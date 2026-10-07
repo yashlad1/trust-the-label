@@ -1,0 +1,7 @@
+*.omc
+*.env
+*.claude
+*.log
+*.pyc
+*.pyo
+*.swp
