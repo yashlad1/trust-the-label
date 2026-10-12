@@ -75,14 +75,8 @@ A viable project should therefore:
 - Distinguish actual harmful tool execution from a model merely stating that it would comply.
 - Evaluate both harmful and benign tasks to identify potential safety–helpfulness trade-offs.
 
-No definitive novelty claim should be made until the full experimental setups and limitations of the closest papers have been examined.
-
 ## 7. Working Conclusion
 
 Prior work already establishes that personas and personal context can influence LLM safety behavior. The strongest next step is not to test persona effects in general, but to identify a specific, controlled question that existing studies have not adequately addressed.
 
-The final research question should be selected only after the closest papers' methods, limitations, and evaluation settings have been compared directly.
-
 ---
-
-*Note: This is a preliminary literature review. Paper summaries, publication details, and similarity judgments should be checked against the full papers before being used to support a formal novelty claim.*
