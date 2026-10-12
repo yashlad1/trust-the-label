@@ -19,8 +19,6 @@ We are particularly interested in the relationship between user identity, backgr
 | [PropensityBench: Evaluating Latent Safety Risks in Large Language Models via an Agentic Approach](https://arxiv.org/abs/2511.20703) | Evaluates whether agents choose risky tools under different operational pressures and dangerous capability settings. | Focuses primarily on risky tool-use propensity rather than isolating user persona as the independent variable. | 2/5 |
 | [AgentHarm (ICLR 2025)](https://proceedings.iclr.cc/paper_files/paper/2025/hash/c493d23af93118975cdbc32cbe7323f5-Abstract-Conference.html) | Provides a benchmark for evaluating harmful multi-step agent tasks, including tool use and robustness to jailbreaks. | Provides an evaluation framework rather than primarily studying how user personas change harmful compliance. | 3/5 |
 
-*Similarity scores are preliminary judgments of how closely each paper matches the proposed study. They are not scores reported by the papers' authors.*
-
 ## 3. Preliminary Findings
 
 The literature suggests that the broad question of whether user personas or personal context influence harmful compliance has already received substantial attention.
