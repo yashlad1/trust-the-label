@@ -5,3 +5,12 @@
 *.pyc
 *.pyo
 *.swp
+# AI-generated (Claude Code): keys, logs, scratch and local rule files are never committed
+logs/
+*.eval
+dev/scratch/
+.venv/
+__pycache__/
+CLAUDE.md
+AGENTS.md
+BACKLOG.md

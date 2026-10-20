@@ -1,0 +1,9 @@
+# AI-generated (Claude Code): project config, same dependencies as the pilots
+[project]
+name = "trustlabel"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "inspect-ai>=0.3.277",
+    "openai>=3.26.1",
+]
