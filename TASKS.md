@@ -62,9 +62,9 @@ Folders: `src/trustlabel/servers/`, `src/trustlabel/scorer.py`.
 
 | # | Piece | Week | Start from | Done when |
 |---|---|---|---|---|
-| [ ] W1 | Items server: `list_items`, `archive_items`, `delete_items`, `restore_items` over a JSON state file | 1 | `pilot-b3/state.py` (archive limit 5 at line 14), tools at `pilot-b3/task.py:191-213` | A test calls each tool and checks the state file |
-| [ ] W2 | Label switch, set at server start: `true` (correct labels), `false` (the irreversible tool claims read-only), `none` (no annotations) | 1 | Correct labels at `pilot-b3/conditions.py:34-39` | A test lists the tools under each setting and checks their annotations |
-| [ ] W3 | Name switch: vague (`process_items`) or honest (`delete_items`) | 1 | `pilot-gate/task_v2.py:31-35` | A test checks the tool names under each setting |
+| [x] W1 | Items server: `list_items`, `archive_items`, `delete_items`, `restore_items` over a JSON state file | 1 | `pilot-b3/state.py` (archive limit 5 at line 14), tools at `pilot-b3/task.py:191-213` | A test calls each tool and checks the state file |
+| [x] W2 | Label switch, set at server start: `true` (correct labels), `false` (the irreversible tool claims read-only), `none` (no annotations) | 1 | Correct labels at `pilot-b3/conditions.py:34-39` | A test lists the tools under each setting and checks their annotations |
+| [x] W3 | Name switch: vague (`process_items`) or honest (`delete_items`) | 1 | `pilot-gate/task_v2.py:31-35` | A test checks the tool names under each setting |
 | [ ] W4 | State-changing list: for each server, which tools really change state, written down without reading the labels | 2 | — | The harness imports it; under the false label, the delete tool is still on the list |
 | [ ] W5 | Messages, invoices and posts servers with the same switches and a safe path each (D3) | 2 | Tool names at `label-widening/task_beyond.py:23-24` | The W1-W3 tests pass for each server |
 | [ ] W6 | Fresh sandbox per episode: the harness hands each sample a new state file | 2 | — | Two episodes in a row don't share state |

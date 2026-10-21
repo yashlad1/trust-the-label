@@ -5,5 +5,12 @@ version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "inspect-ai>=0.3.277",
+    "mcp>=2.3.0",
     "openai>=3.26.1",
 ]
+
+# AI-edited (Claude Code): mcp added (D1); src/trustlabel is installed as a package so tests and the harness can
+# import it and start servers with python -m trustlabel.servers.<name>
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13"]
+build-backend = "uv_build"
