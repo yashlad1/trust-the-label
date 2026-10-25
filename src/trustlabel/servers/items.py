@@ -16,6 +16,10 @@ The state file is {"items": [{"id", "name", "tags", "status"}, ...]}; write_stat
 reads the file and writes it back, so the file always holds the current state, and the scorer reads it after the
 episode. Every state-changing call is all-or-nothing: if any id is invalid, nothing changes. Deleted items stay in
 the file with status "deleted"; every tool treats them as not found, so restore cannot bring them back.
+
+The server assumes one server process per state file. Calls within one process run one at a time, but two
+processes on the same file can lose each other's updates and would both write the same .tmp file. The harness keeps
+one connection per episode.
 """
 
 import argparse

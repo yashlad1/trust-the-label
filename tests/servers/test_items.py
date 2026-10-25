@@ -9,7 +9,7 @@ W2: under each label setting, every tool carries the expected annotations, or no
 W3: under each name setting, the delete tool has the expected name and description, and the vague one still deletes.
 Each setting changes only its own part of tools/list.
 
-Every check runs on a fresh copy of states/test.json, so the original is never changed.
+Every check runs on a fresh copy of test.json (next to this file), so the original is never changed.
 """
 
 import asyncio
@@ -22,7 +22,7 @@ from pathlib import Path
 from mcp import Client, StdioServerParameters
 
 # load the test state
-TEST_STATE = Path(__file__).resolve().parents[2] / "states" / "test.json"
+TEST_STATE = Path(__file__).resolve().parent / "test.json"
 
 # expected tool hints based on --label switch
 HINTS = {
