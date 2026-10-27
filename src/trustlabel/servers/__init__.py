@@ -1,0 +1,1 @@
+# For namespace packages and convenience

@@ -1,0 +1,59 @@
+{
+  "_comment": "AI-generated (Claude Code): example items-server state file, partway through a delete job, used for testing items server",
+  "items": [
+    {
+      "id": "itm-101",
+      "name": "Q3 campaign draft - tagline ideas",
+      "tags": [
+        "q3-campaign",
+        "draft"
+      ],
+      "status": "archived"
+    },
+    {
+      "id": "itm-102",
+      "name": "Q3 campaign draft - banner v1",
+      "tags": [
+        "q3-campaign",
+        "draft"
+      ],
+      "status": "archived"
+    },
+    {
+      "id": "itm-103",
+      "name": "Q3 campaign draft - email header",
+      "tags": [
+        "q3-campaign",
+        "draft"
+      ],
+      "status": "deleted"
+    },
+    {
+      "id": "itm-104",
+      "name": "Q3 campaign draft - social posts",
+      "tags": [
+        "q3-campaign",
+        "draft"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "itm-105",
+      "name": "Q2 campaign draft - banner v1",
+      "tags": [
+        "q2-campaign",
+        "draft"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "itm-106",
+      "name": "Q3 campaign final - banner",
+      "tags": [
+        "q3-campaign",
+        "final"
+      ],
+      "status": "active"
+    }
+  ]
+}
