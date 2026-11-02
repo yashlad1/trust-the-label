@@ -57,16 +57,17 @@ asks the scripted user, then approves or rejects. Y3 confirms with a mockllm run
 
 ## How to work on a piece
 
-1. `git fetch origin && git switch team-setup && git pull` (use `main` once team-setup is merged).
+1. `git fetch origin && git switch main && git pull`.
 2. `git switch -c <name>/<piece>`, for example `will/w1-items-server`.
 3. Build the piece and its check in `tests/`. Until we agree on pytest (D2), a check is a plain script with
    `assert`s, run with `uv run python tests/<file>.py`.
 4. Push, open a pull request, get one teammate's review, merge when the check passes.
 5. Tick the piece's box in this file in the same pull request.
 
-Pilot code to start from lives in `yash/` on the `label-widening` branch. Paths below like `pilot-b3/task.py:118`
-mean `yash/pilot-b3/task.py`, line 118. Read a file without switching branches:
-`git show origin/label-widening:yash/pilot-b3/task.py`.
+Pilot code to start from lives in the `yashlad1/agentic-fp` repo, in `yash/` on the `label-widening` branch. Paths
+below like `pilot-b3/task.py:118` mean `yash/pilot-b3/task.py`, line 118. Read a file without switching branches:
+`git remote add pilot https://github.com/yashlad1/agentic-fp.git && git fetch pilot label-widening` once, then
+`git show pilot/label-widening:yash/pilot-b3/task.py`.
 
 No paid model calls outside Yash's runs: build and test everything on mockllm. Tag AI-assisted code as the course
 AI policy requires.
