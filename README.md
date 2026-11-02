@@ -18,7 +18,7 @@ cp .env.example .env    # add your OpenRouter key; .env is never committed
 | `src/trustlabel/servers/` | Local MCP servers (items, messages, invoices, posts), with label and name switches | Will |
 | `src/trustlabel/scorer.py` | Reads the final sandbox state | Will |
 | `src/trustlabel/policies/` | The five approval policies and the gate prompt | Vignesh |
-| `src/trustlabel/analysis/` | Harm, catch, false-alarm and task-success rates; paired test with Holm correction | Vignesh |
+| `src/trustlabel/analysis/` | Agent proposal rates, gate outcomes, harm and task success; paired tests with Holm correction | Vignesh |
 | `src/trustlabel/scenarios/` | 40 jobs, each in an unneeded and a wanted version, with ground truth and the user's answer rules | Isha |
 | `src/trustlabel/harness/` | The Inspect task, the agent-to-gate loop and the scripted user | Yash |
 | `src/trustlabel/contracts.py` | Shared formats: tool call, decision, scenario. Changes need everyone they affect. | everyone |
