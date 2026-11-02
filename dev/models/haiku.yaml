@@ -1,0 +1,6 @@
+# Pilot B3 model (added 2026-10-09): Claude Haiku 5.5, Anthropic.
+# Version: anthropic/claude-haiku-5.5. Host: Anthropic first-party, no fallbacks.
+# Reasoning effort: medium, set per run with --reasoning-effort medium.
+provider:
+  order: [anthropic]
+  allow_fallbacks: false

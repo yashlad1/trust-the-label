@@ -1,0 +1,4 @@
+# Version: openai/gpt-6-luna. Host: OpenAI first-party (standard tier, not flex), no fallbacks. Reasoning effort: medium, set per run with --reasoning-effort medium. The host takes no temperature: OpenRouter drops it and the model's default applies.
+provider:
+  order: [openai]
+  allow_fallbacks: false

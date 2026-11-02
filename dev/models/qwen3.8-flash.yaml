@@ -1,0 +1,7 @@
+# Model-run candidate: Qwen 3.8 Flash (open weights: Qwen/Qwen3.8-Flash-Next), Alibaba.
+# Version: qwen/qwen3.8-flash. Host: Alibaba first-party, no fallbacks. 
+# Thinking: on. The host has no reasoning-effort setting.
+provider:
+  order: [alibaba]
+  allow_fallbacks: false
+reasoning_enabled: true

@@ -1,0 +1,4 @@
+# Version: z-ai/glm-5.3-flash. Host: Z.AI first-party (fp8), no fallbacks. Reasoning effort: medium, set per run with --reasoning-effort medium.
+provider:
+  order: [z-ai]
+  allow_fallbacks: false

@@ -6,10 +6,28 @@ servers, five approval policies, a scripted user and a scorer that reads the fin
 
 ## Setup
 
+Everyone works in the same environment: Python 3.13 (pinned in `.python-version`) and the exact package versions in
+`uv.lock` (inspect-ai 0.3.282, mcp 2.3.0, openai 3.35.1).
+
 ```bash
-uv sync
+# 1. install uv once (https://docs.astral.sh/uv/)
+curl -LsSf https://astral.sh/uv/install.sh | sh                  # macOS / Linux
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"       # Windows
+
+# 2. from the repo folder: Python 3.13 and the locked packages
+uv python install 3.13
+uv sync --locked
+
+# 3. check: prints 3.13.x and the three versions above, then the items-server test passes
+uv run python -c "import sys, importlib.metadata as m; print(sys.version.split()[0], *(f'{p} {m.version(p)}' for p in ('inspect-ai', 'mcp', 'openai')))"
+uv run python tests/servers/test_items.py
+
+# 4. your key
 cp .env.example .env    # add your OpenRouter key; .env is never committed
 ```
+
+Run everything through `uv run ...` so it uses this environment. To add a dependency, run `uv add <package>` and
+commit `pyproject.toml` and `uv.lock` together in their own pull request.
 
 ## Layout
 
@@ -30,7 +48,7 @@ cp .env.example .env    # add your OpenRouter key; .env is never committed
 ## Working on it
 
 ```bash
-git switch main && git pull               # use team-setup until it is merged into main
+git switch main && git pull
 git switch -c <name>/<topic>              # e.g. will/items-server
 # work and commit
 git push -u origin <name>/<topic>         # then open a pull request into main

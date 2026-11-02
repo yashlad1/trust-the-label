@@ -1,0 +1,6 @@
+# gpt-oss-120b, OpenAI open weights, 117B MoE.
+# Version: openai/gpt-oss-120b (open weights, no dated revisions).
+# Host: DeepInfra bf16, no fallbacks. Reasoning effort: medium, set per run with --reasoning-effort medium.
+provider:
+  order: [deepinfra/bf16] 
+  allow_fallbacks: false
