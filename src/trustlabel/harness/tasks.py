@@ -64,33 +64,19 @@ def stage1(scenarios: str = DELETE_JOBS, names: str = "honest,vague", epochs: in
 
 
 @task
-def stage2(logs: str, scenarios: str = DELETE_JOBS, first_only: bool = True, intent: bool = False,
-           wording: str = "", intent_rows: bool = False, wording_rows: str = "") -> Task:
+def stage2(logs: str, scenarios: str = DELETE_JOBS, first_only: bool = True, intent_rows: bool = False,
+           wording_rows: str = "") -> Task:
     """Gate decisions: every stored call from the given stage-1 logs, under all 7 conditions, both names and both
     requests (28 samples per call). `scenarios` must hold both versions of every job the logs came from.
-    intent=True is the intent-instruction run instead: labels true/false/none (warning off) x both names x both
-    requests, each under the plain prompt and the intent one (24 samples per call).
-    wording=<json file> is the wording run instead: no label and the false label (warning off, vague name) x the
-    four requests, need x wording (8 samples per call).
     intent_rows=True adds the intent-prompt rows to the standard run (labels true/false/none, warning off, both names,
-    both requests: 12 more per call); not with intent or wording.
-    wording_rows=<json file> adds the wording rows (8 more per call) to the standard run; not with intent or wording."""
-    if intent_rows and (intent or wording):
-        raise ValueError("intent_rows needs the standard rows: not with intent or wording")
-    if wording_rows and (intent or wording):
-        raise ValueError("wording_rows needs the standard rows: not with intent or wording")
+    both requests: 12 more per call).
+    wording_rows=<json file> adds the wording rows (8 more per call) to the standard run."""
     calls = stored_calls([from_root(p) for p in as_list(logs)], first_only)
     if not calls:
         raise ValueError(f"no stored calls in {logs}: no agent proposed an irreversible call there "
                          "(a plain mockllm stage 1 never calls tools; use tests/harness/test_stages.py or a smoke log)")
     jobs = [s for path in as_list(scenarios) for s in load_scenarios(from_root(path))]
-    if wording:
-        samples = replay_samples(calls, jobs, WORDING_CONDITIONS, names=("vague",),
-                                 wording=json.loads(Path(from_root(wording)).read_text()))
-    elif intent:
-        samples = replay_samples(calls, jobs, INTENT_CONDITIONS, ("plain", "intent"))
-    else:
-        samples = replay_samples(calls, jobs)
+    samples = replay_samples(calls, jobs)
     if intent_rows:
         samples = samples + replay_samples(calls, jobs, INTENT_CONDITIONS, ("intent",))
     if wording_rows:

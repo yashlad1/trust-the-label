@@ -24,7 +24,6 @@ MODELS = {
     "glm-5.3-flash": ("z-ai/glm-5.3-flash", "glm-5.3-flash.yaml", True),
     "qwen3.8-flash": ("qwen/qwen3.8-flash", "qwen3.8-flash.yaml", False),
     "gpt-6-luna": ("openai/gpt-6-luna", "gpt-6-luna.yaml", True),
-    "haiku": ("anthropic/claude-haiku-5.5", "haiku.yaml", True),
     "gpt-oss-120b": ("openai/gpt-oss-120b", "gpt-oss-120b.yaml", True),
 }
 MODELS_DIR = Path(__file__).parent / "models"

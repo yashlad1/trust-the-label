@@ -2,7 +2,7 @@
 """Stage-1 logs with real stored calls, on mockllm, so a dry run can exercise stage 2 at full scale.
 
 Plain mockllm never calls a tool, so a plain dry run has no stored calls to replay. This drives the same
-stage-1 task with the scripted agent from tests/blackbox, which lists records and then calls whichever
+stage-1 task with the scripted agent from tests/harness, which lists records and then calls whichever
 irreversible tool the server offers. Free: no model is ever called.
 
   dev/py.sh python dev/scripted_stage1.py <out dir> [--jobs <files>] [--limit N]
@@ -17,7 +17,7 @@ from pathlib import Path
 from inspect_ai import eval as run_eval
 from inspect_ai.model import get_model
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tests" / "blackbox"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tests" / "harness"))
 from mock_agents import list_then_act_first  # noqa: E402
 
 from trustlabel.harness.tasks import stage1  # noqa: E402
