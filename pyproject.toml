@@ -7,6 +7,7 @@ dependencies = [
     "inspect-ai>=0.3.277",
     "mcp>=2.3.0",
     "openai>=3.26.1",
+    "pyyaml>=6.0.3",
 ]
 
 # AI-edited (Claude Code): mcp added (D1); src/trustlabel is installed as a package so tests and the harness can
