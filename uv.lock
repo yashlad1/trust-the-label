@@ -2194,6 +2194,7 @@ dependencies = [
     { name = "inspect-ai" },
     { name = "mcp" },
     { name = "openai" },
+    { name = "pyyaml" },
 ]
 
 [package.metadata]
@@ -2201,6 +2202,7 @@ requires-dist = [
     { name = "inspect-ai", specifier = ">=0.3.277" },
     { name = "mcp", specifier = ">=2.3.0" },
     { name = "openai", specifier = ">=3.26.1" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
 ]
 
 [[package]]
