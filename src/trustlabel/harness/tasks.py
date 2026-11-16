@@ -1,10 +1,13 @@
-"""The three stages as Inspect tasks (Y6). Every switch is a task parameter (-T key=value).
+# FP3 tasks 16, 17 (docs/fp3-tasks.html): stage tasks one to three, live loop
+"""The three stages as Inspect tasks. Every switch is a task parameter (-T key=value).
 
   inspect eval src/trustlabel/harness/tasks.py@stage1 --model <agent>
-  inspect eval src/trustlabel/harness/tasks.py@stage2 --model <gate> -T logs=<stage-1 .eval paths, comma-separated>
+  inspect eval src/trustlabel/harness/tasks.py@stage2 --model <gate> -T logs=<stage-1 .eval paths, comma-separated> -T scenarios=<the stage-1 scenario files>
   inspect eval src/trustlabel/harness/tasks.py@stage3 --model <agent> -T gate_model=<gate> -T gate_config=<yaml> -T gate_effort=<effort> -T warning=true
 """
 
+import json
+from collections import Counter
 from dataclasses import asdict
 from pathlib import Path
 
@@ -14,7 +17,7 @@ from inspect_ai.model import GenerateConfig
 from inspect_ai.solver import generate
 
 from trustlabel.harness.episode import episode
-from trustlabel.harness.replay import gate_outcome, replay_samples, stored_calls
+from trustlabel.harness.replay import INTENT_CONDITIONS, NAMES_SHOWN, WORDING_CONDITIONS, gate_outcome, replay_samples, stored_calls
 from trustlabel.scenarios.load import DELETE_JOBS, load_scenarios
 from trustlabel.scorer import final_state_scorer
 
@@ -26,13 +29,22 @@ def from_root(path: str) -> str:
     return str(path if Path(path).is_absolute() else ROOT / path) if path else path
 
 
+def as_list(value) -> list[str]:
+    """A comma-list parameter: inspect's -T parsing turns "a,b" into a list, Python callers pass a string."""
+    return [str(v) for v in value] if isinstance(value, (list, tuple)) else value.split(",")
+
+
 def episode_samples(scenarios: str, names: str) -> MemoryDataset:
     samples = [
         Sample(input=s.request, id=f"{s.id}-{s.version}-{name}", metadata={"scenario": asdict(s), "name": name})
-        for path in scenarios.split(",")
+        for path in as_list(scenarios)
         for s in load_scenarios(from_root(path))
-        for name in names.split(",")
+        for name in as_list(names)
     ]
+    clashing = [i for i, c in Counter(s.id for s in samples).items() if c > 1]
+    assert not clashing, (f"{len(clashing)} sample ids appear more than once, so two jobs share an id across the "
+                          f"job files: {clashing[:4]}. Inspect cannot run this, and the job bootstrap would "
+                          f"resample them as one job.")
     return MemoryDataset(samples)
 
 
@@ -52,14 +64,26 @@ def stage1(scenarios: str = DELETE_JOBS, names: str = "honest,vague", epochs: in
 
 
 @task
-def stage2(logs: str, first_only: bool = True) -> Task:
-    """Gate decisions: every stored call from the given stage-1 logs, under all 7 conditions for its name."""
-    calls = stored_calls([from_root(p) for p in logs.split(",")], first_only)
+def stage2(logs: str, scenarios: str = DELETE_JOBS, first_only: bool = True, intent_rows: bool = False,
+           wording_rows: str = "") -> Task:
+    """Gate decisions: every stored call from the given stage-1 logs, under all 7 conditions, both names and both
+    requests (28 samples per call). `scenarios` must hold both versions of every job the logs came from.
+    intent_rows=True adds the intent-prompt rows to the standard run (labels true/false/none, warning off, both names,
+    both requests: 12 more per call).
+    wording_rows=<json file> adds the wording rows (8 more per call) to the standard run."""
+    calls = stored_calls([from_root(p) for p in as_list(logs)], first_only)
     if not calls:
         raise ValueError(f"no stored calls in {logs}: no agent proposed an irreversible call there "
                          "(a plain mockllm stage 1 never calls tools; use tests/harness/test_stages.py or a smoke log)")
+    jobs = [s for path in as_list(scenarios) for s in load_scenarios(from_root(path))]
+    samples = replay_samples(calls, jobs)
+    if intent_rows:
+        samples = samples + replay_samples(calls, jobs, INTENT_CONDITIONS, ("intent",))
+    if wording_rows:
+        samples = samples + replay_samples(calls, jobs, WORDING_CONDITIONS, names=("vague",),
+                                           wording=json.loads(Path(from_root(wording_rows)).read_text()))
     return Task(
-        dataset=MemoryDataset(replay_samples(calls)),
+        dataset=MemoryDataset(samples),
         solver=generate(),
         scorer=gate_outcome(),
         config=GenerateConfig(temperature=1.0),
@@ -72,6 +96,10 @@ def stage3(policy: str = "gate_with_labels", label: str = "false", name: str = "
            gate_effort: str = "", scenarios: str = DELETE_JOBS, epochs: int = 1, max_steps: int = 12,
            seed: int = 0) -> Task:
     """Live check: the whole loop with a real gate, scored on harm and task success. Name the gate explicitly, with the same provider pin and reasoning effort as its stage-2 run, e.g. -T gate_model=openrouter/openai/gpt-6-luna -T gate_config=dev/models/gpt-6-luna.yaml -T gate_effort=medium (Qwen: no gate_effort). Rule policies (never_ask, label_rule) need no gate."""
+    if isinstance(label, bool):  # -T label=false arrives as the boolean False
+        label = str(label).lower()
+    if label not in ("true", "false", "none"):
+        raise ValueError(f"label must be 'true', 'false' or 'none', not {label!r}")
     return Task(
         dataset=episode_samples(scenarios, name),
         solver=episode(stage=3, policy=policy, label=label, warning=warning, gate_model=gate_model or None,
