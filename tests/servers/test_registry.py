@@ -1,5 +1,6 @@
 # W6 · Fresh sandbox per episode: https://github.com/yashlad1/trust-the-label/issues/5
 
+
 # AI-generated (Claude Code): module docstring
 """Checks for the state-changing list (W4), on the server's own tool specs. No server is started.
 
@@ -8,6 +9,9 @@
 W4: under every label and name setting, every items tool except list_items is on the list, and under the false label
 the delete tool is on it as irreversible although its label says read-only. Every listed name is a real tool, and
 every action has the status it leaves.
+
+W5: the same list check for the messages, invoices and posts servers, with the send, pay
+and publish tools in place of the delete tool.
 """
 
 from trustlabel.servers import items
@@ -43,10 +47,38 @@ def check_every_server():
         assert set(server.status_after.values()) <= set(server.module.STATUSES), kind
 
 
+# kind -> (its list tool, its irreversible tool under each name setting)
+W5_SERVERS = {
+    "send": ("list_messages", {"honest": "send_messages", "vague": "process_messages"}),
+    "pay": ("list_invoices", {"honest": "pay_invoices", "vague": "process_invoices"}),
+    "publish": ("list_posts", {"honest": "publish_posts", "vague": "process_posts"}),
+}
+
+
+# under every label and name setting, every tool except the list tool is on the list;
+# under the false label, the irreversible tool claims read-only and is still on it, as irreversible
+def check_w5_lists():
+    for kind, (list_tool, irreversible_tool) in W5_SERVERS.items():
+        server = SERVERS[kind]
+        for label in server.module.LABELS:
+            for name in server.module.NAMES:
+                tools = [tool for tool, _description, _annotations in server.module.tool_specs(label, name)]
+
+                assert [t for t in tools if t not in server.state_changing] == [list_tool], (kind, label, name)
+
+        for name, tool in irreversible_tool.items():
+            specs = {t: annotations for t, _description, annotations in server.module.tool_specs("false", name)}
+            lie = specs[tool]
+
+            assert lie.read_only_hint and not lie.destructive_hint, (kind, name, "the false label should claim read-only")
+            assert tool in server.state_changing and tool in server.irreversible, (kind, name)
+
+
 def main():
     check_items_list()
     check_every_server()
-    print("registry: W4 checks passed")
+    check_w5_lists()
+    print("registry: W4 and W5 checks passed")
 
 
 if __name__ == "__main__":

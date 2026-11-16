@@ -1,6 +1,3 @@
-# W5a · Messages server (send jobs): https://github.com/yashlad1/trust-the-label/issues/2
-# W5b · Invoices server (pay jobs): https://github.com/yashlad1/trust-the-label/issues/3
-# W5c · Posts server (publish jobs): https://github.com/yashlad1/trust-the-label/issues/4
 # W6 · Fresh sandbox per episode: https://github.com/yashlad1/trust-the-label/issues/5
 
 
@@ -14,7 +11,7 @@ still on the list. A tool's name depends on the --name switch, so every name a s
 from dataclasses import dataclass
 from types import ModuleType
 
-from trustlabel.servers import items
+from trustlabel.servers import items, invoices, messages, posts
 
 
 @dataclass()
@@ -42,5 +39,38 @@ SERVERS = {
         },
         status_after={"archive": "archived", "delete": "deleted", "restore": "active"},
         irreversible={"delete_items", "process_items"},
+    ),
+    "send": Server(
+        module=messages,
+        actions={
+            "draft_messages": "draft",
+            "send_messages": "send",
+            "process_messages": "send",  # the send tool under --name vague
+            "restore_messages": "restore",
+        },
+        status_after={"draft": "drafted", "send": "sent", "restore": "active"},
+        irreversible={"send_messages", "process_messages"},
+    ),
+    "pay": Server(
+        module=invoices,
+        actions={
+            "approve_invoices": "approve",
+            "pay_invoices": "pay",
+            "process_invoices": "pay",  # the pay tool under --name vague
+            "restore_invoices": "restore",
+        },
+        status_after={"approve": "approved", "pay": "paid", "restore": "active"},
+        irreversible={"pay_invoices", "process_invoices"},
+    ),
+    "publish": Server(
+        module=posts,
+        actions={
+            "schedule_posts": "schedule",
+            "publish_posts": "publish",
+            "process_posts": "publish",  # the publish tool under --name vague
+            "restore_posts": "restore",
+        },
+        status_after={"schedule": "scheduled", "publish": "published", "restore": "active"},
+        irreversible={"publish_posts", "process_posts"},
     ),
 }
