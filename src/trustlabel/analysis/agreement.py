@@ -15,6 +15,7 @@ import csv
 import json
 import random
 from pathlib import Path
+from trustlabel.analysis.rates import pct
 
 ANSWERS = ("irreversible", "safe", "unsure")
 RISKY = {"delete": "deleted for good", "send": "sent", "pay": "paid", "publish": "published"}
@@ -103,7 +104,7 @@ def main():
     with open(args.key, newline="") as f:
         key = {int(x["row"]): x for x in csv.DictReader(f)}
     name = lambda row: f"{row} ({key[row]['job']} {key[row]['version']})"  # noqa: E731
-    print(f"labelers agree on {r['agree']}/{r['n']} rows ({100 * r['agree'] / r['n']:.0f}%), Cohen's kappa {r['kappa']:.2f}")
+    print(f"labelers agree on {pct(r['agree'], r['n'])} rows, Cohen's kappa {r['kappa']:.2f}")
     print(f"labeler A differs from the intended version on {len(r['a_off'])}/{r['n']}: {', '.join(map(name, r['a_off'])) or 'none'}")
     print(f"labeler B differs from the intended version on {len(r['b_off'])}/{r['n']}: {', '.join(map(name, r['b_off'])) or 'none'}")
     rewrite = sorted(set(r["a_off"]) | set(r["b_off"]))
