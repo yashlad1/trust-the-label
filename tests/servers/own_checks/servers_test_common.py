@@ -12,6 +12,7 @@ this folder, so they import this file by name.
 
 import asyncio
 import json
+import os
 import subprocess
 import sys
 
@@ -29,7 +30,7 @@ RECORD_HINTS = {
 # starts a server module (e.g. "trustlabel.servers.items") as a client
 def server(module, state, label="true", name="honest"):
     args = ["-m", module, "--state", str(state), "--label", label, "--name", name]
-    return Client(StdioServerParameters(command=sys.executable, args=args))
+    return Client(StdioServerParameters(command=sys.executable, args=args, env={**os.environ}))
 
 
 # read the statuses of items from the state file
