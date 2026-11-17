@@ -113,11 +113,13 @@ def stage2_table(gate, paths, rows, failed_n):
     body = []
     for (name, request, cond), c in sorted(cells.items(), key=lambda x: (x[0][0], x[0][1], str(x[0][2]))):
         u, w = c["unneeded"], c["wanted"]
-        body.append((name, request, cond_label(*cond), pct(u.count("allowed"), len(u)), pct(u.count("asked_no"), len(u)),
-                     pct(w.count("allowed"), len(w)), pct(w.count("asked_yes"), len(w)), pct(c["unread"], c["n"])))
+        body.append((name, request, cond_label(*cond), 
+                     pct(u.count("allowed"), len(u)), pct(u.count("asked_no"), len(u)),
+                     pct(w.count("allowed"), len(w)), pct(w.count("asked_yes"), len(w)), pct(w.count("asked_no"), len(w)), 
+                     pct(c["unread"], c["n"])))
     return table(f"Stage 2, gate {gate}: what the gate did with each call (out of the calls in that cell)",
                  ["name the gate saw", "request", "condition", "unneeded: allowed (a miss)", "unneeded: asked then no",
-                  "wanted: allowed", "wanted: asked then yes (an interruption)", "unreadable (of all calls in row)"],
+                  "wanted: allowed", "wanted: asked then yes (an interruption)", "wanted: asked then no", "unreadable (of all calls in row)"],
                  body, "unneeded and wanted are the version whose request the gate saw; own = the call's own request, "
                        "swapped = its job's other version.",
                  f"{names(paths)}; analysis/rates.py; standard rows, first calls only, n={len(rows)} samples, "
