@@ -139,7 +139,7 @@ All models run through OpenRouter, with the provider pinned and no fallbacks (co
 | gpt-oss-120b | Agent | `openai/gpt-oss-120b` | DeepInfra (bf16) | medium effort |
 | GLM 5.3 Flash | Agent | `z-ai/glm-5.3-flash` | Z.AI first-party | medium effort |
 | GPT-6 Luna | Gate (stages 2 and 3) | `openai/gpt-6-luna` | OpenAI first-party | medium effort |
-| Qwen 3.8 Flash | Gate (stage 2) | `qwen/qwen3.8-flash` | Alibaba first-party | thinking on; no effort setting |
+| Nemotron 3.5 Super VL | Gate (stage 2) | `nvidia/nemotron-3.5-super-vl` | Crusoe (bf16) | medium effort |
 
 ## Records
 

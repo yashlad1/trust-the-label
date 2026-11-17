@@ -1,7 +1,7 @@
 # FP3 task 20 (docs/fp3-tasks.html): runs table from a run's records (measure tables arrive with rates.py)
 """Runs table: one row per log, with failed samples, wall time, tokens and billed cost.
 
-  dev/py.sh python dev/report.py <manifest.json>
+  dev/py.sh python dev/report.py <manifest.json> [<manifest.json> ...]
   dev/py.sh python dev/report.py <log.eval> [<log.eval> ...]
 
 manifest: {"stage1": [path, ...], "stage2": {gate: path}, "stage3": {policy label: path}, ...}
@@ -32,11 +32,11 @@ def cost(log):
 
 def entries(arg):
     """(stage, model or gate, log path) per log: from the manifest's keys, or from each log's own task and model."""
-    if len(arg) == 1 and arg[0].endswith(".json"):
-        m = json.loads(Path(arg[0]).read_text())
-        return ([("stage1", None, p) for p in m.get("stage1") or []]
-                + [("stage2", g, p) for g, p in (m.get("stage2") or {}).items()]
-                + [("stage3", g, p) for g, p in (m.get("stage3") or {}).items()])
+    if all(a.endswith(".json") for a in arg):  # several manifests (a split run) read as one
+        ms = [json.loads(Path(a).read_text()) for a in arg]
+        return ([("stage1", None, p) for p in dict.fromkeys(p for m in ms for p in m.get("stage1") or [])]
+                + [("stage2", g, p) for m in ms for g, p in (m.get("stage2") or {}).items()]
+                + [("stage3", g, p) for m in ms for g, p in (m.get("stage3") or {}).items()])
     return [(None, None, p) for p in arg]
 
 

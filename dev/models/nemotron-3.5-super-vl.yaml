@@ -1,0 +1,6 @@
+# Gate candidate (replacement rule for Qwen 3.8 Flash): NVIDIA Nemotron 3.5 Super VL.
+# Version: nvidia/nemotron-3.5-super-vl. Host: Crusoe bf16 only, no fallbacks. Reasoning effort: medium, set per run
+# with --reasoning-effort medium.
+provider:
+  order: [crusoe/bf16]
+  allow_fallbacks: false
