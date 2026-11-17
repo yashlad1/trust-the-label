@@ -12,8 +12,8 @@ async def never_ask(g: GateInput) -> Decision:
 
 
 async def label_rule(g: GateInput) -> Decision:
-    """Allow a call whose label says read-only; ask about everything else.
-
-    Same decisions as Codex CLI's Auto and Writes modes on our labels, which never set openWorldHint."""
+    """Allow a call whose label says read-only; ask about everything else. 
+    
+    On our labels, which never set openWorldHint, this is the decision Codex CLI makes in its Auto and Writes tool-approval modes (openai/codex, codex-rs/core/src/mcp_tool_call.rs, requires_mcp_tool_approval, tag rust-v0.169.0)."""
     read_only = g.labels is not None and g.labels.read_only is True
     return Decision("allow" if read_only else "ask", "label rule")
