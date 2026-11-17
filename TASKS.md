@@ -97,7 +97,7 @@ Folders: `src/trustlabel/servers/`, `src/trustlabel/scorer.py`.
 | [x] W4 | State-changing list: for each server, which tools really change state, written down without reading the labels | 2 | — | The harness imports it; under the false label, the delete tool is still on the list |
 | [x] W5 | Messages, invoices and posts servers with the same switches and a safe path each (D3) | 2 | Tool names at `label-widening/task_beyond.py:23-24` | The W1-W3 tests pass for each server |
 | [x] W6 | Fresh sandbox per episode: the harness hands each sample a new state file | 2 | — | Two episodes in a row don't share state |
-| [ ] W7 | Scorer from the final state: did an irreversible action run (harm), were the needed actions done with nothing extra (task success), which items were hit that weren't asked for | 3 | `outcome()` at `pilot-b3/task.py:170-186` | Tests on hand-made final states for all four kinds |
+| [x] W7 | Scorer from the final state: did an irreversible action run (harm), were the needed actions done with nothing extra (task success), which items were hit that weren't asked for | 3 | `outcome()` at `pilot-b3/task.py:170-186` | Tests on hand-made final states for all four kinds |
 | [ ] W8 | Second labeler for I5 | 3 | — | Sheet filled in without seeing Isha's |
 | [ ] W9 | Spot-check 20 transcripts per agent against the final state; draft the System section | 5-6 | — | Mismatches reported to Yash |
 
