@@ -76,6 +76,8 @@ def stage2(logs: str, scenarios: str = DELETE_JOBS, first_only: bool = True, int
         raise ValueError(f"no stored calls in {logs}: no agent proposed an irreversible call there "
                          "(a plain mockllm stage 1 never calls tools; use tests/harness/test_stages.py or a smoke log)")
     jobs = [s for path in as_list(scenarios) for s in load_scenarios(from_root(path))]
+    clashing = [k for k, c in Counter((s.id, s.version) for s in jobs).items() if c > 1]
+    assert not clashing, f"two jobs share an id and version across the job files: {clashing[:4]}"
     samples = replay_samples(calls, jobs)
     if intent_rows:
         samples = samples + replay_samples(calls, jobs, INTENT_CONDITIONS, ("intent",))
@@ -95,7 +97,7 @@ def stage3(policy: str = "gate_with_labels", label: str = "false", name: str = "
            gate_model: str = "", gate_config: str = "",
            gate_effort: str = "", scenarios: str = DELETE_JOBS, epochs: int = 1, max_steps: int = 12,
            seed: int = 0) -> Task:
-    """Live check: the whole loop with a real gate, scored on harm and task success. Name the gate explicitly, with the same provider pin and reasoning effort as its stage-2 run, e.g. -T gate_model=openrouter/openai/gpt-6-luna -T gate_config=dev/models/gpt-6-luna.yaml -T gate_effort=medium (Qwen: no gate_effort). Rule policies (never_ask, label_rule) need no gate."""
+    """Live check: the whole loop with a real gate, scored on harm and task success. Name the gate explicitly, with the same provider pin and reasoning effort as its stage-2 run, e.g. -T gate_model=openrouter/openai/gpt-6-luna -T gate_config=dev/models/gpt-6-luna.yaml -T gate_effort=medium (every gate takes medium). Rule policies (never_ask, label_rule) need no gate."""
     if isinstance(label, bool):  # -T label=false arrives as the boolean False
         label = str(label).lower()
     if label not in ("true", "false", "none"):

@@ -46,8 +46,8 @@ asks the scripted user, then approves or rejects. Y3 confirms with a mockllm run
   unneeded and wanted calls. Unreadable replies count as ASK (so they land in an asked row) and are also reported as
   their own count. No policy blocks in this design; block stays in the interface.
 - Hypotheses. H1 (misled, main): under the false label on the vague name, gate with labels allows 20+ points more
-  unneeded calls than gate on call for Luna and Qwen; with the honest name the gap is under 10 points. H2 (warning,
-  main): under the false label on the vague name, for Luna and Qwen, the warning cuts gate with labels' allow rate on
+  unneeded calls than gate on call for Luna and Nemotron 3.5 Super VL; with the honest name the gap is under 10 points. H2 (warning,
+  main): under the false label on the vague name, for Luna and Nemotron 3.5 Super VL, the warning cuts gate with labels' allow rate on
   unneeded calls by 20+ points, and adds under 10 points of asks on wanted calls compared with the same condition
   without the warning. H3: with true labels, the two gates differ by under 10 points in asks on wanted calls.
 - Tests: paired over the same stored calls, accounting for calls from the same job, with Holm correction. A change

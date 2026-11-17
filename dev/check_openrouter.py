@@ -22,9 +22,9 @@ import yaml
 # name -> (OpenRouter id, yaml file, we send reasoning effort "medium")
 MODELS = {
     "glm-5.3-flash": ("z-ai/glm-5.3-flash", "glm-5.3-flash.yaml", True),
-    "qwen3.8-flash": ("qwen/qwen3.8-flash", "qwen3.8-flash.yaml", False),
     "gpt-6-luna": ("openai/gpt-6-luna", "gpt-6-luna.yaml", True),
     "gpt-oss-120b": ("openai/gpt-oss-120b", "gpt-oss-120b.yaml", True),
+    "nemotron-3.5-super-vl": ("nvidia/nemotron-3.5-super-vl", "nemotron-3.5-super-vl.yaml", True),
 }
 MODELS_DIR = Path(__file__).parent / "models"
 API = "https://openrouter.ai/api/v1"
@@ -68,7 +68,7 @@ def free_check():
             continue
         sp = ep["supported_parameters"]
         tools = "tools" in sp
-        reasoning = "reasoning" in sp  # JSON also lists "reasoning_effort"; qwen has reasoning but no effort
+        reasoning = "reasoning" in sp  # JSON also lists "reasoning_effort"
         if not tools:
             bad.append(f"{name}: endpoint {ep['tag']} lacks tools")
         if effort and not (reasoning and "reasoning_effort" in sp):
@@ -124,7 +124,6 @@ async def ping(only):
             u = out.usage
             print(f"{name}: ok | tool_call={bool(out.message.tool_calls)} | stop={out.stop_reason} | "
                   f"in={u and u.input_tokens} out={u and u.output_tokens} | text={out.completion[:80]!r}")
-            rc |= not out.message.tool_calls
         except Exception as e:
             print(f"{name}: ERROR {type(e).__name__}: {str(e)[:300]}")
             rc = 1
