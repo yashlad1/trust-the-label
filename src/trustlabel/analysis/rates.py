@@ -35,7 +35,7 @@ KEY_FIELDS = ("name", "request", "stored_version", "policy", "label", "warning",
 
 def pct(k, n):
     """Percent with the count, like '43% (17/40)'; a cell with no calls prints '– (0/0)'."""
-    return f"{100 * k / n:.0f}% ({k}/{n})" if n else "– (0/0)"
+    return f"{(200 * k + n) // (2 * n):.0f}% ({k}/{n})" if n else "– (0/0)"
 
 
 def pick(rows, spec):
