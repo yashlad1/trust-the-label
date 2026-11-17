@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FP3 Task Board</title>
+<style>
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --text: #1d1d1b; --muted: #5f5f5a; --line: #e2e1dc; --accent: #2b59c3;
+  --s: #1f7a4a; --s-bg: #e3f4ea; --m: #2b59c3; --m-bg: #e5ecfb; --l: #9a5b00; --l-bg: #fbefd9;
+  --xl: #b3261e; --xl-bg: #fbe3e1; --chip: #f0efeb;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161615; --panel: #1f1f1d; --text: #ecebe6; --muted: #a3a29b; --line: #34332f; --accent: #8fb0ff;
+    --s: #7fd6a4; --s-bg: #173826; --m: #9db8ff; --m-bg: #1d2a4d; --l: #f0c070; --l-bg: #3d2d10;
+    --xl: #ff9c94; --xl-bg: #44201d; --chip: #2a2a27;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161615; --panel: #1f1f1d; --text: #ecebe6; --muted: #a3a29b; --line: #34332f; --accent: #8fb0ff;
+  --s: #7fd6a4; --s-bg: #173826; --m: #9db8ff; --m-bg: #1d2a4d; --l: #f0c070; --l-bg: #3d2d10;
+  --xl: #ff9c94; --xl-bg: #44201d; --chip: #2a2a27;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 64px; }
+h1 { font-size: 26px; margin: 0 0 4px; }
+h2 { font-size: 18px; margin: 36px 0 10px; }
+.sub { color: var(--muted); margin: 0 0 14px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.card h3 { margin: 0; font-size: 16px; }
+.card .role { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.card ul { margin: 6px 0 8px; padding-left: 18px; font-size: 13.5px; }
+.filters { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 6px 0 12px; }
+.group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.group span { font-size: 13px; color: var(--muted); margin-right: 2px; }
+button { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--panel); color: var(--text);
+  padding: 4px 11px; border-radius: 999px; cursor: pointer; }
+button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.scroll { overflow-x: auto; max-width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 1200px; font-size: 13.5px; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { background: var(--panel); font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td.file { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; min-width: 190px; }
+td.note { color: var(--muted); min-width: 300px; }
+td.task { min-width: 260px; }
+td.num { white-space: nowrap; }
+.badge { display: inline-block; font-size: 12px; font-weight: 650; padding: 1px 8px; border-radius: 6px; white-space: nowrap; }
+.e-small { color: var(--s); background: var(--s-bg); } .e-medium { color: var(--m); background: var(--m-bg); }
+.e-large { color: var(--l); background: var(--l-bg); } .e-very { color: var(--xl); background: var(--xl-bg); }
+.chip { display: inline-block; font-size: 12px; padding: 0 7px; border-radius: 6px; background: var(--chip); }
+a { color: var(--accent); }
+.count { color: var(--muted); font-size: 13px; margin: 8px 2px 0; }
+ul.plain { margin: 6px 0 0; padding-left: 20px; }
+ul.plain li { margin: 4px 0; }
+.timeline { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; font-size: 14px; }
+.timeline b { white-space: nowrap; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; background: var(--chip);
+  padding: 0 4px; border-radius: 4px; overflow-wrap: anywhere; }
+@media (max-width: 600px) { h1 { font-size: 22px; } .timeline { grid-template-columns: 1fr; gap: 2px 0; } .timeline span { margin-bottom: 8px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>FP3 Task Board</h1>
+  <p class="sub">Group 12 · Trust the Label? · FP3 (the harness) due <b>Sun Nov 23</b> · every task to do in <code>trust-the-label</code></p>
+  <p>FP3 builds the research instrument. No experiments yet. The FP3 report stays about the instrument: pilot runs that worked or failed, time, tokens, and the main measures as plain rates, with no verdicts. Statistics and findings come in FP4.
+    Background: <a href="README.md">README.md</a> · <a href="how-the-system-works.md">how-the-system-works.md</a> · <a href="traps.md">traps.md</a></p>
+
+  <h2>Legend</h2>
+  <div class="panel legend">
+    <div><span class="badge e-small">small</span> <span class="badge e-medium">medium</span> <span class="badge e-large">large</span> <span class="badge e-very">very large</span> size is a word, from quick to a long job</div>
+    <div><b>Tested by: decided later.</b> Black box: the tester never wrote the code and works only from the task card.</div>
+    <div><b>Phase:</b> FP3 (now) or FP4 (later)</div>
+    <div><b>Kind:</b> code (write it), test (check someone's code), data (job files and wording), check (a human check), run (a model run), report (writing)</div>
+  </div>
+
+  <h2>Who does what in FP3</h2>
+  <div class="cards" id="cards"></div>
+
+  <h2>All tasks</h2>
+  <div class="filters">
+    <div class="group" id="f-person"><span>Person</span></div>
+    <div class="group" id="f-phase"><span>Phase</span></div>
+    <div class="group" id="f-kind"><span>Kind</span></div>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>#</th><th>Size</th><th>File</th><th>Task</th><th>Owner</th><th>Tested by</th>
+        <th>Phase</th><th>Kind</th><th>Depends on</th><th>Issues</th><th>Must do, and the trap to avoid</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <p class="count" id="shown"></p>
+
+  <h2>Dates (proposed, to confirm as a team)</h2>
+  <div class="panel timeline">
+    <b>Thu Nov 13</b><span>Settle the four questions below; real shapes at the package root.</span>
+    <b>Fri Nov 14 – Mon Nov 17</b><span>One pull request per task, the registry first, testers alongside. Job files and wording in by Monday.</span>
+    <b>Tue Nov 18</b><span>Everything merged, every test passes, all three stages run on fake models.</span>
+    <b>Wed Nov 19</b><span>The pilot from the team repo (Yash).</span>
+    <b>Thu Nov 20</b><span>Hand labels, gate-reply and transcript checks, fixes, then the freeze.</span>
+    <b>Fri – Sat Nov 21–22</b><span>Report, README, sample records, zip.</span>
+    <b>Sun Nov 23</b><span>Submit.</span>
+  </div>
+
+  <h2>Settle first (the four questions)</h2>
+  <div class="panel">
+    <ul class="plain">
+      <li><b>Server files:</b> one shared server body (<code>records.py</code>) with three thin servers, or three stand-alone servers? Agree their file names.</li>
+      <li><b>Root shapes:</b> move <code>contracts.py</code> and <code>scorer.py</code> from <code>servers/</code> up to the package root. Keep or delete the copies?</li>
+      <li><b>Names:</b> confirm the tool names and job kinds: draft/send, approve/pay, schedule/publish; kinds <code>send</code>, <code>pay</code>, <code>publish</code>.</li>
+      <li><b>Job files:</b> by hand, or by a small generator?</li>
+    </ul>
+  </div>
+
+  <h2>Names other files import (testers work from these)</h2>
+  <div class="panel">
+    <ul class="plain">
+      <li><code>contracts</code>: Labels (+ as_annotations), Call, GateInput, Decision (with unreadable), Policy, Scenario(id, kind, version, request, items, needed), StoredCall (+ to_dict / from_dict)</li>
+      <li><code>servers.registry</code>: SERVERS[kind], each a Server with module, actions, irreversible, state_changing, status_after, new_state_file(scenario, workdir=None)</li>
+      <li>every server module: LABELS, NAMES, STATUSES, tool_specs(label, name) (read tool first, risky tool at position 2), write_state(path, items), read_items(path), command line <code>--state --label --name</code></li>
+      <li><code>policies</code>: Gate(model, with_labels, model_args, effort), gate_messages(g, with_labels, intent=False), parse_verdict(reply), never_ask, label_rule, hybrid(labels, gate_with_labels)</li>
+      <li><code>scenarios</code>: DELETE_JOBS, SEND_JOBS, PAY_JOBS, PUBLISH_JOBS, load_scenarios(path=DELETE_JOBS); check: problems(jobs), wording_problems(jobs, wording)</li>
+      <li><code>scorer</code>: final_state_scorer(), expected_state(scenario)</li>
+      <li><code>harness</code>: stage1(...), stage2(logs, scenarios=DELETE_JOBS, first_only=True, intent_rows=False, wording_rows=""), stage3(...); replay_samples(calls, scenarios, conditions, prompts=("plain",), names=("honest","vague"), wording=None)</li>
+    </ul>
+  </div>
+
+  <h2>Known traps (full list: <a href="traps.md">traps.md</a>)</h2>
+  <div class="panel">
+    <ul class="plain">
+      <li>Nothing in the harness imports until the root <code>contracts.py</code> and <code>scorer.py</code> hold real code.</li>
+      <li><code>new_state_file</code> is called first in every episode. The open pull request lacks it.</li>
+      <li>List each risky tool under every name (honest and vague).</li>
+      <li>The shared last sentence of both versions must read as the safe step. No "v1/v2" item names.</li>
+      <li>Inspect turns <code>-T a,b,c</code> into a list and <code>-T label=false</code> into a bool.</li>
+      <li>Judge a run from the log's status and sample errors, never the exit code.</li>
+      <li>A failed run has no scores, so count it as its own outcome.</li>
+      <li>Labels never reach the agent, only the approval layer.</li>
+      <li>A tool missing from the registry skips the gate.</li>
+      <li>The YAML package is imported but not in <code>pyproject.toml</code>.</li>
+      <li>Fake-model test logs belong in a temp folder, not <code>logs/</code>.</li>
+    </ul>
+  </div>
+</main>
+
+<script>
+// [id, phase, kind, owner, size, file, task, depends, issues, note]
+const T = [
+ [1,"FP3","code","Yash","small","src/trustlabel/contracts.py","Write the shared shapes in the package-root contracts.py: Labels, Call, GateInput, Decision, Policy, Scenario, StoredCall; everyone reviews","—","#36 #10 #25","Must: the harness imports every name from the package root. Trap: the records are frozen, a call never carries labels, and from_dict rebuilds the nested parts."],
+ [2,"FP3","code","Will","medium","src/trustlabel/servers/registry.py","The risky-tool list for all four job kinds, as SERVERS of Server entries, plus new_state_file","1","#1 #5","Must: a fresh state file per episode. Trap: the open pull request lacks new_state_file; list each risky tool under its honest and vague names."],
+ [3,"FP3","code","Will","large","src/trustlabel/servers/records.py (if the shared body is chosen)","One shared body for the three new servers: read tool, safe tool limited to a few ids, irreversible tool, the label and name switches, the command line","1","none","Trap: the false label lies only on the irreversible tool, which stays at position 2 under every name."],
+ [4,"FP3","code","Will","small","the messages server (send jobs)","Thin server: list, draft, send","3","#2","Trap: the job kind is \"send\"."],
+ [5,"FP3","code","Will","small","the invoices server (pay jobs)","Thin server: list, approve, pay","3","#3","Trap: the job kind is \"pay\"."],
+ [6,"FP3","code","Will","small","the posts server (publish jobs)","Thin server: list, schedule, publish","3","#4","Trap: the job kind is \"publish\"."],
+ [7,"FP3","code","Will","medium","src/trustlabel/scorer.py","Harm, task done and stray items from the final state, for all four kinds","1, 2","#6","Trap: never read what the model says it did."],
+ [8,"FP3","code","Vignesh","small","src/trustlabel/policies/rules.py","never_ask and label_rule","1","#11 #12","Trap: a missing label must ask, not crash; the lying label passes the label rule by design."],
+ [9,"FP3","code","Vignesh","small","src/trustlabel/policies/hybrid.py","The hybrid baseline: a read-only label allows, otherwise the stored gate-with-labels decision; computed on saved calls","1","#16","Trap: it is never run live."],
+ [10,"FP3","code","Vignesh","medium","src/trustlabel/policies/gate.py","One gate prompt with the labels, the warning and the intent sentence as switches; the reply parser; the Gate object with provider pin and reasoning effort","1","#13 #14 #15","Trap: the prompts differ only in the switches; anything but ASK or ALLOW counts as ask and as unreadable; a gate that drops its provider pin silently uses another host."],
+ [11,"FP3","code","Isha","small","src/trustlabel/scenarios/load.py","The four job-file constants and load_scenarios","1","#25","Trap: the stage tasks import DELETE_JOBS and load_scenarios as they load, so a broken loader stops the whole harness."],
+ [12,"FP3","data","Isha","very large","the four job files (delete, send, pay, publish)","Forty jobs, each with an unneeded and a wanted version; same records and targets in both","11","#26 #27 #28 #29","Trap: both versions share their first and last sentence, so the last one must read as the safe step; job ids never repeat across kinds; no \"v1/v2\" names."],
+ [13,"FP3","data","Isha","medium","the wording file (all forty jobs)","For every job a calm wanted request and a high-stakes unneeded request; final before the freeze","12","none","Trap: raise the stakes without saying anyone already approved the action; keep each job's first and last sentence."],
+ [14,"FP3","code","Isha","medium","src/trustlabel/scenarios/check.py","The job checker (both versions, same records, shared sentences, right action per version, unique ids) and the wording-file check; exit 1 on any problem","11, 12","#33","Trap: a checker that never complains passes a weak test."],
+ [15,"FP3","check","Isha","small","the user's answer rules","Confirm the scripted user's rule (yes only if this version needs the asked action on every asked item) matches the jobs","12","#30","Must: the rule and the jobs agree."],
+ [16,"FP3","code","Yash","large","src/trustlabel/harness/replay.py, src/trustlabel/harness/tasks.py","Name swap, request swap, every standard condition, the intent-sentence rows and the wording rows; stages one to three chosen by run settings; safe handling of command-line values","1, 10, 11","#43 #44 #45","Trap: only one switch may differ between two rows; score the version whose request the gate saw."],
+ [17,"FP3","run","Yash","medium","the live loop (stage three)","Agent, tools, gate, scripted user and scorer together on the real job files, for every live policy, on fake models","2, 4, 5, 6, 7, 10, 16","#45","Trap: judge a run from the log status and sample errors, never the exit code."],
+ [18,"FP3","code","Vignesh","large","src/trustlabel/analysis/rates.py, src/trustlabel/analysis/tables.py","The measures from the logs: proposal rates per kind; per condition how often the gate allowed, asked or gave an unreadable reply, on unneeded and wanted calls; the reference lines; the live loop's harm, task done, stray items and failed runs; live versus replay; tokens and time per run","16, 17","#17 #18 #19 #20 #23","Trap: a failed run has no scores; count it as its own outcome or one failure stops every table."],
+ [19,"FP3","run","Yash","large","dev/pipeline.py, dev/scripted_stage1.py","The runner: smoke first, then the full stage, repeats, saved results, a spend stop; scripted stage-one logs for fake-model runs","16, 17","#46 #47","Trap: judge the smoke from the log, never the exit code."],
+ [20,"FP3","code","Yash","medium","dev/report.py","One command prints every FP3 table from a run's records (Vignesh's measures, plus a runs table with failed runs, time and tokens)","18, 19","none","Trap: the FP3 report shows plain rates only, no verdicts."],
+ [21,"FP3","code","Vignesh","medium","src/trustlabel/analysis/agreement.py","Blind labeling sheets and the agreement between two labelers","12","#31 #32","Trap: when both labelers use one label throughout, the agreement must not divide by zero."],
+ [22,"FP3","check","Isha + Will","medium","labeling sheets","Label every job version and wording request separately and blind; resolve disagreements; reword or drop contradicting rows before the freeze","13, 21","#31 #32 #7","Must: no contradicting row survives the freeze."],
+ [23,"FP3","check","Isha","medium","gate replies","Read at least twenty gate replies and compare with the parser's reading; write down the agreement","10, 25","none","Must: the agreement is written down."],
+ [24,"FP3","check","Will","medium","live-loop transcripts","Compare at least twenty live-loop transcripts with the scorer; write down any mismatch","7, 25","#8","Must: every mismatch is written down."],
+ [25,"FP3","run","Yash","medium","the pilot","From the team repo: at least ten representative tasks per condition, one trial each, the same tasks across conditions; record runs that worked or failed, time, tokens or cost (paid: Yash's go)","19, 20","#49","Trap: pick enough jobs that every condition still sees at least ten tasks."],
+ [26,"FP3","report","Yash","medium","README.md, pyproject.toml, .env.example, sample records","Setup, dependencies (add the YAML package), how to run each condition and get the summaries, an example env file, a small sample of saved run records, the public repo link","19, 25","none","Must: a stranger can set up and run from the README."],
+ [27,"FP3","report","Everyone","medium","the FP3 report (PDF)","Changes since FP2; the setup with the updated architecture diagram (where measurements are taken), what each condition changes and what stays fixed, model names and settings; tasks, measures and logging; the pilot; readiness; the FP4 plan. Will: system section; Vignesh: measures and tables; Isha: tasks and methods; Yash: pilot, readiness, FP4 plan and putting it together","25","#9 #34","Trap: stay about the instrument; no findings."],
+ [28,"FP3","test","Will's code","medium","tests/servers/test_registry.py","Every state-changing tool is listed; two state files differ","2","#1 #5","Must check as written."],
+ [29,"FP3","test","Will's code","medium","tests/servers/test_messages.py, test_invoices.py, test_posts.py","Tool names under each name setting, annotations under each label setting, state after each tool","4, 5, 6","#2 #3 #4","Must check as written."],
+ [30,"FP3","test","Will's code","medium","tests/test_scorer.py","Hand-made final states for all four kinds hit harm, task done and stray","7","#6","Must check as written."],
+ [31,"FP3","test","Vignesh's code","small","tests/policies/test_rules.py, test_hybrid.py","All three label states; the lying label passes the label rule","8, 9","#11 #12 #16","Must check as written."],
+ [32,"FP3","test","Vignesh's code","medium","tests/policies/test_gate.py","Prompts differ only in the switches; ASK, ALLOW and a garbled reply; no network","10","#13 #14 #15","Must check as written."],
+ [33,"FP3","test","Vignesh's code","large","tests/analysis/test_rates.py","Hand-made counts and fake-model logs, including a failed run","18","#17-#20","Must check as written."],
+ [34,"FP3","test","Isha's code","medium","tests/scenarios/test_jobs.py","The real job files pass; each rule broken on purpose is caught; the wording check too","14","#33","Must check as written."],
+ [35,"FP3","test","Yash's code","large","tests/harness/test_stages.py, mock_agents.py","All three stages end to end on fake models with scripted agents; intent and wording rows present","16, 17","#43 #44 #45","Must check as written."],
+ [36,"FP3","test","Yash's code","medium","tests/harness/test_approval.py, test_probe.py","Allowed, asked-then-yes and asked-then-no end in the right state; the approval hook fires on MCP calls; the agent's tool list carries no labels","17","#37-#41","Must check as written."],
+ [37,"FP3","test","Yash's code","medium","tests/harness/test_units.py, test_compat.py","Contracts round trip, the scripted user; no state-changing tool skips approval; the registry agrees with each server","1, 2","#36 #42","Must check as written."],
+ [38,"FP3","test","Yash's code","medium","tests/harness/test_openrouter.py","Requests go to a local fake server; the provider pin, reasoning effort and seed are sent; no paid call","10","#49","Must check as written."],
+ [39,"FP4","run","Yash","—","the full paid run (all three stages, real models)","The full run on real models","—","#50 #51 #52",""],
+ [40,"FP4","code","Vignesh","—","src/trustlabel/analysis/stats.py and the hypothesis tables","Statistics and the hypothesis tables","—","#21 #22 #23",""],
+ [41,"FP4","report","Vignesh","—","figures","Figures for the final report","—","#24",""],
+ [42,"FP4","run","Yash","—","—","Rerun failed samples; recheck every reported number","—","#53 #54",""],
+ [43,"FP4","report","Everyone","—","—","Final report, talk, and each person walking through their own files live","—","",""],
+ [44,"FP4","report","Will","—","—","Draft the System section for the final report","—","#9",""]
+];
+
+const people = ["Will","Vignesh","Isha","Yash"];
+const cardData = {
+  Will: ["The servers and the scorer", ["Risky-tool registry","Shared server body and three thin servers","Scorer for all four kinds","Live-loop transcript check","Labeling (with Isha)","System section of the report"]],
+  Vignesh: ["The policies and the measures", ["Rules and hybrid baseline","Gate prompt, parser and Gate object","Measures and tables from the logs","Agreement between labelers","Measures and tables section of the report"]],
+  Isha: ["The scenarios", ["Loader for the job files","Forty jobs, both versions","Wording file","Job and wording checker","User answer rules","Gate-reply check","Labeling (with Will)","Tasks and methods section of the report"]],
+  Yash: ["The harness and the runs", ["Shared shapes (contracts.py)","Replay and stage tasks","Live loop (stage three)","Runner and scripted stage one","Report command","The pilot","README, dependencies, sample records","Pilot, readiness and FP4 plan in the report"]]
+};
+const sel = {person:"All", phase:"All", kind:"All"};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const badge = s => s === "—" ? "—" : '<span class="badge e-' + (s === "very large" ? "very" : s) + '">' + s + '</span>';
+
+document.getElementById("cards").innerHTML = people.map(p => {
+  const [role, list] = cardData[p];
+  return '<div class="panel card"><h3>' + p + '</h3><div class="role">' + esc(role) + '</div><ul>' +
+    list.map(x => "<li>" + esc(x) + "</li>").join("") + '</ul></div>';
+}).join("");
+
+function mk(id, key, opts) {
+  const box = document.getElementById(id);
+  opts.forEach(o => {
+    const b = document.createElement("button");
+    b.textContent = o; b.setAttribute("aria-pressed", o === "All" ? "true" : "false");
+    b.onclick = () => {
+      sel[key] = o;
+      box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+      render();
+    };
+    box.appendChild(b);
+  });
+}
+mk("f-person", "person", ["All"].concat(people));
+mk("f-phase", "phase", ["All","FP3","FP4"]);
+mk("f-kind", "kind", ["All","code","test","data","check","run","report"]);
+
+function render() {
+  const rows = T.filter(r =>
+    (sel.person === "All" || r[3].indexOf(sel.person) >= 0 || r[3] === "Everyone") &&
+    (sel.phase === "All" || r[1] === sel.phase) &&
+    (sel.kind === "All" || r[2] === sel.kind));
+  document.getElementById("rows").innerHTML = rows.map(r =>
+    "<tr><td class=\"num\">" + r[0] + "</td><td>" + badge(r[4]) + "</td><td class=\"file\">" + esc(r[5]) +
+    "</td><td class=\"task\">" + esc(r[6]) + "</td><td>" + esc(r[3]) + "</td><td>decided later</td><td>" + r[1] +
+    "</td><td><span class=\"chip\">" + r[2] + "</span></td><td class=\"num\">" + esc(r[7]) + "</td><td class=\"num\">" +
+    esc(r[8]) + "</td><td class=\"note\">" + esc(r[9]) + "</td></tr>").join("");
+  document.getElementById("shown").textContent = rows.length + " tasks shown";
+}
+render();
+</script>
+</body>
+</html>

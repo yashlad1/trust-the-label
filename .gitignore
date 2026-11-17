@@ -18,3 +18,5 @@ BACKLOG.md
 .ruff_cache/
 *.pdf
 
+*.txt
+*.html

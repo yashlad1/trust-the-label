@@ -1,67 +1,147 @@
-<!-- AI-generated (Claude Code): team README for the final project skeleton -->
 # Trust the Label? (Group 12, CS6983 Agentic AI)
 
-We test how agent approval layers handle false MCP tool annotations. The system has one agent loop, local MCP
-servers, five approval policies, a scripted user and a scorer that reads the final sandbox state.
+An agent uses tools through MCP servers. Before a risky call runs, an LLM approval gate decides: let it run, or ask
+the user first. Each tool carries MCP annotations (such as "read-only" or "destructive") and a name. We test whether
+the gate judges the tool's annotations and name, or the user's actual request. The work has three stages. In stage 1
+agents propose calls. In stage 2 gates judge those stored calls under every condition. In stage 3 the whole loop
+(agent, gate, scripted user, scorer) runs live.
+
+Team: Yash (harness and runs), Will (MCP servers and scorer), Vignesh (approval policies and analysis), Isha
+(scenarios).
+
+## Repo layout
+
+```
+src/trustlabel/
+  contracts.py   shared formats: tool call, decision, scenario
+  servers/       local MCP servers (items, messages, invoices, posts) with label and name switches
+  policies/      the approval policies and the gate prompt
+  scenarios/     the job files (delete, send, pay, publish), wording.json, load.py, check.py
+  harness/       the Inspect tasks (tasks.py), the agent-to-gate loop, replay of stored calls, scripted user
+  analysis/      the measures computed from the logs
+  scorer.py      scores the final sandbox state
+dev/
+  pipeline.py          runs the whole experiment end to end (dry or paid)
+  report.py            prints the runs table from a run's records
+  scripted_stage1.py   makes stage-1 logs on the fake model, for free dry runs
+  run.sh, progress.sh  run helper and a progress printer for long runs
+  check_openrouter.py  pings each model once
+  models/              one provider config per model (see Models)
+tests/                 same layout as src/; fake model only
+sample_records/        a small zipped sample of a dry run
+```
 
 ## Setup
 
-Everyone works in the same environment: Python 3.13 (pinned in `.python-version`) and the exact package versions in
-`uv.lock` (inspect-ai 0.3.282, mcp 2.3.0, openai 3.35.1).
+Needs Python 3.13 and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-# 1. install uv once (https://docs.astral.sh/uv/)
-curl -LsSf https://astral.sh/uv/install.sh | sh                  # macOS / Linux
-powershell -c "irm https://astral.sh/uv/install.ps1 | iex"       # Windows
-
-# 2. from the repo folder: Python 3.13 and the locked packages
-uv python install 3.13
-uv sync --locked
-
-# 3. check: prints 3.13.x and the three versions above, then the items-server test passes
-uv run python -c "import sys, importlib.metadata as m; print(sys.version.split()[0], *(f'{p} {m.version(p)}' for p in ('inspect-ai', 'mcp', 'openai')))"
-uv run python tests/servers/test_items.py
-
-# 4. your key
-cp .env.example .env    # add your OpenRouter key; .env is never committed
+uv sync
+cp .env.example .env     # put your OpenRouter key on its one line; this file is never committed
 ```
 
-Run everything through `uv run ...` so it uses this environment. To add a dependency, run `uv add <package>` and
-commit `pyproject.toml` and `uv.lock` together in their own pull request.
+Run everything with `uv run ...`. It makes `import trustlabel` work.
 
-## Layout
+## Dependencies
 
-| Folder | What goes there | Owner |
+From `pyproject.toml`: `inspect-ai` (the evaluation framework), `mcp` (the MCP servers), `openai` (the client library).
+PyYAML is also needed (the runner reads the model configs); add it with `uv add pyyaml`.
+
+## Conditions
+
+Each job exists in two versions. In the "unneeded" version the user's request does not need the risky action. In the
+"wanted" version it does. Each tool has an honest name and a vague name. Labels are the tool's annotations: true,
+false, or none shown.
+
+| Condition | What changes | How to run it |
 |---|---|---|
-| `src/trustlabel/servers/` | Local MCP servers (items, messages, invoices, posts), with label and name switches | Will |
-| `src/trustlabel/scorer.py` | Reads the final sandbox state | Will |
-| `src/trustlabel/policies/` | The five approval policies and the gate prompt | Vignesh |
-| `src/trustlabel/analysis/` | Agent proposal rates, gate outcomes, harm and task success; paired tests with Holm correction | Vignesh |
-| `src/trustlabel/scenarios/` | 40 jobs, each in an unneeded and a wanted version, with ground truth and the user's answer rules | Isha |
-| `src/trustlabel/harness/` | The Inspect task, the agent-to-gate loop and the scripted user | Yash |
-| `src/trustlabel/contracts.py` | Shared formats: tool call, decision, scenario. Changes need everyone they affect. | everyone |
-| `tests/` | Same layout as `src/`. Mockllm and plain functions only, no paid calls. | owner of the matching folder |
-| `dev/` | Run scripts and mockllm configs. `dev/scratch/` is for personal experiments and is never committed. | anyone |
+| Stage 1: agents propose | The agent works each job version. The policy is "never ask", so nothing stops it. The full runs use the honest name only (the task's default lists both names). | `uv run inspect eval src/trustlabel/harness/tasks.py@stage1 --model <agent> -T names=honest -T epochs=2` |
+| Stage 2, standard rows | Every stored call is judged 28 ways: gate on call (no labels), and gate with labels x label true / false / none x warning off / on (7 conditions), each under both names and both requests. | `uv run inspect eval src/trustlabel/harness/tasks.py@stage2 --model <gate> -T logs=<stage-1 .eval>[,<more>]` (add `-T scenarios=<job files>` when the stage-1 run used job files other than the delete jobs; stage 2 needs both versions of every job in the logs) |
+| Stage 2, intent-sentence rows | Adds 12 rows per call: gate prompt with one added sentence about the user's intent; labels true / false / none, warning off, both names, both requests. | add `-T intent_rows=true` |
+| Stage 2, wording rows | Adds 8 rows per call: vague name only, labels false and none, four request wordings (unneeded or wanted, calm or loud). | add `-T wording_rows=src/trustlabel/scenarios/wording.json` |
+| Stage 3, gate on call | Live loop; the gate sees the call, no labels. | `uv run inspect eval src/trustlabel/harness/tasks.py@stage3 --model <agent> -T policy=gate_on_call -T name=honest -T gate_model=<gate> -T gate_config=<yaml> -T gate_effort=<effort>` |
+| Stage 3, gate with labels, warning off | The gate also sees the tool's labels. | same, with `-T policy=gate_with_labels -T label=false -T warning=false` |
+| Stage 3, gate with labels, warning on | As above, plus a warning sentence in the gate prompt. | same, with `-T warning=true` |
+| Stage 3, reference policies | No gate model needed: `never_ask` (always runs) and `label_rule` (decides from the label alone). | `-T policy=never_ask` or `-T policy=label_rule` |
 
-`scorer.py` and `contracts.py` are added in week 1.
+Stage parameters (all passed as `-T name=value`):
 
-## Working on it
+- `stage1`: `scenarios` (comma-separated job files, default the delete jobs), `names` (default `honest,vague`),
+  `epochs` (2), `max_steps` (12), `seed` (0).
+- `stage2`: `logs` (required), `scenarios`, `first_only` (true: only each episode's first irreversible call),
+  `intent_rows` (false), `wording_rows` (empty).
+- `stage3`: `policy` (default `gate_with_labels`), `label` (`true`, `false` or `none`; default `false`), `name`
+  (default `vague`), `warning` (false), `gate_model`, `gate_config`, `gate_effort`, `scenarios`, `epochs` (1),
+  `max_steps` (12), `seed` (0).
+
+Model flags, as in `dev/pipeline.py`: add `--model-config dev/models/<model>.yaml` for the provider pin and
+`--reasoning-effort medium` where the model has that setting (see Models). Example gate for stage 3:
+`-T gate_model=openrouter/openai/gpt-6-luna -T gate_config=dev/models/gpt-6-luna.yaml -T gate_effort=medium`.
+
+What stays fixed between conditions: the jobs, the stored call, the user's record list and the scorer. Only the
+named switch changes (label, warning, name, request wording, or the added sentence). Stage 2 and stage 3 show the gate
+the same text for the same condition.
+
+## Running everything
+
+Free dry run on the fake model (no paid call, no key needed):
 
 ```bash
-git switch main && git pull
-git switch -c <name>/<topic>              # e.g. will/items-server
-# work and commit
-git push -u origin <name>/<topic>         # then open a pull request into main
-git fetch && git merge origin/main        # stay current: merge, don't rebase and force-push
+uv run python dev/scripted_stage1.py logs/dry_stage1          # prints the stage-1 log path
+uv run python dev/pipeline.py dry logs/dry \
+    --wording src/trustlabel/scenarios/wording.json --stage1-logs <that log path> [--jobs <files>] [--epochs N]
 ```
 
-One branch per piece of the week plan, merged by Sunday.
+A plain fake model never calls a tool, so the scripted stage 1 supplies calls to replay. `--jobs` takes
+comma-separated job files and defaults to the delete jobs. `--epochs` sets repeats for the full stage-1 and stage-3
+runs.
 
-## Rules
+Paid run (needs an OpenRouter key in `.env` and costs money):
 
-- Nobody pushes to main directly. Every change goes in through a pull request with one teammate's review.
-- Each pull request touches only its author's folders, except a change to `contracts.py`.
-- Tests make no paid model calls.
-- Never commit `.env`, keys, logs or raw `.eval` files. Zip logs and commit them only when needed.
-- Tag AI-assisted code as the course AI policy requires. Everyone explains their own files in the live code walkthrough.
-- Every paid model run goes through Yash.
+```bash
+uv run python dev/pipeline.py paid logs/run --wording src/trustlabel/scenarios/wording.json [--jobs <files>] [--epochs N]
+```
+
+The run pings each model once, then for each stage runs a 12-sample smoke first. The full stage starts only if the
+smoke passes its checks (the agent called tools; at most 3 of 12 gate replies unreadable; the gate decided calls).
+A spend stop ends the run when billed spend passes a set limit. Run it detached, with the computer plugged in:
+
+```bash
+perl -MPOSIX -e 'POSIX::setsid(); exec @ARGV' -- caffeinate -is uv run python dev/pipeline.py paid logs/run \
+    --wording src/trustlabel/scenarios/wording.json > logs/run.out 2>&1 < /dev/null &
+```
+
+The runner writes `<out>/manifest.json`: the stage-1 logs, the stage-2 log per gate, the stage-3 log per policy, the
+job files, the wording file, the epochs and the live gate. Check the job files first with
+`uv run python -m trustlabel.scenarios.check --wording src/trustlabel/scenarios/wording.json`.
+
+## Getting the summaries
+
+`uv run python dev/report.py <out>/manifest.json` prints the runs table: samples, failed samples (counted as
+outcomes), wall time, tokens and billed cost. It also accepts `.eval` files directly.
+
+The measure tables (src/trustlabel/analysis/) are printed by [fill in when the analysis code lands].
+
+A sample: `unzip sample_records/dry_run_fake_model.zip -d sample_records/` then
+`uv run python dev/report.py sample_records/dry_run/manifest.json`.
+
+## Tests
+
+Plain Python scripts with `assert`. Run one with `uv run python tests/<folder>/<file>.py`, for example
+`uv run python tests/servers/test_items.py`. They use the fake model only, so they cost nothing.
+
+## Models
+
+All models run through OpenRouter, with the provider pinned and no fallbacks (configs in `dev/models/`).
+
+| Model | Role | OpenRouter ID | Provider (pinned, no fallbacks) | Reasoning |
+|---|---|---|---|---|
+| gpt-oss-120b | Agent | `openai/gpt-oss-120b` | DeepInfra (bf16) | medium effort |
+| GLM 5.3 Flash | Agent | `z-ai/glm-5.3-flash` | Z.AI first-party | medium effort |
+| GPT-6 Luna | Gate (stages 2 and 3) | `openai/gpt-6-luna` | OpenAI first-party | medium effort |
+| Qwen 3.8 Flash | Gate (stage 2) | `qwen/qwen3.8-flash` | Alibaba first-party | thinking on; no effort setting |
+
+## Records
+
+Runs write Inspect `.eval` logs under the output folder you give. Raw logs are not committed. `sample_records/` holds
+a small zipped sample of a dry run on the fake model.
