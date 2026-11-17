@@ -1,7 +1,8 @@
 # AI-generated (Claude Code): module docstring
-"""Constants that every server (items, messages, invoices, posts) uses, kept in one place so they can't drift apart.
+"""Constants every server uses: items (servers/items.py) and, through servers/records.py, messages, invoices and posts.
 
-Each server imports them, so items.LABELS, messages.NAMES and the rest still work for the harness and the tests.
+Kept in one place so the switches can't drift apart between servers. items.py and records.py import them, so
+items.LABELS, messages.NAMES and the rest still work for the harness and the tests.
 """
 
 # allowed values for switches --label and --name

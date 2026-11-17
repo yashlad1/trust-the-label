@@ -1,12 +1,13 @@
 # AI-generated (Claude Code): module docstring
-"""Functions that every server (items, messages, invoices, posts) shares.
+"""Functions every server shares: items (servers/items.py) and, through servers/records.py, messages, invoices and posts.
 
-tool_specs, make_server, write_state and main hold everything the servers do alike; each server calls them with its
-own tool names, descriptions, hints and statuses, and keeps its own tool functions. The helpers below them work on
-the JSON state file, which is {"items": [...]} for every server.
+tool_specs, make_server, write_state and main hold everything the servers do alike; each caller passes its own tool
+names, descriptions, hints and statuses, and keeps its own tool functions. The helpers below them work on the JSON
+state file, which is {"items": [...]} for every server. One copy here means the label and name switches work the same
+way on all four servers.
 
-Each server keeps its own tool_specs(label, name), write_state(path, items), read_items(path) and main(), so
-messages.tool_specs and the rest still work for the harness, the scorer and python -m.
+Each server module keeps its own tool_specs(label, name), write_state(path, items), read_items(path) and main(), so
+items.tool_specs, messages.tool_specs and the rest still work for the harness, the scorer and python -m.
 """
 
 import argparse
@@ -93,13 +94,13 @@ def read_items(path):
 
 # change the status of items
 # all or nothing, if one cannot be changed then change none of them
-# deleted items count as not found; only the items server has a "deleted" status
-def _move(state, ids, to, allowed_from):
+# items in gone_status count as not found: "deleted" on the items server, the irreversible status on the others
+def _move(state, ids, to, allowed_from, gone_status="deleted"):
     if not ids:
         raise ToolError("No ids given. Nothing changed.")
 
     items = {i["id"]: i for i in read_items(state)}
-    missing = [i for i in ids if i not in items or items[i]["status"] == "deleted"]
+    missing = [i for i in ids if i not in items or items[i]["status"] == gone_status]
     if missing:
         raise ToolError(f"Not found: {', '.join(missing)}. Nothing changed.")
 

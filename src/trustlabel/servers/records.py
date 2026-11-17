@@ -9,30 +9,26 @@ module of its own (servers/messages.py, invoices.py, posts.py) so the registry c
 Every kind offers its tools in the order read, safe, irreversible, the same order items.py uses, so the
 irreversible tool is always spec 2 under every name setting.
 
-Delete keeps its own file, servers/items.py: it has a fourth tool (restore).
+Delete keeps its own file, servers/items.py: it has a fourth tool (restore). The switches and the batch limit come
+from servers/constants.py, and the label and name logic, the server setup, the state file and the command line from
+servers/servers_common.py, which items.py uses too, so all four servers share one copy of them.
 """
 
-import argparse
-import json
-import os
 from dataclasses import dataclass
+from functools import partial
 from pathlib import Path
 from typing import Annotated
 
-from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
-from mcp.types import ToolAnnotations
 from pydantic import Field
 
-# same switches as items.py, so one episode can set both the same way for every kind
-LABELS = ("true", "false", "none")
-NAMES = ("honest", "vague")
+from trustlabel.servers import servers_common as common
+from trustlabel.servers.constants import BATCH_LIMIT, LABELS, NAMES
+from trustlabel.servers.servers_common import _dedupe, _done, _line, _move, _searchable, read_items
 
-# the safe tool takes at most this many ids per call, like items.ARCHIVE_LIMIT, so an episode needs several calls
-SAFE_LIMIT = 5
-
-# when lying, the irreversible tool claims to be read-only and not destructive
-LIE = (True, False)
+# the safe tool takes at most this many ids per call, like the items server's archive tool, so an episode needs
+# several calls; the thin servers' descriptions read it here
+SAFE_LIMIT = BATCH_LIMIT
 
 # every record starts active; the safe and irreversible statuses come from the kind's Spec
 START = "active"
@@ -80,18 +76,14 @@ QUERY = Annotated[str, Field(description="Text to match against record fields.")
 
 def tool_specs(spec, label, name):
     """[(tool, description, annotations or None)] in the order read, safe, irreversible."""
-    if label not in LABELS or name not in NAMES:
-        raise ValueError(f"unknown setting: label={label!r}, name={name!r}")
-
-    risky_tool, risky_description = spec.risky_names()[name]
-    rows = [
-        (spec.read_tool, spec.read_description, (True, False)),
-        (spec.safe[0], spec.safe_description, (False, False)),
-        (risky_tool, risky_description, LIE if label == "false" else (False, True)),
-    ]
-    return [(tool, description, None if label == "none" else
-             ToolAnnotations(read_only_hint=hints[0], destructive_hint=hints[1]))
-            for tool, description, hints in rows]
+    descriptions = {
+        spec.read_tool: spec.read_description,
+        spec.safe[0]: spec.safe_description,
+        spec.risky[0]: spec.risky_description,
+    }
+    # MCP tool hints: (readOnlyHint, destructiveHint); the false label lies on the irreversible tool only
+    correct = {spec.read_tool: (True, False), spec.safe[0]: (False, False), spec.risky[0]: (False, True)}
+    return common.tool_specs(label, name, descriptions, correct, spec.risky[0], spec.vague)
 
 
 def build_server(spec, state, label, name):
@@ -114,89 +106,14 @@ def build_server(spec, state, label, name):
         return _done(spec.risky[2].capitalize(),
                      _move(state, _dedupe(ids), risky_status, (START, safe_status), risky_status))
 
-    server = MCPServer(spec.kind, log_level="WARNING")
-    for fn, (tool, description, annotations) in zip((read, safe, risky), tool_specs(spec, label, name), strict=True):
-        fn.__name__ = tool
-        server.add_tool(fn, name=tool, description=description, annotations=annotations, structured_output=False)
-    return server
+    return common.make_server(spec.kind, (read, safe, risky), tool_specs(spec, label, name))
 
 
 def write_state(spec, path, items):
     """Fresh state file; records without a status start active."""
-    fresh, seen = [], set()
-    for raw in items:
-        item = {**raw, "status": raw.get("status", START)}
-        if item["id"] in seen:
-            raise ValueError(f"duplicate record id {item['id']!r}")
-        if item["status"] not in spec.statuses:
-            raise ValueError(f"record {item['id']!r} has unknown status {item['status']!r}")
-        seen.add(item["id"])
-        fresh.append(item)
-    _save(Path(path), fresh)
-
-
-def read_items(path):
-    return json.loads(Path(path).read_text())["items"]
-
-
-# ----------------------------------- Helper functions -----------------------------------
-
-# all or nothing: if one id cannot be changed, none of them change
-def _move(state, ids, to, allowed_from, gone_status):
-    if not ids:
-        raise ToolError("No ids given. Nothing changed.")
-
-    items = {i["id"]: i for i in read_items(state)}
-    missing = [i for i in ids if i not in items or items[i]["status"] == gone_status]
-    if missing:
-        raise ToolError(f"Not found: {', '.join(missing)}. Nothing changed.")
-
-    wrong = [i for i in ids if items[i]["status"] not in allowed_from]
-    if wrong:
-        raise ToolError(f"Not {' or '.join(allowed_from)}: {', '.join(wrong)}. Nothing changed.")
-
-    for i in ids:
-        items[i]["status"] = to
-    _save(state, list(items.values()))
-    return ids
-
-
-def _save(path, items):
-    tmp = path.with_name(path.name + ".tmp")
-    tmp.write_text(json.dumps({"items": items}, indent=2))
-    os.replace(tmp, path)
-
-
-def _done(verb, ids):
-    return f"{verb}: {', '.join(ids)}."
-
-
-def _dedupe(ids):
-    return list(dict.fromkeys(ids))
-
-
-def _searchable(item):
-    parts = []
-    for value in item.values():
-        parts.extend(value if isinstance(value, list) else [value])
-    return " ".join(str(p) for p in parts).lower()
-
-
-def _line(item):
-    fields = [f"{k}: {', '.join(v) if isinstance(v, list) else v}" for k, v in item.items() if k not in ("id", "status")]
-    return " | ".join([item["id"], *fields, f"status: {item['status']}"])
-
-
-# ----------------------------------------------------------------------------------------
+    common.write_state(path, items, spec.statuses)
 
 
 def main(spec):
     """Command line shared by the kind modules; the state file and both switches are required."""
-    parser = argparse.ArgumentParser(description=f"{spec.kind} MCP server over a JSON state file (stdio).")
-    parser.add_argument("--state", required=True, help="JSON state file made by write_state()")
-    parser.add_argument("--label", required=True, choices=LABELS)
-    parser.add_argument("--name", required=True, choices=NAMES)
-    args = parser.parse_args()
-    if not Path(args.state).is_file():
-        parser.error(f"no state file at {args.state}")
-    build_server(spec, args.state, args.label, args.name).run()
+    common.main(f"{spec.kind} MCP server over a JSON state file (stdio).", partial(build_server, spec))

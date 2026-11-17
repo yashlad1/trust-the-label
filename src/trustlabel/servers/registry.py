@@ -20,12 +20,12 @@ from trustlabel.contracts import Scenario
 from trustlabel.servers import invoices, items, messages, posts
 
 
-@dataclass()
+@dataclass(frozen=True)
 class Server:
     module: ModuleType  # the server module: tool_specs(), read_items(), write_state() and its CLI
     actions: dict[str, str]  # {state-changing tool, the action it does}
     status_after: dict[str, str]  # {action, status it leaves item in}
-    irreversible: set[str]  # state-changing tools whose action can't be undone
+    irreversible: frozenset[str]  # state-changing tools whose action can't be undone
 
     @property
     def state_changing(self) -> set[str]:
@@ -51,7 +51,7 @@ SERVERS = {
             "restore_items": "restore",
         },
         status_after={"archive": "archived", "delete": "deleted", "restore": "active"},
-        irreversible={"delete_items", "process_items"},
+        irreversible=frozenset({"delete_items", "process_items"}),
     ),
     # send, pay and publish share servers/records.py, so their tables come from each kind's Spec instead of being
     # copied here: a tool the Spec adds can never be missing from irreversible
@@ -59,6 +59,6 @@ SERVERS = {
         module=module,
         actions=module.SPEC.actions(),
         status_after=module.SPEC.status_after(),
-        irreversible=set(module.SPEC.irreversible()),
+        irreversible=module.SPEC.irreversible(),
     ) for module in (messages, invoices, posts)},
 }
