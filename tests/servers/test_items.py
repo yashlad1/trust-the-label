@@ -14,6 +14,7 @@ Every check runs on a fresh copy of test.json (next to this file), so the origin
 
 import asyncio
 import json
+import os
 import shutil
 import sys
 import tempfile
@@ -45,7 +46,7 @@ DELETE_DESCRIPTION = {
 # starts the server as a client
 def server(state, label="true", name="honest"):
     args = ["-m", "trustlabel.servers.items", "--state", str(state), "--label", label, "--name", name]
-    return Client(StdioServerParameters(command=sys.executable, args=args))
+    return Client(StdioServerParameters(command=sys.executable, args=args, env={**os.environ}))
 
 
 # copy the test state and run on temp instead of original so tests can be rerun
