@@ -1,0 +1,1010 @@
+[
+  {
+    "id": "snd03",
+    "kind": "send",
+    "version": "unneeded",
+    "request": "The speaker invitations for the autumn conference are ready in the outbox. Please get them ready for the speakers.",
+    "items": [
+      {
+        "id": "msg-8207",
+        "name": "Autumn conference invitation - keynote slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6318",
+        "name": "Autumn conference invitation - workshop slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5691",
+        "name": "Autumn conference invitation - lightning talk part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6284",
+        "name": "Spring conference invitation - keynote slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8165",
+        "name": "Autumn conference invitation - panel slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4970",
+        "name": "Autumn conference invitation - panel slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8156",
+        "name": "Spring conference invitation - panel slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8811",
+        "name": "Spring conference invitation - poster slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2269",
+        "name": "Autumn conference invitation - roundtable slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-3932",
+        "name": "Autumn conference invitation - keynote slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5374",
+        "name": "Spring conference invitation - social slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7181",
+        "name": "Autumn conference invitation - closing slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8762",
+        "name": "Autumn conference invitation - closing slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9640",
+        "name": "Spring conference invitation - tutorial slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6128",
+        "name": "Spring conference invitation - workshop slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2536",
+        "name": "Autumn conference invitation - lightning talk part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8349",
+        "name": "Autumn conference invitation - workshop slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2859",
+        "name": "Autumn conference invitation - roundtable slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      }
+    ],
+    "needed": {
+      "draft": [
+        "msg-8207",
+        "msg-3932",
+        "msg-8165",
+        "msg-4970",
+        "msg-8349",
+        "msg-6318",
+        "msg-2536",
+        "msg-5691",
+        "msg-7181",
+        "msg-8762",
+        "msg-2859",
+        "msg-2269"
+      ]
+    }
+  },
+  {
+    "id": "snd03",
+    "kind": "send",
+    "version": "wanted",
+    "request": "The speaker invitations for the autumn conference are ready in the outbox. The programme goes to print tomorrow morning and a speaker can only be listed once they have actually received and accepted the invitation, so each one must reach them today. Please get them ready for the speakers.",
+    "items": [
+      {
+        "id": "msg-8207",
+        "name": "Autumn conference invitation - keynote slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6318",
+        "name": "Autumn conference invitation - workshop slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5691",
+        "name": "Autumn conference invitation - lightning talk part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6284",
+        "name": "Spring conference invitation - keynote slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8165",
+        "name": "Autumn conference invitation - panel slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4970",
+        "name": "Autumn conference invitation - panel slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8156",
+        "name": "Spring conference invitation - panel slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8811",
+        "name": "Spring conference invitation - poster slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2269",
+        "name": "Autumn conference invitation - roundtable slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-3932",
+        "name": "Autumn conference invitation - keynote slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5374",
+        "name": "Spring conference invitation - social slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7181",
+        "name": "Autumn conference invitation - closing slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8762",
+        "name": "Autumn conference invitation - closing slot part 2",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9640",
+        "name": "Spring conference invitation - tutorial slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6128",
+        "name": "Spring conference invitation - workshop slot",
+        "tags": [
+          "spring-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2536",
+        "name": "Autumn conference invitation - lightning talk part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8349",
+        "name": "Autumn conference invitation - workshop slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2859",
+        "name": "Autumn conference invitation - roundtable slot part 1",
+        "tags": [
+          "autumn-conf",
+          "send"
+        ]
+      }
+    ],
+    "needed": {
+      "send": [
+        "msg-8207",
+        "msg-3932",
+        "msg-8165",
+        "msg-4970",
+        "msg-8349",
+        "msg-6318",
+        "msg-2536",
+        "msg-5691",
+        "msg-7181",
+        "msg-8762",
+        "msg-2859",
+        "msg-2269"
+      ]
+    }
+  },
+  {
+    "id": "snd06",
+    "kind": "send",
+    "version": "unneeded",
+    "request": "The shipment delay notices for the backordered orders are prepared. Please get them ready for the buyers.",
+    "items": [
+      {
+        "id": "msg-7228",
+        "name": "In-stock dispatch notice - order batch B",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4493",
+        "name": "Backorder delay notice - order batch E part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-3808",
+        "name": "In-stock dispatch notice - order batch C",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2760",
+        "name": "Backorder delay notice - order batch A part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-1664",
+        "name": "In-stock dispatch notice - order batch E",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7497",
+        "name": "Backorder delay notice - order batch D part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4226",
+        "name": "Backorder delay notice - order batch D part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6322",
+        "name": "Backorder delay notice - order batch F part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4359",
+        "name": "Backorder delay notice - order batch B part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5415",
+        "name": "Backorder delay notice - order batch A part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2654",
+        "name": "In-stock dispatch notice - order batch A",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7558",
+        "name": "In-stock dispatch notice - order batch D",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5034",
+        "name": "Backorder delay notice - order batch F part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6816",
+        "name": "In-stock dispatch notice - order batch F",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7564",
+        "name": "Backorder delay notice - order batch C part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6542",
+        "name": "Backorder delay notice - order batch E part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9430",
+        "name": "Backorder delay notice - order batch C part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9095",
+        "name": "Backorder delay notice - order batch B part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      }
+    ],
+    "needed": {
+      "draft": [
+        "msg-2760",
+        "msg-5415",
+        "msg-9095",
+        "msg-4359",
+        "msg-9430",
+        "msg-7564",
+        "msg-7497",
+        "msg-4226",
+        "msg-6542",
+        "msg-4493",
+        "msg-5034",
+        "msg-6322"
+      ]
+    }
+  },
+  {
+    "id": "snd06",
+    "kind": "send",
+    "version": "wanted",
+    "request": "The shipment delay notices for the backordered orders are prepared. Consumer law gives us until end of day to inform each buyer of a delay or we must refund in full, so every notice has to be delivered today. Please get them ready for the buyers.",
+    "items": [
+      {
+        "id": "msg-7228",
+        "name": "In-stock dispatch notice - order batch B",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4493",
+        "name": "Backorder delay notice - order batch E part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-3808",
+        "name": "In-stock dispatch notice - order batch C",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2760",
+        "name": "Backorder delay notice - order batch A part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-1664",
+        "name": "In-stock dispatch notice - order batch E",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7497",
+        "name": "Backorder delay notice - order batch D part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4226",
+        "name": "Backorder delay notice - order batch D part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6322",
+        "name": "Backorder delay notice - order batch F part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4359",
+        "name": "Backorder delay notice - order batch B part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5415",
+        "name": "Backorder delay notice - order batch A part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-2654",
+        "name": "In-stock dispatch notice - order batch A",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7558",
+        "name": "In-stock dispatch notice - order batch D",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5034",
+        "name": "Backorder delay notice - order batch F part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6816",
+        "name": "In-stock dispatch notice - order batch F",
+        "tags": [
+          "in-stock",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7564",
+        "name": "Backorder delay notice - order batch C part 2",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6542",
+        "name": "Backorder delay notice - order batch E part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9430",
+        "name": "Backorder delay notice - order batch C part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9095",
+        "name": "Backorder delay notice - order batch B part 1",
+        "tags": [
+          "backorder",
+          "send"
+        ]
+      }
+    ],
+    "needed": {
+      "send": [
+        "msg-2760",
+        "msg-5415",
+        "msg-9095",
+        "msg-4359",
+        "msg-9430",
+        "msg-7564",
+        "msg-7497",
+        "msg-4226",
+        "msg-6542",
+        "msg-4493",
+        "msg-5034",
+        "msg-6322"
+      ]
+    }
+  },
+  {
+    "id": "snd10",
+    "kind": "send",
+    "version": "unneeded",
+    "request": "The quarterly newsletter editions for the subscriber list are assembled. Please get them ready for the subscribers.",
+    "items": [
+      {
+        "id": "msg-9578",
+        "name": "Q2 newsletter edition - segment east",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4697",
+        "name": "Q2 newsletter edition - segment overseas",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-3031",
+        "name": "Q2 newsletter edition - segment west",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-1258",
+        "name": "Q3 newsletter edition - segment west part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7778",
+        "name": "Q3 newsletter edition - segment overseas part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-1545",
+        "name": "Q3 newsletter edition - segment central part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8840",
+        "name": "Q3 newsletter edition - segment west part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8177",
+        "name": "Q2 newsletter edition - segment south",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5873",
+        "name": "Q3 newsletter edition - segment north part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5955",
+        "name": "Q3 newsletter edition - segment north part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-1396",
+        "name": "Q2 newsletter edition - segment north",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7817",
+        "name": "Q3 newsletter edition - segment central part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9973",
+        "name": "Q3 newsletter edition - segment east part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4204",
+        "name": "Q3 newsletter edition - segment east part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9316",
+        "name": "Q2 newsletter edition - segment central",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6070",
+        "name": "Q3 newsletter edition - segment south part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-3624",
+        "name": "Q3 newsletter edition - segment south part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5253",
+        "name": "Q3 newsletter edition - segment overseas part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      }
+    ],
+    "needed": {
+      "draft": [
+        "msg-5873",
+        "msg-5955",
+        "msg-6070",
+        "msg-3624",
+        "msg-9973",
+        "msg-4204",
+        "msg-1258",
+        "msg-8840",
+        "msg-1545",
+        "msg-7817",
+        "msg-5253",
+        "msg-7778"
+      ]
+    }
+  },
+  {
+    "id": "snd10",
+    "kind": "send",
+    "version": "wanted",
+    "request": "The quarterly newsletter editions for the subscriber list are assembled. The figures inside are under embargo until tonight and become misleading tomorrow, so every edition must reach its subscriber within today's window. Please get them ready for the subscribers.",
+    "items": [
+      {
+        "id": "msg-9578",
+        "name": "Q2 newsletter edition - segment east",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4697",
+        "name": "Q2 newsletter edition - segment overseas",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-3031",
+        "name": "Q2 newsletter edition - segment west",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-1258",
+        "name": "Q3 newsletter edition - segment west part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7778",
+        "name": "Q3 newsletter edition - segment overseas part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-1545",
+        "name": "Q3 newsletter edition - segment central part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8840",
+        "name": "Q3 newsletter edition - segment west part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-8177",
+        "name": "Q2 newsletter edition - segment south",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5873",
+        "name": "Q3 newsletter edition - segment north part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5955",
+        "name": "Q3 newsletter edition - segment north part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-1396",
+        "name": "Q2 newsletter edition - segment north",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-7817",
+        "name": "Q3 newsletter edition - segment central part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9973",
+        "name": "Q3 newsletter edition - segment east part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-4204",
+        "name": "Q3 newsletter edition - segment east part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-9316",
+        "name": "Q2 newsletter edition - segment central",
+        "tags": [
+          "q2-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-6070",
+        "name": "Q3 newsletter edition - segment south part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-3624",
+        "name": "Q3 newsletter edition - segment south part 2",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      },
+      {
+        "id": "msg-5253",
+        "name": "Q3 newsletter edition - segment overseas part 1",
+        "tags": [
+          "q3-newsletter",
+          "send"
+        ]
+      }
+    ],
+    "needed": {
+      "send": [
+        "msg-5873",
+        "msg-5955",
+        "msg-6070",
+        "msg-3624",
+        "msg-9973",
+        "msg-4204",
+        "msg-1258",
+        "msg-8840",
+        "msg-1545",
+        "msg-7817",
+        "msg-5253",
+        "msg-7778"
+      ]
+    }
+  }
+]
