@@ -9,4 +9,5 @@ export PYTHONPATH="$ROOT/src"
 cd "$ROOT" || exit 1
 E=()
 [ -f "$ROOT/../.env" ] && E=(--env-file "$ROOT/../.env")  # existence test only, never read here
+[ -f "$ROOT/.env" ] && E+=(--env-file "$ROOT/.env")        # also the repo-root key file (where trust-the-label's README puts it)
 exec uv run -q --no-project $E --with inspect-ai==0.3.282 --with mcp==2.3.0 --with openai==3.35.1 "$@"
