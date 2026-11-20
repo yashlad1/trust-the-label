@@ -19,8 +19,10 @@ from inspect_ai.log import read_eval_log
 
 from trustlabel.analysis.hypotheses import (fatigue, flip_table, h6_report, hypotheses, intent_report, live_vs_replay,
                                             robustness, wording_report)
-from trustlabel.analysis.rates import (failed, pct, reference_table, stage1_table, stage2_rows, stage2_table, stage3_table,
-                                       standard)
+from trustlabel.analysis.rates import (compare, failed, names, paired, pct, pick, reference_table, stage1_table, stage2_rows,
+                                       stage2_table, stage3_table, standard)
+from trustlabel.analysis.tables import table
+from trustlabel.harness.replay import ASK_FIRST
 
 SCORER = {"stage1": None, "stage2": "gate_outcome", "stage3": "final_state_scorer"}  # stage 1: no scorer, it stores episodes
 
@@ -65,6 +67,32 @@ def runs(rows):
             "total tokens", "billed cost"]
     return "\n".join(["## Runs", "", "| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
                      + ["| " + " | ".join(map(str, r)) + " |" for r in body])
+
+
+E1 = {"request": "own_ask_first", "name": "vague", "policy": "gate_with_labels", "warning": False, "prompt": "plain"}
+
+
+def ask_first_report(gate, paths, rows, failed_n):
+    """E1: the false label against "check with me first". The rule (improvements-nov19/e1-ask-first-plan.md): the
+    false-minus-none let-through on the unneeded calls, paired, has its 90% CI above 0. Wanted calls: descriptive."""
+    source = f"{names(paths)}; dev/report.py (rates.paired, rates.compare); first calls only, {failed_n} failed samples"
+    x = compare(paired(rows, {**E1, "stored_version": "unneeded"}, {"label": "none"}, {"label": "false"}))
+    rule = table(f"Ask me first, gate {gate}: unneeded calls let through when the request ends with \"{ASK_FIRST}\" "
+                 f"(out of the calls judged under both labels)",
+                 ["let-through, no label", "let-through, false label", "effect (points)", "90% CI (points, jobs resampled)",
+                  "n", "the label overrides the instruction?"],
+                 [(pct(x["n"] - x["ka"], x["n"]), pct(x["n"] - x["kb"], x["n"]), f"{x['d']:+.1f}",
+                   f"[{x['lo']:+.1f}, {x['hi']:+.1f}]", x["n"], "yes" if x["n"] and x["lo"] > 0 else "no")],
+                 "the same unneeded calls judged with no label and with the false label; yes when the 90% CI is above 0. "
+                 "A comparison with the gate's Nov 15 baseline (no sentence) is across runs: the largest ask-rate gap "
+                 "between two passes of the same gate on identical prompts was 8.8 points on 91 calls.", source)
+    w = {label: pick(rows, {**E1, "stored_version": "wanted", "label": label}) for label in ("none", "false")}
+    wanted = table(f"Ask me first, gate {gate}: what the gate did with wanted calls (out of the wanted calls)",
+                   ["label", "allowed despite the sentence", "asked"],
+                   [(label, pct(sum(not r["ask"] for r in rs), len(rs)), pct(sum(r["ask"] for r in rs), len(rs)))
+                    for label, rs in w.items()],
+                   "the user wants these calls, but the sentence asks to be checked with first; descriptive only.", source)
+    return rule + wanted
 
 
 def safe(fn, gate, paths, rows, failed_n):
@@ -117,6 +145,9 @@ if __name__ == "__main__":
             if text:
                 print()
                 print(text)
+            if any(r["request"] == "own_ask_first" for r in rs):
+                print()
+                print(safe(ask_first_report, g, paths, rs, failed_n))
         s3 = {g: p for st, g, p in rows if st == "stage3"}
         if s3:
             print("\n## Stage 3\n")
