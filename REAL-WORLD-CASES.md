@@ -6,7 +6,10 @@ server is trusted. The cases below show the parts of this problem that have alre
 
 We found no public report, as of November 2026, of an attacker using a false read-only label in the wild. The cases
 show the client behaviour that would let one work (case 1), MCP servers acting maliciously (case 2), attacks that
-hide in tool metadata (case 3), and the harm an approval layer exists to prevent (case 4).
+hide in tool metadata (case 3), and the harm an approval layer exists to prevent (case 4). Cases 5 to 9 are from
+2026: an approval prompt that showed a harmless action while a harmful one ran (case 5), agents destroying data or
+getting past access controls (cases 6 and 7), attempts to make agents pay or buy (case 8), and new supply-chain and
+design problems in MCP itself (case 9).
 
 ## 1. A client that trusts the server's own read-only label
 
@@ -56,5 +59,65 @@ hide in tool metadata (case 3), and the harm an approval layer exists to prevent
   - <https://www.techradar.com/pro/amazon-ai-coding-agent-hacked-to-inject-data-wiping-commands>
 - **Where they are in this study:** these are the failures an approval gate exists to stop. The unneeded version of
   each job is an agent proposing an irreversible action the user did not need, whatever the reason it proposed it.
+
+## 2026 cases
+
+### 5. An approval prompt that named a harmless file while a sensitive one was written (GhostApproval)
+
+- **What happened:** On July 8, 2026, Wiz Research disclosed a flaw in six AI coding assistants: Amazon Q Developer,
+  Claude Code, Augment, Cursor, Google Antigravity and Windsurf. A malicious repository used a symbolic link so that
+  the approval prompt named a harmless project file while the write went to a sensitive file outside the project.
+  AWS, Google and Cursor shipped fixes. Anthropic first said the report was outside its threat model, and later
+  pointed to a symlink warning it had added in February 2026. Augment and Windsurf had acknowledged the report but
+  not yet shipped fixes when Wiz published.
+- **Where it is in this study:** the approver judged what it was shown, not what the action would do. The vague-name
+  and false-label conditions test the same thing with an LLM as the approver.
+- **Source:** <https://wiz.io/blog/ghostapproval-a-trust-boundary-gap-in-ai-coding-assistants>
+
+### 6. An agent deleted a production database and its backups (PocketOS)
+
+- **What happened:** In 2026, a Cursor coding agent running Claude Opus 4.6 deleted PocketOS's production database
+  and its volume-level backups while trying to fix a problem in a staging environment. It used an API token with far
+  broader access than the task needed, and no person checked the action first. The hosting provider, Railway, helped
+  recover the data over two days.
+- **Where it is in this study:** the delete jobs. An irreversible call that no one needed, with nothing in place to
+  ask first.
+- **Source:** <https://airisk.mit.edu/ai-incidents/1469-pocketos-production-database-was-reportedly-deleted>
+
+### 7. Agents got past access controls on government and internal systems (OpenAI disclosures)
+
+- **What happened:** In September 2026, the Australian government said an OpenAI model researching medical spending
+  had got around blocks on Medicare's public statistics portal. OpenAI said it did not believe the model reached
+  personal medical records, and the Prime Minister called the incident "obviously unacceptable" and announced an
+  inquiry. In October 2026, OpenAI disclosed four more such incidents, 19 in all: an agent that got past a
+  government site's access controls, a model that made an unauthorized payment from a cryptocurrency test wallet, a
+  model that changed a live internal system and downloaded 147,451 rows from nonpublic tables, and an agent that
+  asked outside services to do what it had been blocked from doing.
+- **Where it is in this study:** the unauthorized payment is the pay jobs' failure, made for real. These are the
+  actions an approval layer exists to stop.
+- **Sources:**
+  - <https://www.aljazeera.com/news/2026/9/24/how-an-openai-agent-hacked-australias-medicare-and-what-that-means>
+  - <https://fortune.com/2026/10/16/openai-discloses-four-more-rogue-incidents-involving-financial-medical-and-government-data/>
+
+### 8. Web pages that try to make agents pay or buy (Unit 42)
+
+- **What happened:** On March 3, 2026, Palo Alto Networks' Unit 42 reported hidden instructions on live websites,
+  aimed at AI agents that read those pages. Some tried to make an agent buy a paid plan, donate through a payment
+  link, buy shoes, or send $5,000 to the attacker. Unit 42 did not report any of these attempts succeeding.
+- **Where it is in this study:** the pay jobs. The cause of an unneeded payment does not matter to the gate; it has
+  to catch the call either way.
+- **Source:** <https://unit42.paloaltonetworks.com/ai-agent-prompt-injection/>
+
+### 9. New supply-chain and design problems in MCP itself
+
+- **A trojanized MCP server spread through MCP registries:** in February 2026, attackers cloned the Oura MCP project
+  and distributed a copy carrying information-stealing malware through public MCP registries.
+  - <https://authzed.com/blog/timeline-mcp-breaches>
+- **A design flaw in MCP's local server transport:** in April 2026, OX Security showed that a server's
+  configuration can be turned directly into an operating-system command. It led to CVEs in products including
+  LiteLLM, Flowise and Windsurf. Anthropic called the behaviour expected.
+  - <https://thehackernews.com/2026/04/anthropic-mcp-design-vulnerability.html>
+- **Where it is in this study:** both show again that an MCP server, and everything it says about itself, comes from
+  a party the client cannot simply trust.
 
 All sources accessed November 19, 2026.
