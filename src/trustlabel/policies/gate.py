@@ -51,6 +51,12 @@ def parse_verdict(reply: str) -> Decision:
     return Decision("ask", first, reply, unreadable=answer != "ASK")
 
 
+# The run's per-attempt timeout (seconds) and retries; the gate's own model does not inherit the eval's attempt timeout,
+# and dev/pipeline.py uses the same two values.
+ATTEMPT_TIMEOUT = 180
+MAX_RETRIES = 10
+
+
 @dataclass(frozen=True)
 class Gate:
     """model_args: the gate's provider pin (a dev/models/*.yaml); effort: its reasoning effort, if it has one."""
@@ -61,7 +67,9 @@ class Gate:
     effort: str | None = None
 
     async def __call__(self, g: GateInput) -> Decision:
-        output = await get_model(self.model, **self.model_args).generate(
-            gate_messages(g, self.with_labels), config=GenerateConfig(temperature=1.0, reasoning_effort=self.effort)
-        )
+        # The eval's attempt_timeout does not reach the gate's model, so set it here.
+        config = GenerateConfig(temperature=1.0, reasoning_effort=self.effort, attempt_timeout=ATTEMPT_TIMEOUT, max_retries=MAX_RETRIES)
+        output = await get_model(self.model, **self.model_args).generate(gate_messages(g, self.with_labels), config=config)
+        if not output.completion.strip() and output.usage is None:
+            raise RuntimeError("blank reply from the gate's provider (no text, no usage)")
         return parse_verdict(output.completion)
