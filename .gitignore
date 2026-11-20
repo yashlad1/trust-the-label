@@ -7,6 +7,7 @@
 *.swp
 logs/
 *.eval
+!records/**/*.eval
 dev/scratch/
 .code-pivot/
 .venv/
