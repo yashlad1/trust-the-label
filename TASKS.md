@@ -98,7 +98,7 @@ Folders: `src/trustlabel/servers/`, `src/trustlabel/scorer.py`.
 | [x] W5 | Messages, invoices and posts servers with the same switches and a safe path each (D3) | 2 | Tool names at `label-widening/task_beyond.py:23-24` | The W1-W3 tests pass for each server |
 | [x] W6 | Fresh sandbox per episode: the harness hands each sample a new state file | 2 | — | Two episodes in a row don't share state |
 | [x] W7 | Scorer from the final state: did an irreversible action run (harm), were the needed actions done with nothing extra (task success), which items were hit that weren't asked for | 3 | `outcome()` at `pilot-b3/task.py:170-186` | Tests on hand-made final states for all four kinds |
-| [ ] W8 | Second labeler for I5 | 3 | — | Sheet filled in without seeing Isha's |
+| [x] W8 | Second labeler for I5 | 3 | — | Sheet filled in without seeing Isha's |
 | [ ] W9 | Spot-check 20 transcripts per agent against the final state; draft the System section | 5-6 | — | Mismatches reported to Yash |
 
 ## Vignesh: approval policies and analysis
@@ -107,12 +107,12 @@ Folders: `src/trustlabel/policies/`, `src/trustlabel/analysis/`.
 
 | # | Piece | Week | Start from | Done when |
 |---|---|---|---|---|
-| [ ] V1 | Policy interface from `contracts.py`: a call and its labels go in, allow / ask / block comes out | 1 | Fig. 2 of the proposal | Reviewed with Yash, merged with Y1 |
-| [ ] V2 | Never ask, and label rule (ask unless the label says read-only), as plain functions; used as reference lines on the stored calls | 1 | — | A test covers both policies under all three label states |
-| [ ] V3 | One gate prompt for both LLM policies, with labels and the warning sentence as switches | 1-2 | Prompt at `pilot-gate/task.py:23-24`; labels as an `annotations` field at `pilot-gate/task_v2.py:111-113`; warning at `lying-label/task_warn.py:18` | A test shows the prompts differ only in the labels and the warning |
-| [ ] V4 | Gate on call, and gate with labels: call the gate model, parse ASK / ALLOW, count unparseable replies separately | 2 | `verdict()` at `pilot-gate/task.py:88-94` | A mockllm test, including a garbled reply |
-| [ ] V5 | Hybrid: a read-only label allows the call without the LLM; anything else gets the gate-with-labels decision (D8), computed on the stored calls | 2 | — | A test shows the hybrid allows read-only-labelled calls and otherwise takes the stored gate-with-labels decision |
-| [ ] V6 | Analysis from the logs: agent proposal rates (stage 1); per gate condition, allowed, asked then yes, asked then no, blocked and unreadable, on unneeded and wanted calls (stage 2); harm and task success (stage 3); reference lines for never ask, label rule and hybrid | 3 | `pilot-b3/analyze.py` | Tested on mockllm logs and hand-made counts |
+| [x] V1 | Policy interface from `contracts.py`: a call and its labels go in, allow / ask / block comes out | 1 | Fig. 2 of the proposal | Reviewed with Yash, merged with Y1 |
+| [x] V2 | Never ask, and label rule (ask unless the label says read-only), as plain functions; used as reference lines on the stored calls | 1 | — | A test covers both policies under all three label states |
+| [x] V3 | One gate prompt for both LLM policies, with labels and the warning sentence as switches | 1-2 | Prompt at `pilot-gate/task.py:23-24`; labels as an `annotations` field at `pilot-gate/task_v2.py:111-113`; warning at `lying-label/task_warn.py:18` | A test shows the prompts differ only in the labels and the warning |
+| [x] V4 | Gate on call, and gate with labels: call the gate model, parse ASK / ALLOW, count unparseable replies separately | 2 | `verdict()` at `pilot-gate/task.py:88-94` | A mockllm test, including a garbled reply |
+| [x] V5 | Hybrid: a read-only label allows the call without the LLM; anything else gets the gate-with-labels decision (D8), computed on the stored calls | 2 | — | A test shows the hybrid allows read-only-labelled calls and otherwise takes the stored gate-with-labels decision |
+| [x] V6 | Analysis from the logs: agent proposal rates (stage 1); per gate condition, allowed, asked then yes, asked then no, blocked and unreadable, on unneeded and wanted calls (stage 2); harm and task success (stage 3); reference lines for never ask, label rule and hybrid | 3 | `pilot-b3/analyze.py` | Tested on mockllm logs and hand-made counts |
 | [ ] V7 | Paired tests over the same stored calls (first call per episode; calls from the same job accounted for) with Holm correction, for H1-H3; a change counts at 20+ points with Holm p < 0.05; two rates count as the same when the 90% confidence interval of the difference lies inside ±10 points | 3 | — | A test on made-up counts with a known answer |
 | [ ] V8 | Tables and figures, one set per agent | 5-6 | — | Every number traces to a log file, a command and n |
 
@@ -122,12 +122,12 @@ Folder: `src/trustlabel/scenarios/`.
 
 | # | Piece | Week | Start from | Done when |
 |---|---|---|---|---|
-| [ ] I1 | Scenario format, with Yash in `contracts.py`: id, kind, version (unneeded or wanted), request, items, needed actions | 1 | Keys in `pilot-b3/scenarios.json`: id, title, request_safe, request_required, target_ids, items | Merged with Y1 |
-| [ ] I2 | 10 delete jobs, both versions | 1 | `pilot-b3/scenarios.json`, jobs s01-s10: all ten already have a wanted version (`request_required`) | The I6 check passes |
-| [ ] I3 | 30 jobs: 10 send, 10 pay, 10 publish, both versions | 2 | `label-widening/beyond.json`, x01-x30: the unneeded requests exist; the wanted versions still need writing | The I6 check passes |
-| [ ] I4 | User answer rules: how the scripted user answers an ask in each version, including a question it can't map to the task | 2 | — | Every version has exactly one answer |
+| [x] I1 | Scenario format, with Yash in `contracts.py`: id, kind, version (unneeded or wanted), request, items, needed actions | 1 | Keys in `pilot-b3/scenarios.json`: id, title, request_safe, request_required, target_ids, items | Merged with Y1 |
+| [x] I2 | 10 delete jobs, both versions | 1 | `pilot-b3/scenarios.json`, jobs s01-s10: all ten already have a wanted version (`request_required`) | The I6 check passes |
+| [x] I3 | 30 jobs: 10 send, 10 pay, 10 publish, both versions | 2 | `label-widening/beyond.json`, x01-x30: the unneeded requests exist; the wanted versions still need writing | The I6 check passes |
+| [x] I4 | User answer rules: how the scripted user answers an ask in each version, including a question it can't map to the task | 2 | — | Every version has exactly one answer |
 | [ ] I5 | Two-person labeling: for all 80 versions, does the request truly need the action? Isha and Will fill separate sheets; revise or drop the ones they disagree on | 3 | — | Agreement count recorded; final list frozen |
-| [ ] I6 | Scenario check script: each job has both versions, ids are unique, needed actions name real items | 2 | — | Runs clean on all 40 jobs |
+| [x] I6 | Scenario check script: each job has both versions, ids are unique, needed actions name real items | 2 | — | Runs clean on all 40 jobs |
 | [ ] I7 | Draft the Methods section (scenarios, ground truth) and update Related Work | 5-6 | — | — |
 
 ## Yash: harness and runs
@@ -136,14 +136,14 @@ Folders: `src/trustlabel/harness/`, `dev/`.
 
 | # | Piece | Week | Start from | Done when |
 |---|---|---|---|---|
-| [ ] Y1 | `contracts.py`: tool call, labels, decision, scenario | 1 | V1, I1 | Everyone approves the pull request |
-| [ ] Y2 | Inspect task: the agent reaches Will's items server through `mcp_tools(mcp_server_stdio(...))`; fixed system prompt, step cap and max tokens | 1 | `episode` solver at `pilot-b3/task.py:118` | A mockllm episode lists and archives items |
-| [ ] Y3 | Confirm the approval hook fires on MCP tool calls, and that MCP labels don't reach the model (D4) | 1 | — | A mockllm run shows the approver ran and the model's tool list has no labels |
-| [ ] Y4 | Approval wiring: one approver on Will's state-changing list (W4); allow means approve; ask goes to the scripted user, then approve or reject; every decision is recorded in the sample; every proposed irreversible call is stored with its context for stage 2 | 2 | — | On mockllm, allow, ask-then-yes and ask-then-no each end in the right state, and stored calls replay |
-| [ ] Y5 | Scripted user from Isha's answer rules (I4) | 2 | — | Each version gets its one answer |
-| [ ] Y6 | Stage switches as task parameters: stage 1 (agent, name), stage 2 (gate model, gate on call or gate with labels, label, warning, name), stage 3 (the live cells) | 3 | — | Every stage dry-runs on mockllm |
-| [ ] Y7 | Run scripts in `dev/`: smoke (12 samples), one full condition, progress | 3-4 | `yash/commands/` | Each runs on mockllm |
-| [ ] Y8 | Lock and smoke: freeze scenarios, prompts and the gate-model rule, then smoke with real models | 4 | — | The smoke passes the checks named before it starts |
+| [x] Y1 | `contracts.py`: tool call, labels, decision, scenario | 1 | V1, I1 | Everyone approves the pull request |
+| [x] Y2 | Inspect task: the agent reaches Will's items server through `mcp_tools(mcp_server_stdio(...))`; fixed system prompt, step cap and max tokens | 1 | `episode` solver at `pilot-b3/task.py:118` | A mockllm episode lists and archives items |
+| [x] Y3 | Confirm the approval hook fires on MCP tool calls, and that MCP labels don't reach the model (D4) | 1 | — | A mockllm run shows the approver ran and the model's tool list has no labels |
+| [x] Y4 | Approval wiring: one approver on Will's state-changing list (W4); allow means approve; ask goes to the scripted user, then approve or reject; every decision is recorded in the sample; every proposed irreversible call is stored with its context for stage 2 | 2 | — | On mockllm, allow, ask-then-yes and ask-then-no each end in the right state, and stored calls replay |
+| [x] Y5 | Scripted user from Isha's answer rules (I4) | 2 | — | Each version gets its one answer |
+| [x] Y6 | Stage switches as task parameters: stage 1 (agent, name), stage 2 (gate model, gate on call or gate with labels, label, warning, name), stage 3 (the live cells) | 3 | — | Every stage dry-runs on mockllm |
+| [x] Y7 | Run scripts in `dev/`: smoke (12 samples), one full condition, progress | 3-4 | `yash/commands/` | Each runs on mockllm |
+| [x] Y8 | Lock and smoke: freeze scenarios, prompts and the gate-model rule, then smoke with real models | 4 | — | The smoke passes the checks named before it starts |
 | [ ] Y9 | Runs: stage 1 (2 agents, 2 names, 2 repeats), stage 2 (every stored call under 14 gate conditions, per gate model), stage 3 (the live cells); more models if the budget allows | 5 | — | Logs complete, each failed sample marked |
 | [ ] Y10 | Rerun failed samples; recheck every reported number against the raw logs | 6 | — | — |
 
