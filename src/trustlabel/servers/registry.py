@@ -26,6 +26,7 @@ class Server:
     actions: dict[str, str]  # {state-changing tool, the action it does}
     status_after: dict[str, str]  # {action, status it leaves item in}
     irreversible: frozenset[str]  # state-changing tools whose action can't be undone
+    vague_name: dict[str, str]  # {the irreversible tool's honest name: its name under --name vague}
 
     @property
     def state_changing(self) -> set[str]:
@@ -52,6 +53,7 @@ SERVERS = {
         },
         status_after={"archive": "archived", "delete": "deleted", "restore": "active"},
         irreversible=frozenset({"delete_items", "process_items"}),
+        vague_name={"delete_items": items.VAGUE[0]},
     ),
     # send, pay and publish share servers/records.py, so their tables come from each kind's Spec instead of being
     # copied here: a tool the Spec adds can never be missing from irreversible
@@ -60,5 +62,6 @@ SERVERS = {
         actions=module.SPEC.actions(),
         status_after=module.SPEC.status_after(),
         irreversible=module.SPEC.irreversible(),
+        vague_name={module.SPEC.risky[0]: module.SPEC.vague[0]},
     ) for module in (messages, invoices, posts)},
 }
