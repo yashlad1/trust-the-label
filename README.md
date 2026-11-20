@@ -22,7 +22,7 @@ src/trustlabel/
   scorer.py      scores the final sandbox state
 dev/
   pipeline.py          runs the whole experiment end to end (dry or paid)
-  report.py            prints the runs table from a run's records
+  report.py            prints the runs table and the measure tables
   scripted_stage1.py   makes stage-1 logs on the fake model, for free dry runs
   run.sh, progress.sh  run helper and a progress printer for long runs
   check_openrouter.py  pings each model once
@@ -45,7 +45,6 @@ Run everything with `uv run ...`. It makes `import trustlabel` work.
 ## Dependencies
 
 From `pyproject.toml`: `inspect-ai` (the evaluation framework), `mcp` (the MCP servers), `openai` (the client library).
-PyYAML is also needed (the runner reads the model configs); add it with `uv add pyyaml`.
 
 ## Conditions
 
@@ -120,7 +119,8 @@ job files, the wording file, the epochs and the live gate. Check the job files f
 `uv run python dev/report.py <out>/manifest.json` prints the runs table: samples, failed samples (counted as
 outcomes), wall time, tokens and billed cost. It also accepts `.eval` files directly.
 
-The measure tables (src/trustlabel/analysis/) are printed by [fill in when the analysis code lands].
+The same command also prints the measure tables from `src/trustlabel/analysis/rates.py`: the stage-1 table; for each
+gate, the stage-2 table and the reference lines; and the stage-3 table.
 
 A sample: `unzip sample_records/dry_run_fake_model.zip -d sample_records/` then
 `uv run python dev/report.py sample_records/dry_run/manifest.json`.
