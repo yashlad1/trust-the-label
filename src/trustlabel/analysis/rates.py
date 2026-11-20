@@ -10,6 +10,8 @@
   stage2_table(gate, paths, rows, failed_n)  what the gate did with each call, per name, request and condition
   reference_table(gate, paths, rows, failed_n)  never ask, the label rule and the hybrid, computed on the same calls
   stage3_table(logs)                         harm, task success, stray items and failed episodes, per policy
+  paired(rows, fixed, a, b)                  the same calls under two settings that differ in one field, as Pair objects
+  compare(pairs)                             paired difference in ask rate, in points, with McNemar p and a job-bootstrap CI
 
 The stage-2 tables use the standard rows only (own or swapped request, plain prompt); the intent-sentence and wording
 rows are in stage2_rows for their own tables. gate is the gate's name, used in the table titles.
@@ -21,9 +23,11 @@ finish is named in the table's source line, so a cut-short log never looks like 
 
 from collections import Counter
 from pathlib import Path
+from typing import NamedTuple
 
 from inspect_ai.log import read_eval_log
 
+from trustlabel.analysis.stats import job_bootstrap_ci, mcnemar_p
 from trustlabel.analysis.tables import table
 from trustlabel.contracts import Decision, StoredCall
 from trustlabel.harness.connection import labels_for
@@ -39,7 +43,36 @@ def pct(k, n):
 
 
 def pick(rows, spec):
+    for k, v in spec.items():
+        if rows and not any(r[k] == v for r in rows):
+            raise ValueError(f"no row has {k}={v!r}")
     return [r for r in rows if all(r[k] == v for k, v in spec.items())]
+
+
+class Pair(NamedTuple):  # one stored call judged under both settings: its job and whether the gate asked under each
+    call: str
+    job: str
+    a: bool
+    b: bool
+
+
+def paired(rows, fixed, a, b):
+    """Calls judged under both fixed+a and fixed+b, all other fields equal: [Pair(call, job, ask under a, ask under b)]."""
+    vary = set(a) | set(b)
+    key = lambda r: (r["call"],) + tuple(r[f] for f in KEY_FIELDS if f not in vary)  # noqa: E731
+    ra, rb = ({key(r): r for r in pick(rows, {**fixed, **spec})} for spec in (a, b))
+    assert len(ra) == len(pick(rows, {**fixed, **a})) and len(rb) == len(pick(rows, {**fixed, **b})), "ambiguous pairing"
+    return [Pair(k[0], ra[k]["job"], ra[k]["ask"], rb[k]["ask"]) for k in sorted(ra.keys() & rb.keys())]
+
+
+def compare(pairs):
+    """Paired difference in ask rate (first minus second), in points, with McNemar p and a job-bootstrap 90% CI."""
+    n = len(pairs)
+    b = sum(x and not y for _c, _j, x, y in pairs)  # asked only under the first
+    c = sum(y and not x for _c, _j, x, y in pairs)  # asked only under the second
+    lo, hi = job_bootstrap_ci([(j, int(x) - int(y)) for _c, j, x, y in pairs])
+    return {"n": n, "ka": sum(x for *_, x, _y in pairs), "kb": sum(y for *_, y in pairs), "b": b, "c": c,
+            "d": 100 * (b - c) / n if n else 0.0, "p": mcnemar_p(b, c), "lo": 100 * lo, "hi": 100 * hi}
 
 
 def failed(s, scorer):
@@ -97,7 +130,7 @@ def stage2_rows(paths):
         m = sc.metadata
         rows.append({"call": f"{call.episode}-c{call.position}", "job": m["job"], "kind": m["kind"],
                      "tool": s.metadata["shown_call"]["name"], "answer": sc.answer, "ask": sc.answer != "allowed",
-                     "unreadable": sc.value["unreadable"], "version": m["version"], **{f: m[f] for f in KEY_FIELDS}})
+                     "unreadable": sc.value["unreadable"], "version": m["version"], "agent": call.agent, **{f: m[f] for f in KEY_FIELDS}})
     return rows, failed_n
 
 
