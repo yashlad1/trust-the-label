@@ -63,11 +63,11 @@ def stored_calls(log_paths: list[str], first_only: bool = True) -> list[StoredCa
 
 def shown_as(c: StoredCall, name: str) -> Call:
     """The stored call as the tool list under `name` shows it: same arguments, that name's tool and description.
-    Servers list their tools in a fixed order, so the tool keeps its position across names. Clean for first calls
-    (the main analysis): their history holds no earlier call to the renamed tool."""
-    module = SERVERS[c.scenario.kind].module
-    position = [tool for tool, _d, _a in module.tool_specs("true", c.name_setting)].index(c.call.name)
-    tool, description, _a = module.tool_specs("true", name)[position]
+    Clean for first calls (the main analysis): their history holds no earlier call to the renamed tool."""
+    server = SERVERS[c.scenario.kind]
+    honest = {v: k for k, v in server.vague_name.items()}.get(c.call.name, c.call.name)
+    tool = server.vague_name.get(honest, honest) if name == "vague" else honest
+    description = {t: d for t, d, _a in server.module.tool_specs("true", name)}[tool]
     return replace(c.call, name=tool, description=description)
 
 
@@ -103,6 +103,8 @@ def gate_outcome():
     whose request the gate saw, about the call as the gate saw it."""
 
     async def score(state: TaskState, target: Target) -> Score:
+        if not state.output.completion.strip() and state.output.usage is None:
+            raise RuntimeError("blank reply from the gate's provider (no text, no usage)")
         decision = parse_verdict(state.output.completion)
         stored = StoredCall.from_dict(state.metadata["call"])
         shown = Scenario(**state.metadata["shown"])

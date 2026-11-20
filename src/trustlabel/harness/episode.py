@@ -75,6 +75,8 @@ def episode(stage: int, policy: str, label: str, warning: bool = False, gate_mod
             while step < max_steps:
                 step += 1
                 output = await model.generate(state.messages, tools=tools, config=config)
+                if output.usage is None and not output.message.text.strip() and not output.message.tool_calls:
+                    raise RuntimeError("blank reply from the agent's provider (no text, no tool calls, no usage)")
                 state.messages.append(output.message)
                 if not output.message.tool_calls:
                     if acted:
