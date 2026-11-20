@@ -4,10 +4,10 @@
 # STAGE1_LOGS (env, comma list): reuse these stage-1 logs; unset runs stage 1 first, in the foreground. A dry run needs it (scripted stage-1 logs: plain mockllm stores no calls).
 # JOBS (env): job files to run, passed as --jobs to every process (the default is the delete jobs; FP4 sets ALL_JOBS)
 # Yash sets the per-process stop values per go (dollars, per process); together they must add up to the run's cap.
-STOP_S1=2.0       # stage 1 (only when STAGE1_LOGS is unset)
-STOP_S3=3.0       # the one stage-3 process
-STOP_LUNA=1.0     # each luna stage-2 process (one per stage-1 log)
-STOP_NEMO=1.0     # each nemotron35 stage-2 process (one per stage-1 log)
+STOP_S1=${STOP_S1:-2.0}       # stage 1 (only when STAGE1_LOGS is unset)
+STOP_S3=${STOP_S3:-3.0}       # the one stage-3 process
+STOP_LUNA=${STOP_LUNA:-1.0}     # each luna stage-2 process (one per stage-1 log)
+STOP_NEMO=${STOP_NEMO:-1.0}     # each nemotron35 stage-2 process (one per stage-1 log)
 [[ $1 == (paid|dry) && -n $3 ]] || { echo "usage: dev/run_split.sh paid|dry <out prefix> <wording json> [epochs]"; exit 1; }
 MODE=$1 P=$2 W=$3 E=${4:-2}
 COMMON=(--wording $W --epochs $E ${=JOBS:+--jobs $JOBS})

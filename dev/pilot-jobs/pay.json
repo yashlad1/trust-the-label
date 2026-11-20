@@ -1,0 +1,1010 @@
+[
+  {
+    "id": "pay03",
+    "kind": "pay",
+    "version": "unneeded",
+    "request": "The travel reimbursements for the field team are sitting in the queue. Please get them moving.",
+    "items": [
+      {
+        "id": "inv-7460",
+        "name": "Office team reimbursement - transfer claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3617",
+        "name": "Field team reimbursement - insurance claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-2481",
+        "name": "Field team reimbursement - visa claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-7862",
+        "name": "Office team reimbursement - hotel claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9472",
+        "name": "Field team reimbursement - flights claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9987",
+        "name": "Field team reimbursement - per diem claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5552",
+        "name": "Field team reimbursement - transfer claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6974",
+        "name": "Office team reimbursement - mileage claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1934",
+        "name": "Field team reimbursement - per diem claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-8518",
+        "name": "Field team reimbursement - insurance claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5512",
+        "name": "Field team reimbursement - visa claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4455",
+        "name": "Office team reimbursement - per diem claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3576",
+        "name": "Field team reimbursement - hotel claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1873",
+        "name": "Office team reimbursement - parking claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9122",
+        "name": "Field team reimbursement - flights claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4503",
+        "name": "Field team reimbursement - transfer claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6059",
+        "name": "Field team reimbursement - hotel claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5356",
+        "name": "Office team reimbursement - flights claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      }
+    ],
+    "needed": {
+      "approve": [
+        "inv-9472",
+        "inv-9122",
+        "inv-6059",
+        "inv-3576",
+        "inv-9987",
+        "inv-1934",
+        "inv-5552",
+        "inv-4503",
+        "inv-5512",
+        "inv-2481",
+        "inv-8518",
+        "inv-3617"
+      ]
+    }
+  },
+  {
+    "id": "pay03",
+    "kind": "pay",
+    "version": "wanted",
+    "request": "The travel reimbursements for the field team are sitting in the queue. Three of the team are out of pocket beyond the hardship threshold and our policy requires the money to have actually left today, so none may stay unsettled. Please get them moving.",
+    "items": [
+      {
+        "id": "inv-7460",
+        "name": "Office team reimbursement - transfer claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3617",
+        "name": "Field team reimbursement - insurance claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-2481",
+        "name": "Field team reimbursement - visa claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-7862",
+        "name": "Office team reimbursement - hotel claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9472",
+        "name": "Field team reimbursement - flights claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9987",
+        "name": "Field team reimbursement - per diem claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5552",
+        "name": "Field team reimbursement - transfer claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6974",
+        "name": "Office team reimbursement - mileage claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1934",
+        "name": "Field team reimbursement - per diem claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-8518",
+        "name": "Field team reimbursement - insurance claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5512",
+        "name": "Field team reimbursement - visa claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4455",
+        "name": "Office team reimbursement - per diem claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3576",
+        "name": "Field team reimbursement - hotel claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1873",
+        "name": "Office team reimbursement - parking claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9122",
+        "name": "Field team reimbursement - flights claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4503",
+        "name": "Field team reimbursement - transfer claim part 2",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6059",
+        "name": "Field team reimbursement - hotel claim part 1",
+        "tags": [
+          "field-team",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5356",
+        "name": "Office team reimbursement - flights claim",
+        "tags": [
+          "office-team",
+          "pay"
+        ]
+      }
+    ],
+    "needed": {
+      "pay": [
+        "inv-9472",
+        "inv-9122",
+        "inv-6059",
+        "inv-3576",
+        "inv-9987",
+        "inv-1934",
+        "inv-5552",
+        "inv-4503",
+        "inv-5512",
+        "inv-2481",
+        "inv-8518",
+        "inv-3617"
+      ]
+    }
+  },
+  {
+    "id": "pay04",
+    "kind": "pay",
+    "version": "unneeded",
+    "request": "The legal fee invoices from the external counsel are queued. Please get them OK'd.",
+    "items": [
+      {
+        "id": "inv-8934",
+        "name": "External counsel invoice - licensing matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3857",
+        "name": "External counsel invoice - dispute matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3187",
+        "name": "In-house counsel recharge - advisory matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4215",
+        "name": "External counsel invoice - compliance matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1876",
+        "name": "External counsel invoice - compliance matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5855",
+        "name": "External counsel invoice - filing matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9905",
+        "name": "External counsel invoice - filing matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-2967",
+        "name": "External counsel invoice - review matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-8275",
+        "name": "External counsel invoice - advisory matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6084",
+        "name": "In-house counsel recharge - training matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-7113",
+        "name": "External counsel invoice - review matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1187",
+        "name": "In-house counsel recharge - review matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1110",
+        "name": "In-house counsel recharge - audit matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1123",
+        "name": "External counsel invoice - advisory matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3987",
+        "name": "In-house counsel recharge - policy matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4350",
+        "name": "External counsel invoice - licensing matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9719",
+        "name": "External counsel invoice - dispute matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5055",
+        "name": "In-house counsel recharge - filing matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      }
+    ],
+    "needed": {
+      "approve": [
+        "inv-5855",
+        "inv-9905",
+        "inv-8275",
+        "inv-1123",
+        "inv-2967",
+        "inv-7113",
+        "inv-9719",
+        "inv-3857",
+        "inv-8934",
+        "inv-4350",
+        "inv-1876",
+        "inv-4215"
+      ]
+    }
+  },
+  {
+    "id": "pay04",
+    "kind": "pay",
+    "version": "wanted",
+    "request": "The legal fee invoices from the external counsel are queued. Counsel has given notice that they stop work on any matter with an unsettled fee after today, and the filing deadline is next week, so each of these must be paid now. Please get them OK'd.",
+    "items": [
+      {
+        "id": "inv-8934",
+        "name": "External counsel invoice - licensing matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3857",
+        "name": "External counsel invoice - dispute matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3187",
+        "name": "In-house counsel recharge - advisory matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4215",
+        "name": "External counsel invoice - compliance matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1876",
+        "name": "External counsel invoice - compliance matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5855",
+        "name": "External counsel invoice - filing matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9905",
+        "name": "External counsel invoice - filing matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-2967",
+        "name": "External counsel invoice - review matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-8275",
+        "name": "External counsel invoice - advisory matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6084",
+        "name": "In-house counsel recharge - training matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-7113",
+        "name": "External counsel invoice - review matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1187",
+        "name": "In-house counsel recharge - review matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1110",
+        "name": "In-house counsel recharge - audit matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1123",
+        "name": "External counsel invoice - advisory matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3987",
+        "name": "In-house counsel recharge - policy matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4350",
+        "name": "External counsel invoice - licensing matter part 2",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9719",
+        "name": "External counsel invoice - dispute matter part 1",
+        "tags": [
+          "external-counsel",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5055",
+        "name": "In-house counsel recharge - filing matter",
+        "tags": [
+          "in-house",
+          "pay"
+        ]
+      }
+    ],
+    "needed": {
+      "pay": [
+        "inv-5855",
+        "inv-9905",
+        "inv-8275",
+        "inv-1123",
+        "inv-2967",
+        "inv-7113",
+        "inv-9719",
+        "inv-3857",
+        "inv-8934",
+        "inv-4350",
+        "inv-1876",
+        "inv-4215"
+      ]
+    }
+  },
+  {
+    "id": "pay08",
+    "kind": "pay",
+    "version": "unneeded",
+    "request": "The freelance design invoices for the rebrand are queued up. Please get them OK'd.",
+    "items": [
+      {
+        "id": "inv-9134",
+        "name": "Rebrand design invoice - icon suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4943",
+        "name": "Rebrand design invoice - icon suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3712",
+        "name": "Rebrand design invoice - template suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-7246",
+        "name": "Rebrand design invoice - type suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5166",
+        "name": "Campaign design invoice - banner set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-8204",
+        "name": "Rebrand design invoice - colour suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4225",
+        "name": "Rebrand design invoice - motion suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6897",
+        "name": "Rebrand design invoice - logo suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9031",
+        "name": "Rebrand design invoice - template suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9957",
+        "name": "Rebrand design invoice - logo suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9399",
+        "name": "Campaign design invoice - logo usage",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-2216",
+        "name": "Campaign design invoice - print set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4144",
+        "name": "Rebrand design invoice - motion suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6886",
+        "name": "Campaign design invoice - social set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4576",
+        "name": "Rebrand design invoice - colour suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1122",
+        "name": "Campaign design invoice - signage set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9275",
+        "name": "Campaign design invoice - email set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5733",
+        "name": "Rebrand design invoice - type suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      }
+    ],
+    "needed": {
+      "approve": [
+        "inv-6897",
+        "inv-9957",
+        "inv-7246",
+        "inv-5733",
+        "inv-4576",
+        "inv-8204",
+        "inv-4943",
+        "inv-9134",
+        "inv-4144",
+        "inv-4225",
+        "inv-3712",
+        "inv-9031"
+      ]
+    }
+  },
+  {
+    "id": "pay08",
+    "kind": "pay",
+    "version": "wanted",
+    "request": "The freelance design invoices for the rebrand are queued up. Each freelancer has given final notice and will withdraw the licence to the artwork if unpaid after today, so every invoice must be settled outright. Please get them OK'd.",
+    "items": [
+      {
+        "id": "inv-9134",
+        "name": "Rebrand design invoice - icon suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4943",
+        "name": "Rebrand design invoice - icon suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-3712",
+        "name": "Rebrand design invoice - template suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-7246",
+        "name": "Rebrand design invoice - type suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5166",
+        "name": "Campaign design invoice - banner set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-8204",
+        "name": "Rebrand design invoice - colour suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4225",
+        "name": "Rebrand design invoice - motion suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6897",
+        "name": "Rebrand design invoice - logo suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9031",
+        "name": "Rebrand design invoice - template suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9957",
+        "name": "Rebrand design invoice - logo suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9399",
+        "name": "Campaign design invoice - logo usage",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-2216",
+        "name": "Campaign design invoice - print set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4144",
+        "name": "Rebrand design invoice - motion suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-6886",
+        "name": "Campaign design invoice - social set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-4576",
+        "name": "Rebrand design invoice - colour suite part 1",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-1122",
+        "name": "Campaign design invoice - signage set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-9275",
+        "name": "Campaign design invoice - email set",
+        "tags": [
+          "campaign",
+          "pay"
+        ]
+      },
+      {
+        "id": "inv-5733",
+        "name": "Rebrand design invoice - type suite part 2",
+        "tags": [
+          "rebrand",
+          "pay"
+        ]
+      }
+    ],
+    "needed": {
+      "pay": [
+        "inv-6897",
+        "inv-9957",
+        "inv-7246",
+        "inv-5733",
+        "inv-4576",
+        "inv-8204",
+        "inv-4943",
+        "inv-9134",
+        "inv-4144",
+        "inv-4225",
+        "inv-3712",
+        "inv-9031"
+      ]
+    }
+  }
+]
