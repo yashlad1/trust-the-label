@@ -1,0 +1,104 @@
+{
+  "stage1": [
+    "records/fp3-pilot-final/final-stage1/stage1-gptoss/2026-11-20T19-03-33-00-00_stage1_AWquS6iR34QyPq6qk7ihck.eval",
+    "records/fp3-pilot-final/final-stage1/stage1-glm/2026-11-20T19-10-47-00-00_stage1_JwVkdRKkHLARgnAUQvTEGN.eval"
+  ],
+  "stage2": {},
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "stage1-gptoss-smoke": "records/fp3-pilot-final/final-stage1/stage1-gptoss-smoke/2026-11-20T19-00-36-00-00_stage1_k69Cus9co74nGTW24aceJ8.eval",
+    "stage1-glm-smoke": "records/fp3-pilot-final/final-stage1/stage1-glm-smoke/2026-11-20T19-09-59-00-00_stage1_UTWFYMwZZtgfzPgLRYpsn9.eval"
+  },
+  "jobs": "dev/pilot-jobs/delete.json,dev/pilot-jobs/send.json,dev/pilot-jobs/pay.json,dev/pilot-jobs/publish.json",
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "epochs": 1,
+  "stage2_epochs": 1,
+  "mode": "paid",
+  "command": [
+    "dev/pipeline.py",
+    "paid",
+    "logs/fp3-pilot-final/final-stage1",
+    "--wording",
+    "src/trustlabel/scenarios/wording.json",
+    "--epochs",
+    "1",
+    "--jobs",
+    "dev/pilot-jobs/delete.json,dev/pilot-jobs/send.json,dev/pilot-jobs/pay.json,dev/pilot-jobs/publish.json",
+    "--no-stage2",
+    "--no-stage3",
+    "--stop-at",
+    "0.10"
+  ],
+  "code": {
+    "git_sha": "89c4089a4b16b0a236bd7db4ded080e34cbbf2bc",
+    "dirty": false
+  },
+  "models": {
+    "gptoss": {
+      "model": "openrouter/openai/gpt-oss-120b",
+      "config": "dev/models/gpt-oss-120b.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "deepinfra/bf16"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 2
+    },
+    "glm": {
+      "model": "openrouter/z-ai/glm-5.3-flash",
+      "config": "dev/models/glm-5.3-flash.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "z-ai"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 4
+    },
+    "luna": {
+      "model": "openrouter/openai/gpt-6-luna",
+      "config": "dev/models/gpt-6-luna.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "openai"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 4
+    },
+    "nemotron35": {
+      "model": "openrouter/nvidia/nemotron-3.5-super-vl",
+      "config": "dev/models/nemotron-3.5-super-vl.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "crusoe/bf16"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 8
+    }
+  },
+  "stage2_skipped": true,
+  "stage3_skipped": true,
+  "stage3_agent": "gptoss",
+  "stage1_unneeded": {
+    "gptoss": 9,
+    "glm": 3
+  },
+  "spend": 0.027130841,
+  "stop_at": 0.1
+}

@@ -1,6 +1,6 @@
 # Sample run records
 
-dry_run_fake_model.zip holds one complete dry run of the experiment on Inspect's fake model (mockllm): two stage-1 runs (one per agent seat), stage 2 for both gate seats with the standard, intent-sentence and wording rows, and the three stage-3 policies, plus the manifest and the scripted stage-1 log the dry run replayed. The fake model calls no tools and gives no real verdicts, so these records show the format of the logs and the manifest, not real behaviour. The records from the pilot on real models replace this sample.
+dry_run_fake_model.zip holds one complete dry run of the experiment on Inspect's fake model (mockllm): two stage-1 runs (one per agent seat), stage 2 for both gate seats with the standard, intent-sentence and wording rows, and the three stage-3 policies, plus the manifest and the scripted stage-1 log the dry run replayed. The fake model calls no tools and gives no real verdicts, so these records show the format of the logs and the manifest, not real behaviour. The records of the real-model runs are in `records/`; see `records/README.md`.
 
 Open it from the repo root:
 
