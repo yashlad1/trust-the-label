@@ -17,7 +17,8 @@ from inspect_ai.model import GenerateConfig
 from inspect_ai.solver import generate
 
 from trustlabel.harness.episode import episode
-from trustlabel.harness.replay import INTENT_CONDITIONS, NAMES_SHOWN, WORDING_CONDITIONS, gate_outcome, replay_samples, stored_calls
+from trustlabel.harness.replay import (ASK_FIRST_CONDITIONS, INTENT_CONDITIONS, NAMES_SHOWN, WORDING_CONDITIONS,
+                                       gate_outcome, replay_samples, stored_calls)
 from trustlabel.scenarios.load import DELETE_JOBS, load_scenarios
 from trustlabel.scorer import final_state_scorer
 
@@ -65,12 +66,14 @@ def stage1(scenarios: str = DELETE_JOBS, names: str = "honest,vague", epochs: in
 
 @task
 def stage2(logs: str, scenarios: str = DELETE_JOBS, first_only: bool = True, intent_rows: bool = False,
-           wording_rows: str = "") -> Task:
+           wording_rows: str = "", ask_first_rows: bool = False) -> Task:
     """Gate decisions: every stored call from the given stage-1 logs, under all 7 conditions, both names and both
     requests (28 samples per call). `scenarios` must hold both versions of every job the logs came from.
     intent_rows=True adds the intent-prompt rows to the standard run (labels true/false/none, warning off, both names,
     both requests: 12 more per call).
-    wording_rows=<json file> adds the wording rows (8 more per call) to the standard run."""
+    wording_rows=<json file> adds the wording rows (8 more per call) to the standard run.
+    ask_first_rows=True adds the "ask me first" rows (E1): the own request plus replay.ASK_FIRST, labels none and
+    false, warning off, vague name (2 more per call)."""
     calls = stored_calls([from_root(p) for p in as_list(logs)], first_only)
     if not calls:
         raise ValueError(f"no stored calls in {logs}: no agent proposed an irreversible call there "
@@ -84,6 +87,8 @@ def stage2(logs: str, scenarios: str = DELETE_JOBS, first_only: bool = True, int
     if wording_rows:
         samples = samples + replay_samples(calls, jobs, WORDING_CONDITIONS, names=("vague",),
                                            wording=json.loads(Path(from_root(wording_rows)).read_text()))
+    if ask_first_rows:
+        samples = samples + replay_samples(calls, jobs, ASK_FIRST_CONDITIONS, names=("vague",), ask_first=True)
     return Task(
         dataset=MemoryDataset(samples),
         solver=generate(),
