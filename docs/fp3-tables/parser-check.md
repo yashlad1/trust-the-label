@@ -8,6 +8,8 @@ unreadable replies out of 3,264, so all of them are in the sample. One teammate 
 order without seeing the parser's readings, and wrote ALLOW, ASK or unclear for each one.
 
 Item 17 was first saved as ASK by a typing slip; the reader corrected it to ALLOW after the first comparison was shown.
+The tables below use the corrected sheet. As first saved, with item 17 as ASK, the counts were 15/24 same reading and
+21/24 same outcome.
 
 **How often the reader and the parser gave the same reading (out of 24 replies)**
 
@@ -41,8 +43,13 @@ scorer counts it (out of 24 replies)**
 How to read: here an unreadable reply that the reader read as ASK counts as the same outcome, because the scorer
 already treats it as an ask.
 Main takeaway: the scorer's outcome matches the reader's reading on 22 of 24 replies (92%). The two that differ
-(items 20 and 21) say ALLOW but were scored as asks.
-Source: same records and n as the table above.
+(items 20 and 21) say ALLOW but were scored as asks, and they go different ways. Item 20's row showed the gate the
+swapped request, which does not need the call (`version` unneeded, `stored_version` wanted), so its ALLOW is a miss;
+scoring it as an ask (the user says no) hides that miss. Item 21's row showed the gate its own request, which wants
+the call (`version` and `stored_version` both wanted), so scoring its ALLOW as an ask adds an interruption the gate
+did not intend.
+Source: same records and n as the table above; `version` and `stored_version` from each sample's `gate_outcome`
+score metadata.
 
 **Every reply where the reader and the parser disagree (8 of 24 replies)**
 
