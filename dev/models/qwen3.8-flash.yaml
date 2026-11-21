@@ -1,0 +1,5 @@
+# Version: qwen/qwen3.8-flash. Host: Alibaba first-party, no fallbacks. Thinking: on. The host has no reasoning-effort setting (the Nov 4 run set none).
+provider:
+  order: [alibaba]
+  allow_fallbacks: false
+reasoning_enabled: true

@@ -1,0 +1,4 @@
+# Version: anthropic/claude-haiku-5.5. Host: Anthropic first-party, no fallbacks. Reasoning effort: medium, set per run.
+provider:
+  order: [anthropic]
+  allow_fallbacks: false

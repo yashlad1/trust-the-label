@@ -1,0 +1,4 @@
+# Version: google/gemini-3.8-flash. Host: Google Vertex (global endpoint, standard tier; OpenRouter reports it as "Google"), no fallbacks, as in the Nov 4 probe. Reasoning effort: medium, set per run.
+provider:
+  order: [google-vertex/global]
+  allow_fallbacks: false
