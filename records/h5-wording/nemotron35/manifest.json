@@ -1,0 +1,28 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "nemotron35": "records/h5-wording/nemotron35/nemotron35/2026-11-20T20-34-15-00-00_stage2_2QqJM9Jir76ceWmSqrZwkX.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "nemotron35-smoke": "records/h5-wording/nemotron35/nemotron35-smoke/2026-11-20T20-33-51-00-00_stage2_PrveVZpgfdgpcnhcGnZQ2S.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_h5.py",
+    "paid",
+    "records/fp4/fp4-stage1/manifest.json"
+  ],
+  "code": {
+    "git_sha": "89c4089a4b16b0a236bd7db4ded080e34cbbf2bc",
+    "dirty": false
+  },
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "cap": 1.5,
+  "spend": 0.6965938,
+  "conditions": "H5: wording rows only, vague name, gate with labels, label none/false, warning off, plain"
+}

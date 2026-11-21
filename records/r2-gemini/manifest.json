@@ -1,0 +1,37 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "gemini": "records/r2-gemini/gemini/2026-11-20T09-36-53-00-00_stage2_6vzdio7ZEaVVEPFETBJNtn.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "gemini-smoke": "records/r2-gemini/gemini-smoke/2026-11-20T09-36-28-00-00_stage2_nGgvUvMSTVdbDjwpCETXEG.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_r2.py",
+    "paid",
+    "gemini"
+  ],
+  "code": {
+    "git_sha": "0b4fd4eb108877345ddb4c43e74e80e63cda0e67",
+    "dirty": true
+  },
+  "model": "openrouter/google/gemini-3.8-flash",
+  "pin": {
+    "provider": {
+      "order": [
+        "google-vertex/global"
+      ],
+      "allow_fallbacks": false
+    }
+  },
+  "effort": "medium",
+  "stop_at": 4.5,
+  "spend": 2.94964125,
+  "conditions": "headline: vague, own, gate with labels, label none/false, warning off/on, plain"
+}

@@ -1,0 +1,14 @@
+{
+  "stage1": [
+    "records/fp3-pilot/pilot-stage1/stage1-gptoss/2026-11-15T20-16-57-00-00_stage1_efmZU8PE64XdrcYhDGxtqc.eval",
+    "records/fp3-pilot/pilot-stage1/stage1-glm/2026-11-15T20-23-08-00-00_stage1_jMRfjhFMtUKJigGR5qg5jx.eval"
+  ],
+  "stage2": {},
+  "stage3": {},
+  "live_gate": "luna",
+  "jobs": "pilot-jobs/delete.json,pilot-jobs/send.json,pilot-jobs/pay.json,pilot-jobs/publish.json",
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "epochs": 1,
+  "stage2_skipped": true,
+  "stage3_skipped": true
+}

@@ -1,0 +1,19 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {},
+  "stage3": {
+    "gate on call": "records/fp4/fp4-stage3/stage3-gate_on_call-plain/2026-11-15T22-04-54-00-00_stage3_DjEJ3SchiVijGtVfJHxneD.eval",
+    "labels, warning off": "records/fp4/fp4-stage3/stage3-gate_with_labels-plain/2026-11-15T22-30-08-00-00_stage3_ENbyr8iLqvpffR5wUx9kBQ.eval",
+    "labels, warning on": "records/fp4/fp4-stage3/stage3-gate_with_labels-warn/2026-11-15T23-07-50-00-00_stage3_VeAKi6zgnBARNgVVPGD3hU.eval"
+  },
+  "live_gate": "luna",
+  "jobs": "src/trustlabel/scenarios/delete.json,src/trustlabel/scenarios/send.json,src/trustlabel/scenarios/pay.json,src/trustlabel/scenarios/publish.json",
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "epochs": 2,
+  "stage2_skipped": true,
+  "stage3_skipped": false,
+  "stage1_reused": true
+}

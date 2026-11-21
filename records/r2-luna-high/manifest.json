@@ -1,0 +1,37 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "luna-high": "records/r2-luna-high/luna-high/2026-11-20T03-36-58-00-00_stage2_cVPcjK9xJsM2PuNtkh6zkW.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "luna-high-smoke": "records/r2-luna-high/luna-high-smoke/2026-11-20T03-36-36-00-00_stage2_ikS9QTyWdf5CawBncUWrpP.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_r2.py",
+    "paid",
+    "all"
+  ],
+  "code": {
+    "git_sha": "0b4fd4eb108877345ddb4c43e74e80e63cda0e67",
+    "dirty": true
+  },
+  "model": "openrouter/openai/gpt-6-luna",
+  "pin": {
+    "provider": {
+      "order": [
+        "openai"
+      ],
+      "allow_fallbacks": false
+    }
+  },
+  "effort": "high",
+  "stop_at": 0.8,
+  "spend": 0.247526775,
+  "conditions": "headline: vague, own, gate with labels, label none/false, warning off/on, plain"
+}

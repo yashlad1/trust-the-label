@@ -1,0 +1,16 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval"
+  ],
+  "stage2": {
+    "luna": "records/fp4/fp4-luna-1/stage2-luna/2026-11-15T22-03-10-00-00_stage2_UVXcNvegxAzHctDwXznqBx.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "jobs": "src/trustlabel/scenarios/delete.json,src/trustlabel/scenarios/send.json,src/trustlabel/scenarios/pay.json,src/trustlabel/scenarios/publish.json",
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "epochs": 2,
+  "stage2_skipped": false,
+  "stage3_skipped": true,
+  "stage1_reused": true
+}
