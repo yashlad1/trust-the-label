@@ -1,0 +1,37 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "glm": "records/r2-glm/glm/2026-11-20T01-34-52-00-00_stage2_jRjtwLLSSsmz68u7LQm2dt.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "glm-smoke": "records/r2-glm/glm-smoke/2026-11-20T01-34-38-00-00_stage2_4jXpiRoShhZskaPjSQVMz9.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_r2.py",
+    "paid",
+    "all"
+  ],
+  "code": {
+    "git_sha": "0b4fd4eb108877345ddb4c43e74e80e63cda0e67",
+    "dirty": true
+  },
+  "model": "openrouter/z-ai/glm-5.3-flash",
+  "pin": {
+    "provider": {
+      "order": [
+        "z-ai"
+      ],
+      "allow_fallbacks": false
+    }
+  },
+  "effort": "medium",
+  "stop_at": 0.8,
+  "spend": 0.1506338,
+  "conditions": "headline: vague, own, gate with labels, label none/false, warning off/on, plain"
+}

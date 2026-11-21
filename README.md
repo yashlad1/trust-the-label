@@ -29,6 +29,7 @@ dev/
   models/              one provider config per model (see Models)
 tests/                 same layout as src/; fake model only
 sample_records/        a small zipped sample of a dry run
+records/               logs of the real-model runs, stored with Git LFS (see records/README.md)
 ```
 
 ## Setup

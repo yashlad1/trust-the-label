@@ -3,23 +3,36 @@
 Logs of the runs on real models, one folder per run. They are stored with Git LFS: run `git lfs install` once, then
 `git lfs pull` after you clone or pull. Without Git LFS each `.eval` file is a small text pointer instead of a log.
 
-Each file is a copy of the original Inspect log. The only change is that local home paths were made relative to the
-repository root. A scan of every file found no keys, tokens, authorization headers, emails or home paths.
+Each file is a copy of the original Inspect log. The only change is that local home paths were made relative: paths
+inside our project folders lost their home-folder start, and other home-folder paths (Python's package cache, in
+error tracebacks) start with `~/`. A scan of every file found no keys, tokens, authorization headers, emails or home
+paths. The launchers' text output files were not copied.
+
+Times are Eastern (EST). "Smokes" are the 12-sample test runs that ran before each full run.
+
+## The runs
 
 | folder | when | code | what ran | logs | status |
 |---|---|---|---|---|---|
-| `fp3-pilot-final/` | Nov 20, 2026, 2:00 to 2:37 PM EST | 89c4089 (on main as 3727b7f) | The FP3 pilot at the final code: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL, 48 rows per stored first call. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs and 7 smokes) | complete, 0 failed samples |
+| `fp3-pilot/` | Nov 15, 2026, 3:13 to 4:16 PM | a local copy of the code before the final changes (commits 4921121 and eb5cc40, not on GitHub) | The first FP3 pilot: the same 12 jobs as `fp3-pilot-final/`, all three stages. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
+| `fp4/` | Nov 15, 2026, 4:25 to 8:31 PM | a frozen local copy of the code (commits 1115754 and 451bcf4, not on GitHub; the harness reached main in #69, and the AlignmentCheck gate's code is not on main) | The full run: all 40 jobs, 2 repeats. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna, Nemotron 3.5 Super VL and the AlignmentCheck gate (Llama 4 Maverick). Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate. | 20 (11 runs, 9 smokes) | complete, 0 failed samples |
+| `r2-glm/`, `r2-qwen/`, `r2-haiku/`, `r2-luna-low/`, `r2-luna-high/`, `r2-gemini/` | Nov 19, 8:34 PM to Nov 20, 5:02 AM | 0b4fd4e (a local commit with the same code as f46321d, which is on main through #74) | Six more gate models (GLM 5.3 Flash, Qwen 3.8 Flash, Claude Haiku 5.5, GPT-6 Luna at low and at high effort, Gemini 3.8 Flash), each judging the full run's 234 saved first actions in stage 2: 936 gate calls per model. They read the full run's stage-1 logs in `fp4/`. | 2 per folder (1 run, 1 smoke) | complete, 0 failed samples |
+| `r4-luna/` | Nov 19, 10:55 PM to Nov 20, 1:11 AM | 0b4fd4e (as above) | The live runs (stage 3) at the full run's size: gpt-oss-120b with GPT-6 Luna as the live gate, three policies, 160 episodes each. | 4 (3 runs, 1 smoke) | complete, 0 of 480 episodes failed |
+| `r4-nemotron35/` | Nov 20, 1:12 to 4:36 AM | 0b4fd4e (as above) | The same, with Nemotron 3.5 Super VL as the live gate. | 4 (3 runs, 1 smoke) | **partial**: each policy stopped at the 5% failure limit, because the agent's provider sent empty replies |
+| `e1-ask-first/` | Nov 20, 5:03 to 5:13 AM | 9ae0a43 (on main through #78) | E1, added after the freeze: stage 2 only, on the full run's saved first actions, with the user's own request ending "Check with me before you do anything that can't be undone." Labels none and false; GPT-6 Luna and Nemotron 3.5 Super VL, 468 gate calls each. | 4 (2 runs, 2 smokes) | complete, 0 failed samples |
+| `fp3-pilot-final/` | Nov 20, 2:00 to 2:37 PM | 89c4089 (on main as 3727b7f) | The FP3 pilot at the final code: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL, 48 rows per saved first action. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
+| `h5-wording/` | Nov 20, 2:37 to 4:00 PM | 89c4089 (on main as 3727b7f) | The wording rows (H5) run again with the final wording file, on the full run's 234 saved first actions: GPT-6 Luna and Nemotron 3.5 Super VL, 1,872 gate calls each. | 4 (2 runs, 2 smokes) | complete, 0 failed samples |
 
 ## Using a run
 
-From the repository root:
+From the repository root, give `dev/report.py` every manifest of a run:
 
     uv run python dev/report.py records/fp3-pilot-final/final-*/manifest.json
+    uv run python dev/report.py $(find records/fp4 -name manifest.json)
     uv run inspect view --log-dir records/fp3-pilot-final
 
-The pilot has six manifests: `final-stage1` (stage 1), `final-luna-1` and `final-luna-2`, `final-nemotron35-1` and
-`final-nemotron35-2` (stage 2: each gate on each agent's stored calls), and `final-stage3` (stage 3). The stage-2 logs'
-settings name the stage-1 logs at `logs/fp3-pilot-final/...`, where they were when the run happened; the same files
-are here under `records/fp3-pilot-final/...`.
+Runs that judge the full run's saved actions (`r2-*`, `e1-ask-first`, `h5-wording`) point to the stage-1 logs in
+`records/fp4/`, so keep `fp4/` next to them. Inside the logs, the settings name other logs where they were when the run
+happened (for example `logs/fp4/...`); the same files are here under `records/`.
 
 Never edit, move or delete anything in this folder. A new run gets a new folder.

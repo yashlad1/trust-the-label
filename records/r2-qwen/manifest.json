@@ -1,0 +1,38 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "qwen": "records/r2-qwen/qwen/2026-11-20T01-49-31-00-00_stage2_ELeWEaZWTr5mH52FfadXJ5.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "qwen-smoke": "records/r2-qwen/qwen-smoke/2026-11-20T01-46-55-00-00_stage2_dYiY9xY7hRMNpxKQVjgFZw.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_r2.py",
+    "paid",
+    "all"
+  ],
+  "code": {
+    "git_sha": "0b4fd4eb108877345ddb4c43e74e80e63cda0e67",
+    "dirty": true
+  },
+  "model": "openrouter/qwen/qwen3.8-flash",
+  "pin": {
+    "provider": {
+      "order": [
+        "alibaba"
+      ],
+      "allow_fallbacks": false
+    },
+    "reasoning_enabled": true
+  },
+  "effort": null,
+  "stop_at": 0.8,
+  "spend": 0.509204194,
+  "conditions": "headline: vague, own, gate with labels, label none/false, warning off/on, plain"
+}

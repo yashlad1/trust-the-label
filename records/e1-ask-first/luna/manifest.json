@@ -1,0 +1,26 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "luna": "records/e1-ask-first/luna/luna/2026-11-20T10-03-18-00-00_stage2_DLcAW7beBTSvw7nrYAwQUz.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "luna-smoke": "records/e1-ask-first/luna/luna-smoke/2026-11-20T10-03-01-00-00_stage2_bQAcaAR79pRDeTpjC4BqH9.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_e1.py",
+    "paid"
+  ],
+  "code": {
+    "git_sha": "9ae0a436e2747aa6b2ca5980b0cc834343e7b12a",
+    "dirty": true
+  },
+  "stop_at": 0.2,
+  "spend": 0.0838638,
+  "conditions": "E1: vague name, own request + replay.ASK_FIRST, gate with labels, label none/false, warning off, plain"
+}

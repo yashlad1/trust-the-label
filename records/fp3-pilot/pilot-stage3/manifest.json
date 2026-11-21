@@ -1,0 +1,19 @@
+{
+  "stage1": [
+    "records/fp3-pilot/pilot-stage1/stage1-gptoss/2026-11-15T20-16-57-00-00_stage1_efmZU8PE64XdrcYhDGxtqc.eval",
+    "records/fp3-pilot/pilot-stage1/stage1-glm/2026-11-15T20-23-08-00-00_stage1_jMRfjhFMtUKJigGR5qg5jx.eval"
+  ],
+  "stage2": {},
+  "stage3": {
+    "gate on call": "records/fp3-pilot/pilot-stage3/stage3-gate_on_call-plain/2026-11-15T20-29-00-00-00_stage3_UL4jzCZ8KPEdynScjeJQV5.eval",
+    "labels, warning off": "records/fp3-pilot/pilot-stage3/stage3-gate_with_labels-plain/2026-11-15T20-36-17-00-00_stage3_9r6cq32njPC6oJAF27MkXF.eval",
+    "labels, warning on": "records/fp3-pilot/pilot-stage3/stage3-gate_with_labels-warn/2026-11-15T20-43-18-00-00_stage3_ediqrog9inhPCfU9GZDsgk.eval"
+  },
+  "live_gate": "luna",
+  "jobs": "pilot-jobs/delete.json,pilot-jobs/send.json,pilot-jobs/pay.json,pilot-jobs/publish.json",
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "epochs": 1,
+  "stage2_skipped": true,
+  "stage3_skipped": false,
+  "stage1_reused": true
+}

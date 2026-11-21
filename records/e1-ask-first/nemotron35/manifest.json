@@ -1,0 +1,26 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "nemotron35": "records/e1-ask-first/nemotron35/nemotron35/2026-11-20T10-09-54-00-00_stage2_NdujHJHjehxcoF4cxg8eK4.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "nemotron35-smoke": "records/e1-ask-first/nemotron35/nemotron35-smoke/2026-11-20T10-09-33-00-00_stage2_d8u6tBMrpaEaDYwq9FVriv.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_e1.py",
+    "paid"
+  ],
+  "code": {
+    "git_sha": "9ae0a436e2747aa6b2ca5980b0cc834343e7b12a",
+    "dirty": true
+  },
+  "stop_at": 0.3,
+  "spend": 0.1333287,
+  "conditions": "E1: vague name, own request + replay.ASK_FIRST, gate with labels, label none/false, warning off, plain"
+}

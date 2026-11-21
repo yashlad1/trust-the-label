@@ -1,0 +1,16 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "maverick": "records/fp4/fp4-maverick-2/stage2-maverick/2026-11-15T22-03-18-00-00_stage2_JHd6kchctXTeeyE3a9RR9Q.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "jobs": "src/trustlabel/scenarios/delete.json,src/trustlabel/scenarios/send.json,src/trustlabel/scenarios/pay.json,src/trustlabel/scenarios/publish.json",
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "epochs": 2,
+  "stage2_skipped": false,
+  "stage3_skipped": true,
+  "stage1_reused": true
+}

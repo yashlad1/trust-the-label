@@ -1,0 +1,37 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "haiku": "records/r2-haiku/haiku/2026-11-20T03-07-27-00-00_stage2_hG3ouFkMkFnG4BFBXBUG2W.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "haiku-smoke": "records/r2-haiku/haiku-smoke/2026-11-20T03-07-10-00-00_stage2_3SYH7mz8VwQiiS9ngMgPqL.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_r2.py",
+    "paid",
+    "all"
+  ],
+  "code": {
+    "git_sha": "0b4fd4eb108877345ddb4c43e74e80e63cda0e67",
+    "dirty": true
+  },
+  "model": "openrouter/anthropic/claude-haiku-5.5",
+  "pin": {
+    "provider": {
+      "order": [
+        "anthropic"
+      ],
+      "allow_fallbacks": false
+    }
+  },
+  "effort": "medium",
+  "stop_at": 0.8,
+  "spend": 0.3451148,
+  "conditions": "headline: vague, own, gate with labels, label none/false, warning off/on, plain"
+}

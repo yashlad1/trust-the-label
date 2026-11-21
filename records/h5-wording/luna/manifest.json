@@ -1,0 +1,28 @@
+{
+  "stage1": [
+    "records/fp4/fp4-stage1/stage1-gptoss/2026-11-15T21-26-53-00-00_stage1_EDkgrVn33CdaPyJVje6iJW.eval",
+    "records/fp4/fp4-stage1/stage1-glm/2026-11-15T21-52-03-00-00_stage1_VrKayjq25WFTKf8fmTLe6H.eval"
+  ],
+  "stage2": {
+    "luna": "records/h5-wording/luna/luna/2026-11-20T19-38-02-00-00_stage2_jpYL488M6gTKdCQspHFhdv.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "luna-smoke": "records/h5-wording/luna/luna-smoke/2026-11-20T19-37-47-00-00_stage2_jJLzrJua7gxu9ByRWAX6cr.eval"
+  },
+  "mode": "paid",
+  "command": [
+    "dev/launch_h5.py",
+    "paid",
+    "records/fp4/fp4-stage1/manifest.json"
+  ],
+  "code": {
+    "git_sha": "89c4089a4b16b0a236bd7db4ded080e34cbbf2bc",
+    "dirty": false
+  },
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "cap": 1.5,
+  "spend": 0.38697445,
+  "conditions": "H5: wording rows only, vague name, gate with labels, label none/false, warning off, plain"
+}
