@@ -18,11 +18,13 @@ in stage 1 (one version, one repeat), one gate decision on one saved first call 
 live episode with the gate deciding the agent's calls in stage 3. In stage 2 the agent's calls come from both stage-1
 agents. The AlignmentCheck seat runs only the AlignmentCheck rows (8 per saved call; the other gates run 56).
 
-### Time and cost
+### Time and tokens
 
 The whole run took about 4 hours 5 minutes, from 4:26 PM to 8:31 PM EST on Nov 15 (the stages overlapped). A stage-2
 decision took about 4 seconds of work from GPT-6 Luna, 7 from Llama 4 Maverick and 14 from Nemotron 3.5 Super VL; a
 live stage-3 episode took about 26 seconds of work (77 with waiting) and about 9,900 tokens.
+
+**Table 8.** Time and tokens per sample in the full run, by stage and model (11 logs, 28,880 samples).
 
 | Stage | Model | Samples | Time per sample (s) | Tokens per sample |
 |---|---|--:|--:|--:|
