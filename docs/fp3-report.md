@@ -47,7 +47,6 @@ Table style for every table:
 - **Final report and talk date, Plan for FP4, Order:** "The final report and talk follow in the first week of December." The date comes from TASKS.md's assumption, not from Canvas; confirm it against Canvas.
 - **Table number, Pilot Study, the stage-3 table:** "Table 6b. Harm, task success and extra changes in the pilot's live runs..." Renumber once all tables are in.
 - **Caption style, every table:** the newer tables (5, 6b, 7, 8) have a bold title above; the older ones (1 to 4, 6) have an italic caption below. Pick one style.
-- **Transcript check (#8), Evaluation checks:** "The check of live-loop transcripts against the scorer (#8) is still open."
 - **AlignmentCheck code:** the AlignmentCheck gate's code is not on main (records/README.md), so the README and Table A1 can't give its command and "the repository's README gives the command for every condition" isn't true for those rows. Yash decides.
 - **Plan for FP4, "Full experiment.":** the paragraph says the stages "run", while Table 7 says the run happened on Nov 15. Pick the tense.
 - **Run counts in titles:** Table 5 says "9 runs" and Tables 7 and 8 say "11 logs" for the same kind of unit. Pick one word.

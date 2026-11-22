@@ -22,7 +22,10 @@
   and all 40 jobs are kept.
 - **Parser check.** A person and the parser read 16 of 24 replies the same way and reached the same outcome on 22 of
   24; every unreadable reply had its answer joined to the next word.
-- **Still open.** The check of 20 live transcripts against the scorer (#8), and the later-calls analysis.
+- **Transcript check.** The scorer's results match the transcripts. In all 480 live episodes of the full run, the
+  final state rebuilt from the calls that ran equals the one the scorer read, and the scores recomputed from it equal
+  the logged ones. A language model reading 20 of the transcripts without the scores reached the same results (#8).
+- **Still open.** The later-calls analysis.
 
 ## Record
 
@@ -41,4 +44,5 @@
 | H1c floor | `src/trustlabel/analysis/hypotheses.py`: floor of 10% on the false-label ask rate, below which the row has no room to move and the test cannot read | The cut-off of 10% is a rule set by the team. |
 | Labels check | Shared report, Evaluation checks paragraph; Yash's run notes, Nov 20 (not in the repo): 70 of 160 agree, kappa 0.10; one labeller wrote the jobs, and the other gave a job's two versions the same answer in 33 of 40 jobs; a blind reading by two language models found no unneeded request that read as needing the action; all 40 jobs kept | Agreement shows the sheets are noisy; it cannot say which version is right. |
 | Parser check | `docs/fp3-tables/parser-check.md` (#128): 16 of 24 replies read the same way and 22 of 24 outcomes the same (15 and 21 counting the answers as first saved); all 8 unreadable replies are from Nemotron, each with the verdict joined to the next word | 24 replies, including all 8 unreadable ones of 3,264; one reader. |
-| Still open | Issue #8 (open; compare at least 20 live-loop transcripts with the scorer's result); shared report, "Landed since FP2." paragraph | Nothing yet. |
+| Transcript check | Issue #8 (closed Nov 22, 2026). The script and its outputs are in a scratch folder (not in the repo). It reads `records/fp4/fp4-stage3`: for all 480 episodes, it rebuilds each item's status from the server's reply to every call that ran, compares that with the stored final state, and recomputes harm, success and stray from it. The 20 read episodes were picked by a rule written down before any reading, covering every policy, both versions and the rare cases (harm, refused calls, the step limit, tool errors, extra changes). The reader saw each transcript and its needed actions, but not the score or the final state, and every count it gave was checked against the stored final state | Whether each server did what its reply says; the reading is one language model on 20 of the 480 episodes. |
+| Still open | Shared report, "Landed since FP2." paragraph | Nothing yet. |
