@@ -12,9 +12,6 @@ from trustlabel.analysis.rates import compare, paired, stage2_rows
 FIXED = {"name": "vague", "request": "own", "prompt": "plain", "policy": "gate_with_labels", "warning": False,
          "stored_version": "unneeded"}
 GATES = [("luna", "GPT-6 Luna"), ("nemotron35", "Nemotron 3.5 Super VL")]
-CAPTION = ("Figure 2. Unneeded actions each gate let through in the pilot, with no label and with the false read-only "
-           "label (vague tool name, no warning; 12 actions per gate). The effect is the difference in percentage points, "
-           "with a 90% interval from resampling jobs.")
 
 manifests = [json.load(open(f)) for f in sorted(glob.glob("records/fp3-pilot-final/final-*/manifest.json"))]
 results = []
@@ -25,11 +22,23 @@ for gate, shown in GATES:
     results.append((shown, x["n"] - x["ka"], x["n"] - x["kb"], x["n"], x["d"], x["lo"], x["hi"]))
     print(f"{shown}: let through {x['n'] - x['ka']}/{x['n']} no label, {x['n'] - x['kb']}/{x['n']} false label, "
           f"d {x['d']:+.1f} [{x['lo']:+.1f}, {x['hi']:+.1f}]")
-print(CAPTION)
+ns = {r[3] for r in results}
+assert len(ns) == 1, ns
+n_all = ns.pop()
+(_, a, b, _, *_), (_, c, d, _, _, lo, _) = results
+caption = (f"**Figure 2.** How often each gate let an unneeded action through in the pilot, with no label (blue) and with a "
+           f"false read-only label (orange). Each row is the same {n_all} saved actions, shown to the gate under the tool's vague "
+           f"name, with the user's own request and no warning. The longer the line, the more the false label changed the gate's "
+           f"decisions: GPT-6 Luna let {a} of {n_all} through with no label and {b} of {n_all} with the false label, and Nemotron 3.5 "
+           f"Super VL let {c} and {d} through. The numbers on the right are the difference in percentage points, with a 90% "
+           f"interval from resampling jobs" + ("; Nemotron's interval reaches 0" if lo <= 0 else "") +
+           f". With {n_all} actions per gate, this is a pilot check, not a test of the hypotheses.")
+print(caption)
+open("docs/figures/fp3-pilot-headline.md", "w").write("![Figure 2](fp3-pilot-headline.png)\n\n" + caption + "\n")
 
 BLUE, ORANGE = "#2a78d6", "#eb6834"
 INK, INK2, MUTED, GRID, SURF = "#0b0b0b", "#52514e", "#8a8984", "#e6e5e1", "#fcfcfb"
-fig, ax = plt.subplots(figsize=(8.6, 2.9), dpi=200)
+fig, ax = plt.subplots(figsize=(8.6, 2.6), dpi=200)
 fig.patch.set_facecolor(SURF)
 ax.set_facecolor(SURF)
 n = len(results)
@@ -58,11 +67,9 @@ ax.set_axisbelow(True)
 for s in ax.spines.values():
     s.set_visible(False)
 ax.tick_params(length=0)
-ax.set_xlabel("Share of the 12 unneeded actions the gate let through", fontsize=9, color=INK2, labelpad=6)
+ax.set_xlabel(f"Share of the {n_all} unneeded actions the gate let through", fontsize=9, color=INK2, labelpad=6)
 fig.suptitle("Both gates let more unneeded actions through with a false read-only label", x=0.012, ha="left",
              fontsize=11.5, color=INK, weight="bold")
-fig.text(0.012, 0.86, "Same 12 saved actions per gate, judged once with no label and once with the false label\n"
-         "(vague tool name, own request, no warning, plain prompt).", fontsize=8.8, color=INK2, ha="left", va="top")
-fig.subplots_adjust(left=0.27, right=0.70, top=0.60, bottom=0.20)
+fig.subplots_adjust(left=0.27, right=0.70, top=0.84, bottom=0.20)
 fig.savefig("docs/figures/fp3-pilot-headline.png", facecolor=SURF)
 fig.savefig("docs/figures/fp3-pilot-headline.svg", facecolor=SURF)
