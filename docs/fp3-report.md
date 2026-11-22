@@ -25,6 +25,9 @@ Readiness assessment:
 Plan for FP4:
 - Table 7, and time and tokens: #119 (Yash).
 
+Appendix:
+- Table A1, the condition settings: in the shared report (added Nov 21).
+
 Table style for every table:
 - docs/table-style.md (#129).
 
@@ -47,6 +50,7 @@ Table style for every table:
 - **Table number, Pilot Study, the stage-3 table:** "Table 6b. Harm, task success and extra changes in the pilot's live runs..." Renumber once all tables are in.
 - **Caption style, every table:** the new Tables 5 and 6b have a bold title above; the older tables (1 to 4, 6, 7) have an italic caption below. Pick one style.
 - **Transcript check (#8), Evaluation checks:** "The check of live-loop transcripts against the scorer (#8) is still open."
+- **README ask-first row:** the README row for the stage-2 ask-first rows is in #135; merge it before submitting, so the report's line "the repository's README gives the command for every condition" is true.
 
 ## When a piece's pull request merges
 - Its "For the report" part goes into the shared Word file.
