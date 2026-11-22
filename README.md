@@ -126,6 +126,9 @@ gate, the stage-2 table and the reference lines; and the stage-3 table.
 A sample: `unzip sample_records/dry_run_fake_model.zip -d sample_records/` then
 `uv run python dev/report.py sample_records/dry_run/manifest.json`.
 
+`uv run --with matplotlib python dev/fp3_chart.py` draws the pilot's headline chart (Figure 2) into
+`docs/figures/fp3-pilot-headline.png` and `.svg`, and writes its caption page, `docs/figures/fp3-pilot-headline.md`.
+
 ## Tests
 
 Plain Python scripts with `assert`. Run one with `uv run python tests/<folder>/<file>.py`, for example
@@ -144,5 +147,6 @@ All models run through OpenRouter, with the provider pinned and no fallbacks (co
 
 ## Records
 
-Runs write Inspect `.eval` logs under the output folder you give. Raw logs are not committed. `sample_records/` holds
-a small zipped sample of a dry run on the fake model.
+The logs of the real-model runs are in `records/`, stored with Git LFS: run `git lfs install` once, then `git lfs pull`
+after cloning. `records/README.md` lists each run. `sample_records/` holds a small zipped sample of a dry run on the
+fake model.
