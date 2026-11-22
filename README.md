@@ -127,7 +127,7 @@ gate, the stage-2 table and the reference lines; and the stage-3 table.
 A sample: `unzip sample_records/dry_run_fake_model.zip -d sample_records/` then
 `uv run python dev/report.py sample_records/dry_run/manifest.json`.
 
-`uv run --with matplotlib python dev/fp3_chart.py` draws the pilot's headline chart (Figure 2) into
+`uv run --with matplotlib python dev/fp3_chart.py` draws the pilot's headline chart (Figure 3) into
 `docs/figures/fp3-pilot-headline.png` and `.svg`, and writes its caption page, `docs/figures/fp3-pilot-headline.md`.
 
 ## Tests

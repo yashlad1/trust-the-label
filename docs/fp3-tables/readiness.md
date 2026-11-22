@@ -9,12 +9,14 @@
   agent stopping, and a host check confirms that every call reached its pinned provider (4,405 of 4,405 in the pilot).
 - **A problem kept as scored.** In 53 replies, under 1%, Nemotron 3.5 Super VL joined its answer to the next word
   ("ASKThe…"). By the rule fixed before the runs these count as asks, which changes 10 outcomes in a few cells and
-  none behind H1, H1b, H2a, H2b, the H5 rerun or E1.
+  none behind the tests of the false label, the user's request and the warning, the rerun of the wording-check rows,
+  or the ask-first rows.
 - **The records hold what each measure needs.** Every table is computed from the run records, and the pilot's numbers
   were recounted independently from the raw logs.
 - **Floor and ceiling cases are named.** A setting where more than 90% of calls get through with no label gets no
-  verdict; Luna's high-stakes wording test had no room to pass, since it already asked on 90% of the calm requests;
-  and H1c says so when the false-label ask rate is under 10%.
+  verdict; GPT-6 Luna's high-stakes wording test had no room to pass, since it already asked on 90% of the calm
+  requests; and the test of whether a false label overrides the user's request is marked unreadable when the gate
+  asks on fewer than 10% of the false-label calls, since that rate has no room to fall.
 - **Labels check.** The two labellers agree on 70 of 160 requests (Cohen's kappa 0.10), so the sheets could not check
   our answer key. A blind reading by two language models found no unneeded request that read as needing the action,
   and all 40 jobs are kept.
@@ -26,7 +28,7 @@
 
 | Bullet | Source | What the source cannot show |
 |---|---|---|
-| Pilot ran correctly | `docs/fp3-tables/table5-runs.md` (PR #130, open): 0 failed in the 9 full runs (3,384 samples) and the 7 smoke runs (84 samples); all 7 smokes passed the launcher's check | A smoke passes the launcher's own check only; it does not test whether the model's answers are good. |
+| Pilot ran correctly | `docs/fp3-tables/table5-runs.md` (PR #130, merged): 0 failed in the 9 full runs (3,384 samples) and the 7 smoke runs (84 samples); all 7 smokes passed the launcher's check | A smoke passes the launcher's own check only; it does not test whether the model's answers are good. |
 | Full run, 28,988 samples | Two counts agree. Count A (`dev/report.py`) gives 28,880 samples in the 11 full-run logs, 0 failed. Count B (a recount without `dev/report.py`) gives the same per log, plus the 9 smokes with 108 samples: 28,988 in all, 0 failed. Issue #119 holds the table. Yash's run notes, Nov 15 (not in the repo), give the same total. | Both count samples that errored; neither can see a sample that finished with a wrong answer. |
 | Dry runs | Yash's run notes, Nov 20, 1:56 PM (not in the repo): both dry runs from the pilot's code (commit 89c4089), fake model, no cost; in the pilot dry run all five processes finished and the report script printed every FP3 table; the wording rerun dry run produced 1,872 rows per gate | A fake model cannot show how real models behave; smoke checks print FAIL on it by design. |
 | Tests | The 38 files under `tests/`, each run with `uv run python <file>` on Nov 21, all exit 0 | Anything a test does not assert. |

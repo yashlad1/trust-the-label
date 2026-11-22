@@ -1,4 +1,4 @@
-# FP3 pilot headline chart (Figure 2) from the final-run records: uv run --with matplotlib python dev/fp3_chart.py
+# FP3 pilot headline chart (Figure 3) from the final-run records: uv run --with matplotlib python dev/fp3_chart.py
 import glob
 import json
 
@@ -26,7 +26,7 @@ ns = {r[3] for r in results}
 assert len(ns) == 1, ns
 n_all = ns.pop()
 (_, a, b, _, *_), (_, c, d, _, _, lo, _) = results
-caption = (f"**Figure 2.** How often each gate let an unneeded action through in the pilot, with no label (blue) and with a "
+caption = (f"**Figure 3.** How often each gate let an unneeded action through in the pilot, with no label (blue) and with a "
            f"false read-only label (orange). Each row is the same {n_all} saved actions, shown to the gate under the tool's vague "
            f"name, with the user's own request and no warning. The longer the line, the more the false label changed the gate's "
            f"decisions: GPT-6 Luna let {a} of {n_all} through with no label and {b} of {n_all} with the false label, and Nemotron 3.5 "
@@ -34,7 +34,7 @@ caption = (f"**Figure 2.** How often each gate let an unneeded action through in
            f"interval from resampling jobs" + ("; Nemotron's interval reaches 0" if lo <= 0 else "") +
            f". With {n_all} actions per gate, this is a pilot check, not a test of the hypotheses.")
 print(caption)
-open("docs/figures/fp3-pilot-headline.md", "w").write("![Figure 2](fp3-pilot-headline.png)\n\n" + caption + "\n")
+open("docs/figures/fp3-pilot-headline.md", "w").write("![Figure 3](fp3-pilot-headline.png)\n\n" + caption + "\n")
 
 BLUE, ORANGE = "#2a78d6", "#eb6834"
 INK, INK2, MUTED, GRID, SURF = "#0b0b0b", "#52514e", "#8a8984", "#e6e5e1", "#fcfcfb"

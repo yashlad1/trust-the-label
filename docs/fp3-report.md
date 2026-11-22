@@ -10,26 +10,29 @@
 - Yash merges their changes in with Word's Review > Compare > Combine.
 
 ## What fills each section
+- Figure 1: in the shared report (redrawn Nov 22); source docs/figures/fp3-figure1.tex, built with pdflatex.
+- Figure 2, the example call: in the shared report (added Nov 22); source docs/figures/fp3-figure2-example.tex, built with pdflatex.
+
 Pilot Study:
 - Setup paragraph: #127 (Isha).
-- Table 5: #130 (Yash).
+- Table 5: merged, #130 (Yash).
 - Table 6 and the stage-1 rates: #113 and #114 (Vignesh).
-- Figure 2: #131 (Yash).
+- Figure 3: merged, #131 (Yash).
 - Stage-3 table: merged, #123 (Will).
 - Swap paragraph: merged, #126 (Will).
 
 Readiness assessment:
 - Parser check: merged, #128 (Isha).
-- The rest: #120 (Yash).
+- The rest: merged, #134 (Yash).
 
 Plan for FP4:
-- Table 7, and time and tokens: #119 (Yash).
+- Table 7, and time and tokens: merged, #133 (Yash).
 
 Appendix:
 - Table A1, the condition settings: in the shared report (added Nov 21).
 
 Table style for every table:
-- docs/table-style.md (#129).
+- docs/table-style.md (merged, #129).
 
 ## What still needs doing
 
@@ -40,17 +43,15 @@ Table style for every table:
 - **Pilot Study, the paragraph on Table 6's first two rows (#113, Vignesh):** "The first two rows of Table 6 use exactly the same prompt text..."
 - **Pilot Study, the sentence after the stage-3 table (#113, Vignesh):** "These are pilot rates on 15 to 20 calls per stage-2 cell and 12 episodes per stage-3 cell."
 
-### Still to write
-- **Readiness assessment, beyond the parser bullet (#120):** the section now holds only "A person read 24 of the gate's replies blind: the reader and the parser agree on 16 of 24..."; the rest (every condition ran correctly, unreliable jobs, floor and ceiling effects, fixes before the full run) is not written.
-- **Plan for FP4, Table 7 as the full run ran it (#119):** "Table 7. The full experiment."
-- **Plan for FP4, the Time and cost paragraph (#119):** the paragraph "Time and cost." is empty; it needs time and tokens per sample from the full run.
-
 ### To confirm
 - **Final report and talk date, Plan for FP4, Order:** "The final report and talk follow in the first week of December." The date comes from TASKS.md's assumption, not from Canvas; confirm it against Canvas.
 - **Table number, Pilot Study, the stage-3 table:** "Table 6b. Harm, task success and extra changes in the pilot's live runs..." Renumber once all tables are in.
-- **Caption style, every table:** the new Tables 5 and 6b have a bold title above; the older tables (1 to 4, 6, 7) have an italic caption below. Pick one style.
+- **Caption style, every table:** the newer tables (5, 6b, 7, 8) have a bold title above; the older ones (1 to 4, 6) have an italic caption below. Pick one style.
 - **Transcript check (#8), Evaluation checks:** "The check of live-loop transcripts against the scorer (#8) is still open."
-- **README ask-first row:** the README row for the stage-2 ask-first rows is in #135; merge it before submitting, so the report's line "the repository's README gives the command for every condition" is true.
+- **AlignmentCheck code:** the AlignmentCheck gate's code is not on main (records/README.md), so the README and Table A1 can't give its command and "the repository's README gives the command for every condition" isn't true for those rows. Yash decides.
+- **Plan for FP4, "Full experiment.":** the paragraph says the stages "run", while Table 7 says the run happened on Nov 15. Pick the tense.
+- **Run counts in titles:** Table 5 says "9 runs" and Tables 7 and 8 say "11 logs" for the same kind of unit. Pick one word.
+- **Table 2 note, Llama 4 Maverick:** the note says the provider pin is the host in the model's file under dev/models/, but main has no dev/models/ file for Llama 4 Maverick; its pin (Parasail, fp8, fallbacks off) is in the full run's log headers. Reword the note or add the file.
 
 ## When a piece's pull request merges
 - Its "For the report" part goes into the shared Word file.
