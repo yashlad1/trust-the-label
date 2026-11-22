@@ -35,7 +35,7 @@ reports, and says how a `docs/fp3-tables/` page is laid out from now on.
    only in the header. Use one decimal at most.
 4. **Note under the table:** definitions only, in one or two short lines: what each term means, what bold means, how
    the interval was computed. There is no "how to read" line, no takeaway and no command.
-5. **Meaning:** one or two sentences in the paragraph that cites the table.
+5. **Meaning:** one to three short sentences in the paragraph that cites the table.
 6. **Source:** the records folder and the command go in the matching `docs/fp3-tables/` page and in the appendix, not
    in the table.
 7. **Layout:** three horizontal lines, no vertical lines, and right-aligned numbers. In a markdown page, right-align a
@@ -45,7 +45,7 @@ reports, and says how a `docs/fp3-tables/` page is laid out from now on.
 
 From now on, every page in `docs/fp3-tables/` has two parts.
 
-- **For the report.** The table in the style above, its note, and the one or two sentences for the text that cites it.
+- **For the report.** The table in the style above, its note, and the one to three short sentences for the text that cites it.
   This is the only part that goes into the Word report.
 - **Record.** Everything someone needs to check or repeat the numbers: the source folder under `records/`, the
   command, n, and the checks behind the numbers (for example, a second count that agrees). Supporting tables, such as
@@ -61,7 +61,7 @@ takeaway, a source line, and a long paragraph under it.
 
 After, in the report:
 
-**Table 5.** The pilot's full runs at the final code (Nov 20, 2026). Smoke runs are not shown. No sample failed.
+**Table 5.** The pilot's full runs at the final code (Nov 20, 2026; 9 runs, 3,384 samples).
 
 | Stage | Model | Samples | Wall time (min) | Tokens per sample |
 |---|---|--:|--:|--:|
@@ -75,7 +75,8 @@ After, in the report:
 | 3 | gpt-oss-120b with GPT-6 Luna, labels, no warning | 24 | 7.8 | 10,405 |
 | 3 | gpt-oss-120b with GPT-6 Luna, labels, warning | 24 | 5.0 | 9,974 |
 
-*Note.* Wall time runs from a run's start to its end. Tokens per sample counts every model in the run.
+*Note.* Smoke runs are not shown. No sample failed. Wall time runs from a run's start to its end. Tokens per sample
+counts every model in the run.
 
 And in the text that cites it:
 
