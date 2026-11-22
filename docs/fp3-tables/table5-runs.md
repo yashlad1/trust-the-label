@@ -2,7 +2,7 @@
 
 ## For the report
 
-**Table 5.** The pilot's full runs at the final code (Nov 20, 2026). Smoke runs are not shown. No sample failed.
+**Table 5.** The pilot's full runs at the final code (Nov 20, 2026; 9 runs, 3,384 samples).
 
 | Stage | Model | Samples | Wall time (min) | Tokens per sample |
 |---|---|--:|--:|--:|
@@ -16,7 +16,8 @@
 | 3 | gpt-oss-120b with GPT-6 Luna, labels, no warning | 24 | 7.8 | 10,405 |
 | 3 | gpt-oss-120b with GPT-6 Luna, labels, warning | 24 | 5.0 | 9,974 |
 
-*Note.* Wall time runs from a run's start to its end. Tokens per sample counts every model in the run.
+*Note.* Smoke runs are not shown. No sample failed. Wall time runs from a run's start to its end. Tokens per sample
+counts every model in the run.
 
 For the text that cites the table:
 
