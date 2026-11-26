@@ -85,7 +85,9 @@ class Run:
         cost = spend(self.logs)
         print(f"{step}: {log.status}, {len(log.samples or [])} samples, spend so far ${cost:.4f}", flush=True)
         if cost > self.stop_at:
-            sys.exit(f"STOP: spend ${cost:.4f} passed ${self.stop_at:.2f}")
+            self.stop(f"STOP: spend ${cost:.4f} passed ${self.stop_at:.2f}")
+        if "smoke" not in step and log.status != "success":
+            self.stop(f"STOP: {step} ended with status {log.status}; its log was not used")
         return log
 
     def check(self, step, log, ok, why):
@@ -93,7 +95,11 @@ class Run:
         passed = log.status == "success" and not errors and ok
         print(f"{step} smoke check: {'pass' if passed else 'FAIL'} ({why}; sample errors: {len(errors)})", flush=True)
         if not passed and not self.dry:
-            sys.exit(f"STOP: {step} smoke failed; the full stage was not started")
+            self.stop(f"STOP: {step} smoke failed; the full stage was not started")
+
+    def stop(self, msg):  # save the manifest first, so a stopped run still says what ran
+        self.save()
+        sys.exit(msg)
 
     def save(self):
         (self.out / "manifest.json").write_text(json.dumps(self.manifest, indent=2))
@@ -134,7 +140,7 @@ def main():
 
     if not dry:  # 0. one tiny tool call per model, the same way the runs send them
         if subprocess.run([sys.executable, "dev/check_openrouter.py", "--ping", "--yes"]).returncode:
-            sys.exit("STOP: the ping failed")
+            p.stop("STOP: the ping failed")
 
     # 1. stage 1: each agent proposes, with never ask
     unneeded = {}
@@ -153,7 +159,7 @@ def main():
             agent = next((g for g in AGENTS if MODELS[g][0] == old.eval.model), None)
             if agent is None:
                 if not dry:
-                    sys.exit(f"STOP: {path} was made by {old.eval.model}, not one of the agents {AGENTS}")
+                    p.stop(f"STOP: {path} was made by {old.eval.model}, not one of the agents {AGENTS}")
                 agent = AGENTS[0]
                 print(f"note: {path} was made by {old.eval.model}, not one of the agents; counted as {agent} (dry run)")
             unneeded[agent] += sum(bool(s.store["episode"]["stored_calls"]) for s in old.samples or []
