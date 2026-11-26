@@ -77,6 +77,8 @@ def episode(stage: int, policy: str, label: str, warning: bool = False, gate_mod
                 output = await model.generate(state.messages, tools=tools, config=config)
                 if output.usage is None and not output.message.text.strip() and not output.message.tool_calls:
                     raise RuntimeError("blank reply from the agent's provider (no text, no tool calls, no usage)")
+                if output.stop_reason in ("max_tokens", "model_length", "content_filter"):
+                    raise RuntimeError(f"agent reply cut off (stop_reason {output.stop_reason})")
                 state.messages.append(output.message)
                 if not output.message.tool_calls:
                     if acted:
