@@ -18,13 +18,11 @@ from inspect_ai import eval as run_eval
 from inspect_ai.model import get_model
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tests" / "harness"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # the repo root, for dev.pipeline
 from mock_agents import list_then_act_first  # noqa: E402
 
+from dev.pipeline import ALL_JOBS, STAGE1_NAMES  # noqa: E402
 from trustlabel.harness.tasks import stage1  # noqa: E402
-from trustlabel.scenarios.load import DELETE_JOBS, PAY_JOBS, PUBLISH_JOBS, SEND_JOBS  # noqa: E402
-
-ALL_JOBS = ",".join([DELETE_JOBS, SEND_JOBS, PAY_JOBS, PUBLISH_JOBS])
-STAGE1_NAMES = "honest"
 
 
 def main():
