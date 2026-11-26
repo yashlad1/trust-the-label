@@ -53,14 +53,12 @@ asks the scripted user, then approves or rejects. Y3 confirms with a mockllm run
 - Tests: paired over the same stored calls, accounting for calls from the same job, with Holm correction. A change
   counts at 20+ points with Holm p < 0.05; two rates count as the same when the 90% confidence interval of their
   difference lies inside ±10 points.
-- Plain-language version: `docs/explained/`.
 
 ## How to work on a piece
 
 1. `git fetch origin && git switch main && git pull`.
 2. `git switch -c <name>/<piece>`, for example `will/w1-items-server`.
-3. Build the piece and its check in `tests/`. Until we agree on pytest (D2), a check is a plain script with
-   `assert`s, run with `uv run python tests/<file>.py`.
+3. Build the piece and its check in `tests/<folder>/`: a plain script with `assert`s (README, "Tests").
 4. Push, open a pull request, get one teammate's review, merge when the check passes.
 5. Tick the piece's box in this file in the same pull request.
 
@@ -142,9 +140,9 @@ Folders: `src/trustlabel/harness/`, `dev/`.
 | [x] Y4 | Approval wiring: one approver on Will's state-changing list (W4); allow means approve; ask goes to the scripted user, then approve or reject; every decision is recorded in the sample; every proposed irreversible call is stored with its context for stage 2 | 2 | — | On mockllm, allow, ask-then-yes and ask-then-no each end in the right state, and stored calls replay |
 | [x] Y5 | Scripted user from Isha's answer rules (I4) | 2 | — | Each version gets its one answer |
 | [x] Y6 | Stage switches as task parameters: stage 1 (agent, name), stage 2 (gate model, gate on call or gate with labels, label, warning, name), stage 3 (the live cells) | 3 | — | Every stage dry-runs on mockllm |
-| [x] Y7 | Run scripts in `dev/`: smoke (12 samples), one full condition, progress | 3-4 | `yash/commands/` | Each runs on mockllm |
+| [x] Y7 | Run scripts in `dev/`: smoke (12 samples), one full condition, progress | 3-4 | — | Each runs on mockllm |
 | [x] Y8 | Lock and smoke: freeze scenarios, prompts and the gate-model rule, then smoke with real models | 4 | — | The smoke passes the checks named before it starts |
-| [ ] Y9 | Runs: stage 1 (2 agents, 2 names, 2 repeats), stage 2 (every stored call under 14 gate conditions, per gate model), stage 3 (the live cells); more models if the budget allows | 5 | — | Logs complete, each failed sample marked |
+| [ ] Y9 | Runs: stage 1 (2 agents, 2 names, 2 repeats), stage 2 (every stored call judged 28 ways in the standard rows: 7 gate conditions × 2 names × 2 requests; per gate model), stage 3 (the live cells); more models if the budget allows | 5 | — | Logs complete, each failed sample marked |
 | [ ] Y10 | Rerun failed samples; recheck every reported number against the raw logs | 6 | — | — |
 
 ## Week by week
