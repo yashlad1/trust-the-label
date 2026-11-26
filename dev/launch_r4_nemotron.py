@@ -7,5 +7,4 @@ sys.path.insert(0, str(ROOT))
 import dev.pipeline as p
 
 p.LIVE_GATE = "nemotron35"
-sys.argv = [sys.argv[0], *sys.argv[1:]]
 p.main()
