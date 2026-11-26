@@ -19,7 +19,7 @@ from inspect_ai.tool import mcp_connection
 
 from trustlabel.contracts import Policy, Scenario
 from trustlabel.harness.approval import EpisodeContext, gatekeeper
-from trustlabel.harness.connection import final_state, labels_for, start_server, tool_entries
+from trustlabel.harness.connection import labels_for, start_server, tool_entries
 from trustlabel.policies.gate import Gate
 from trustlabel.policies.rules import label_rule, never_ask
 from trustlabel.servers.registry import SERVERS
@@ -100,7 +100,7 @@ def episode(stage: int, policy: str, label: str, warning: bool = False, gate_mod
             "stage": stage, "policy": policy, "label": None if stage == 1 else label, "warning": warning, "name": name_setting,
             "end_reason": end_reason, "steps": step, "clarified": clarified,
             "decisions": ctx.decisions, "stored_calls": ctx.stored,
-            "final_state": final_state(scenario.kind, state_file),
+            "final_state": {i["id"]: i["status"] for i in server.module.read_items(state_file)},  # the scorer reads only this
         })
         return state
 
