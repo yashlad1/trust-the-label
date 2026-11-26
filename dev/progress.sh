@@ -14,7 +14,7 @@ for d in sys.argv[1:]:
     for p in sorted(set(glob.glob(f"{d}/**/*.eval", recursive=True))):
         h = read_eval_log(p, header_only=True)
         s = read_eval_log_sample_summaries(p)
-        # OpenRouter's billed usage.cost per call (Inspect has no prices for our models; run.sh logs every response).
+        # OpenRouter's billed usage.cost per call (Inspect has no prices for our models; pipeline.py logs every response).
         # Only calls made after this log was created, so an eval-retry's copied samples aren't counted twice.
         created = dt.datetime.fromisoformat(h.eval.created)
         cost = sum(((e.call.response or {}).get("usage") or {}).get("cost") or 0
