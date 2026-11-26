@@ -98,6 +98,7 @@ class Run:
             self.stop(f"STOP: {step} smoke failed; the full stage was not started")
 
     def stop(self, msg):  # save the manifest first, so a stopped run still says what ran
+        self.manifest.update(stopped=msg, logs=list(dict.fromkeys(self.logs)))
         self.save()
         sys.exit(msg)
 
