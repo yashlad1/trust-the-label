@@ -115,6 +115,10 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     arg = sys.argv[1:]
+    if all(a.endswith(".json") for a in arg):
+        for a in arg:
+            if "stopped" in json.loads(Path(a).read_text()):
+                print(f"STOPPED: {a}: {json.loads(Path(a).read_text())['stopped']}")
     print(runs(entries(arg)))
     print("\nRead it as one row per log. A failed sample errored or has no score from its stage's scorer; it is counted "
           "here and never as a success. Wall time is the log's start to end; billed cost is what the provider reported, "
