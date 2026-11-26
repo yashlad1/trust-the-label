@@ -35,10 +35,9 @@ def cost(log):
     return sum(c) if c else None
 
 
-def entries(arg):
+def entries(arg, ms):
     """(stage, model or gate, log path) per log: from the manifest's keys, or from each log's own task and model."""
-    if all(a.endswith(".json") for a in arg):  # several manifests (a split run) read as one
-        ms = [json.loads(Path(a).read_text()) for a in arg]
+    if ms:  # several manifests (a split run) read as one
         out, seen, s3 = [], set(), {}
         for stage, g, p in ([("stage1", None, p) for m in ms for p in m.get("stage1") or []]
                             + [("stage2", g, p) for g, p in sorted((g, p) for m in ms for g, p in (m.get("stage2") or {}).items())]
@@ -115,16 +114,16 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     arg = sys.argv[1:]
-    if all(a.endswith(".json") for a in arg):
-        for a in arg:
-            if "stopped" in json.loads(Path(a).read_text()):
-                print(f"STOPPED: {a}: {json.loads(Path(a).read_text())['stopped']}")
-    print(runs(entries(arg)))
+    ms = [json.loads(Path(a).read_text()) for a in arg] if all(a.endswith(".json") for a in arg) else []
+    for a, m in zip(arg, ms):
+        if "stopped" in m:
+            print(f"STOPPED: {a}: {m['stopped']}")
+    rows = entries(arg, ms)
+    print(runs(rows))
     print("\nRead it as one row per log. A failed sample errored or has no score from its stage's scorer; it is counted "
           "here and never as a success. Wall time is the log's start to end; billed cost is what the provider reported, "
           f"'not recorded' if it reported none.\nSource: {', '.join(arg)}")
-    if all(a.endswith(".json") for a in arg):
-        rows = entries(arg)
+    if ms:
         s1 = [p for st, _, p in rows if st == "stage1"]
         if s1:
             print("\n## Stage 1\n")
@@ -132,7 +131,7 @@ def main():
         gates = {}
         for st, g, p in rows:
             if st == "stage2":
-                gates.setdefault(g, []).extend(p if isinstance(p, list) else [p])
+                gates.setdefault(g, []).append(p)
         if gates:
             print("\n## Stage 2")
         for g, paths in gates.items():
@@ -164,7 +163,7 @@ def main():
         if s3:
             print("\n## Stage 3\n")
             print(stage3_table(s3))
-        lives = {m["live_gate"] for m in (json.loads(Path(a).read_text()) for a in arg) if m.get("stage3") and m.get("live_gate")}
+        lives = {m["live_gate"] for m in ms if m.get("stage3") and m.get("live_gate")}
         if len(lives) > 1:
             sys.exit(f"report.py: manifests with stage-3 logs name different live gates: {' and '.join(sorted(lives))}")
         live = next(iter(lives), None)
