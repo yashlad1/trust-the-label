@@ -1,6 +1,6 @@
 # Black-box tester session: Yash's harness files (Nov 14)
 
-Board tasks covered: 16, 17, 19, 35 (rows in docs/fp3-tasks.html, the FP3 task board).
+Board tasks covered: 16, 17, 19, 35 (rows in fp3-tasks.html, the FP3 task board).
 
 Paste this as the first message of the new Claude Code session (trust-the-label open in VS Code):
 
