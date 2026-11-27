@@ -1,0 +1,94 @@
+{
+  "stage1": [
+    "records/fp3-repeat-2/final-stage1/stage1-gptoss/2026-11-27T01-58-03-00-00_stage1_jfv8qw3AUq3QAEt8aKVA9L.eval"
+  ],
+  "stage2": {
+    "luna": "records/fp3-repeat-2/final-luna-1/stage2-luna/2026-11-27T02-05-13-00-00_stage2_kqMx55jahTfBSsqsiMxHmt.eval"
+  },
+  "stage3": {},
+  "live_gate": "luna",
+  "smokes": {
+    "stage2-luna-smoke": "records/fp3-repeat-2/final-luna-1/stage2-luna-smoke/2026-11-27T02-05-00-00-00_stage2_JjUZNc48FWYQGTP8KF8mVk.eval"
+  },
+  "jobs": "dev/pilot-jobs/delete.json,dev/pilot-jobs/send.json,dev/pilot-jobs/pay.json,dev/pilot-jobs/publish.json",
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "epochs": 1,
+  "stage2_epochs": 1,
+  "mode": "paid",
+  "command": [
+    "dev/pipeline.py",
+    "paid",
+    "logs/fp3-repeat-2/final-luna-1",
+    "--wording",
+    "src/trustlabel/scenarios/wording.json",
+    "--epochs",
+    "1",
+    "--jobs",
+    "dev/pilot-jobs/delete.json,dev/pilot-jobs/send.json,dev/pilot-jobs/pay.json,dev/pilot-jobs/publish.json",
+    "--stage1-logs",
+    "records/fp3-repeat-2/final-stage1/stage1-gptoss/2026-11-27T01-58-03-00-00_stage1_jfv8qw3AUq3QAEt8aKVA9L.eval",
+    "--gates",
+    "luna",
+    "--no-stage3",
+    "--stop-at",
+    "0.50"
+  ],
+  "code": {
+    "git_sha": "5cfcb4b1c8a0af56b132042c1afa716c9e92998a",
+    "dirty": false
+  },
+  "models": {
+    "gptoss": {
+      "model": "openrouter/openai/gpt-oss-120b",
+      "config": "dev/models/gpt-oss-120b.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "deepinfra/bf16"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 2
+    },
+    "glm": {
+      "model": "openrouter/z-ai/glm-5.3-flash",
+      "config": "dev/models/glm-5.3-flash.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "z-ai"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 4
+    },
+    "luna": {
+      "model": "openrouter/openai/gpt-6-luna",
+      "config": "dev/models/gpt-6-luna.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "openai"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 4
+    }
+  },
+  "stage2_skipped": false,
+  "stage3_skipped": true,
+  "stage1_reused": true,
+  "stage3_agent": "gptoss",
+  "stage1_unneeded": {
+    "gptoss": 10,
+    "glm": 0
+  },
+  "spend": 0.1990129,
+  "stop_at": 0.5
+}
