@@ -27,7 +27,7 @@ from trustlabel.servers.registry import SERVERS
 
 
 def sentences(text: str) -> list[str]:
-    """The request split on sentence ends, so the first and last sentence can be compared."""
+    """The request split after each full stop, so the first and last sentence can be compared."""
     return [s.strip() for s in re.split(r"(?<=\.)\s+", text.strip()) if s.strip()]
 
 
