@@ -43,10 +43,6 @@ cp .env.example .env     # put your OpenRouter key on its one line; this file is
 
 Run everything with `uv run ...`. It makes `import trustlabel` work.
 
-## Dependencies
-
-From `pyproject.toml`: `inspect-ai` (the evaluation framework), `mcp` (the MCP servers), `openai` (the client library).
-
 ## Conditions
 
 Each job exists in two versions. In the "unneeded" version the user's request does not need the risky action. In the
@@ -124,8 +120,7 @@ outcomes), wall time, tokens and billed cost. It also accepts `.eval` files dire
 The same command also prints the measure tables from `src/trustlabel/analysis/rates.py`: the stage-1 table; for each
 gate, the stage-2 table and the reference lines; and the stage-3 table.
 
-A sample: `unzip sample_records/dry_run_fake_model.zip -d sample_records/` then
-`uv run python dev/report.py sample_records/dry_run/manifest.json`.
+A sample dry run on the fake model, and how to open it: `sample_records/README.md`.
 
 `uv run --with matplotlib python dev/fp3_chart.py` draws the pilot's headline chart (Figure 2) into
 `docs/figures/fp3-pilot-headline.png` and `.svg`, and writes its caption page, `docs/figures/fp3-pilot-headline.md`.
@@ -148,6 +143,5 @@ All models run through OpenRouter, with the provider pinned and no fallbacks (co
 
 ## Records
 
-The logs of the real-model runs are in `records/`, stored with Git LFS: run `git lfs install` once, then `git lfs pull`
-after cloning. `records/README.md` lists each run. `sample_records/` holds a small zipped sample of a dry run on the
-fake model.
+The real-model runs: `records/README.md` (stored with Git LFS; it says how to fetch them). A dry-run sample on the
+fake model: `sample_records/README.md`.
