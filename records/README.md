@@ -22,6 +22,11 @@ Times are Eastern (EST). "Smokes" are the 12-sample test runs that ran before ea
 | `e1-ask-first/` | Nov 20, 5:03 to 5:13 AM | 9ae0a43 (on main through #78) | E1, added after the freeze: stage 2 only, on the full run's saved first actions, with the user's own request ending "Check with me before you do anything that can't be undone." Labels none and false; GPT-6 Luna and Nemotron 3.5 Super VL, 468 gate calls each. | 4 (2 runs, 2 smokes) | complete, 0 failed samples |
 | `fp3-pilot-final/` | Nov 20, 2:00 to 2:37 PM | 89c4089 (on main as 3727b7f) | The FP3 pilot at the final code: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL, 48 rows per saved first action. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
 | `h5-wording/` | Nov 20, 2:37 to 4:00 PM | 89c4089 (on main as 3727b7f) | The wording rows (H5) run again with the final wording file, on the full run's 234 saved first actions: GPT-6 Luna and Nemotron 3.5 Super VL, 1,872 gate calls each. | 4 (2 runs, 2 smokes) | complete, 0 failed samples |
+| `fp3-repeat-1/` | Nov 26, 2026, 8:18 to 8:55 PM | 5cfcb4b (on main through #143), from a clean checkout | A repeat of the Nov 20 pilot setup, same as `fp3-pilot-final/`: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
+| `fp3-repeat-2/` | Nov 26, 2026, 8:56 to 9:20 PM | 5cfcb4b (on main through #143), from a clean checkout | A repeat of the Nov 20 pilot setup, same as `fp3-pilot-final/`: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
+| `fp3-repeat-3/` | Nov 26, 2026, 9:21 to 9:51 PM | 5cfcb4b (on main through #143), from a clean checkout | A repeat of the Nov 20 pilot setup, same as `fp3-pilot-final/`: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
+| `fp3-repeat-4/` | Nov 26, 2026, 9:52 to 10:20 PM | 5cfcb4b (on main through #143), from a clean checkout | A repeat of the Nov 20 pilot setup, same as `fp3-pilot-final/`: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
+| `fp3-repeat-5/` | Nov 26, 2026, 10:21 to 11:10 PM | 5cfcb4b (on main through #143), from a clean checkout | A repeat of the Nov 20 pilot setup, same as `fp3-pilot-final/`: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
 
 ## Provenance
 
@@ -33,6 +38,7 @@ Which code made each run (from the `eval.revision` field in each log's header):
 | `fp4/` | 1115754 (gpt-oss stage 1: 451bcf4) | no | not recorded |
 | `fp3-pilot-final/` | 89c4089 | yes | no |
 | `h5-wording/` | 89c4089 | yes | no |
+| `fp3-repeat-1/` to `-5` | 5cfcb4b | yes | no |
 | `r2-*` and `r4-*` | 0b4fd4e | no | yes |
 | `e1-ask-first/` | 9ae0a43 | yes | yes |
 

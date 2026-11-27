@@ -1,0 +1,109 @@
+{
+  "stage1": [
+    "records/fp3-repeat-3/final-stage1/stage1-gptoss/2026-11-27T02-25-27-00-00_stage1_JP3dBU8r4yKkx7T38MvwEi.eval",
+    "records/fp3-repeat-3/final-stage1/stage1-glm/2026-11-27T02-30-41-00-00_stage1_KgrSDgXUSAybgrLB2ajCZ8.eval"
+  ],
+  "stage2": {},
+  "stage3": {
+    "gate on call": "records/fp3-repeat-3/final-stage3/stage3-gate_on_call-plain/2026-11-27T02-35-41-00-00_stage3_bThCRjvQ8o2NrZDDyM43nh.eval",
+    "labels, warning off": "records/fp3-repeat-3/final-stage3/stage3-gate_with_labels-plain/2026-11-27T02-42-23-00-00_stage3_RgKPJYZGZXh3aNvwHAkQoR.eval",
+    "labels, warning on": "records/fp3-repeat-3/final-stage3/stage3-gate_with_labels-warn/2026-11-27T02-46-44-00-00_stage3_SH4qUFR3cNAosvnNQT5c2g.eval"
+  },
+  "live_gate": "luna",
+  "smokes": {
+    "stage3-smoke": "records/fp3-repeat-3/final-stage3/stage3-smoke/2026-11-27T02-33-15-00-00_stage3_MRESgBwbwXAWnMFvA5fCQw.eval"
+  },
+  "jobs": "dev/pilot-jobs/delete.json,dev/pilot-jobs/send.json,dev/pilot-jobs/pay.json,dev/pilot-jobs/publish.json",
+  "wording": "src/trustlabel/scenarios/wording.json",
+  "epochs": 1,
+  "stage2_epochs": 1,
+  "mode": "paid",
+  "command": [
+    "dev/pipeline.py",
+    "paid",
+    "logs/fp3-repeat-3/final-stage3",
+    "--wording",
+    "src/trustlabel/scenarios/wording.json",
+    "--epochs",
+    "1",
+    "--jobs",
+    "dev/pilot-jobs/delete.json,dev/pilot-jobs/send.json,dev/pilot-jobs/pay.json,dev/pilot-jobs/publish.json",
+    "--stage1-logs",
+    "records/fp3-repeat-3/final-stage1/stage1-gptoss/2026-11-27T02-25-27-00-00_stage1_JP3dBU8r4yKkx7T38MvwEi.eval,records/fp3-repeat-3/final-stage1/stage1-glm/2026-11-27T02-30-41-00-00_stage1_KgrSDgXUSAybgrLB2ajCZ8.eval",
+    "--no-stage2",
+    "--stop-at",
+    "0.20"
+  ],
+  "code": {
+    "git_sha": "5cfcb4b1c8a0af56b132042c1afa716c9e92998a",
+    "dirty": false
+  },
+  "models": {
+    "gptoss": {
+      "model": "openrouter/openai/gpt-oss-120b",
+      "config": "dev/models/gpt-oss-120b.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "deepinfra/bf16"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 2
+    },
+    "glm": {
+      "model": "openrouter/z-ai/glm-5.3-flash",
+      "config": "dev/models/glm-5.3-flash.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "z-ai"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 4
+    },
+    "luna": {
+      "model": "openrouter/openai/gpt-6-luna",
+      "config": "dev/models/gpt-6-luna.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "openai"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 4
+    },
+    "nemotron35": {
+      "model": "openrouter/nvidia/nemotron-3.5-super-vl",
+      "config": "dev/models/nemotron-3.5-super-vl.yaml",
+      "provider": {
+        "provider": {
+          "order": [
+            "crusoe/bf16"
+          ],
+          "allow_fallbacks": false
+        }
+      },
+      "effort": "medium",
+      "connections": 8
+    }
+  },
+  "stage2_skipped": true,
+  "stage3_skipped": false,
+  "stage1_reused": true,
+  "stage3_agent": "gptoss",
+  "stage1_unneeded": {
+    "gptoss": 10,
+    "glm": 4
+  },
+  "spend": 0.080297201,
+  "stop_at": 0.2
+}
