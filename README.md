@@ -84,14 +84,15 @@ the same text for the same condition.
 Free dry run on the fake model (no paid call, no key needed):
 
 ```bash
-uv run python dev/scripted_stage1.py logs/dry_stage1          # prints the stage-1 log path
-uv run python dev/pipeline.py dry logs/dry \
-    --wording src/trustlabel/scenarios/wording.json --stage1-logs <that log path> [--jobs <files>] [--epochs N]
+uv run python dev/scripted_stage1.py logs/dry_stage1 --jobs src/trustlabel/scenarios/delete.json   # prints the stage-1 log path
+uv run python dev/pipeline.py dry logs/dry --jobs src/trustlabel/scenarios/delete.json \
+    --wording src/trustlabel/scenarios/wording.json --stage1-logs <that log path> [--epochs N]
 ```
 
-A plain fake model never calls a tool, so the scripted stage 1 supplies calls to replay. `--jobs` takes
-comma-separated job files and defaults to the delete jobs. `--epochs` sets repeats for the full stage-1 and stage-3
-runs.
+A plain fake model never calls a tool, so the scripted stage 1 supplies calls to replay. Pass the same `--jobs`
+(comma-separated job files) to both commands. `scripted_stage1.py` defaults to all four job kinds and `pipeline.py`
+to the delete jobs, so with both defaults the run fails at stage 2. `--epochs` sets repeats for the full stage-1 and
+stage-3 runs.
 
 Paid run (needs an OpenRouter key in `.env` and costs money):
 
