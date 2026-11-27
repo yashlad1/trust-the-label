@@ -132,7 +132,7 @@ gate, the stage-2 table and the reference lines; and the stage-3 table.
 
 A sample dry run on the fake model, and how to open it: `sample_records/README.md`.
 
-`uv run --with matplotlib python dev/fp3_chart.py` draws the pilot's headline chart (Figure 2) into
+`uv run --with matplotlib python dev/fp3_chart.py` draws the pilot's headline chart (Figure 3) into
 `docs/figures/fp3-pilot-headline.png` and `.svg`, and writes its caption page, `docs/figures/fp3-pilot-headline.md`.
 
 ## Tests
