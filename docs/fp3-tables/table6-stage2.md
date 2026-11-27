@@ -2,7 +2,7 @@
 
 ## For the report
 
-**Table 6.** Pilot stage 2, vague tool name, the call's own request (12 unneeded and 22 wanted actions per gate).
+**Table 6.** How often each gate let an unneeded action through or asked about a wanted one (pilot stage 2, vague tool name, the call's own request; 12 unneeded and 22 wanted actions per gate).
 
 | Condition | GPT-6 Luna: miss | GPT-6 Luna: interruption | GPT-6 Luna: asked, user refused | Nemotron 3.5 Super VL: miss | Nemotron 3.5 Super VL: interruption | Nemotron 3.5 Super VL: asked, user refused |
 |---|--:|--:|--:|--:|--:|--:|
