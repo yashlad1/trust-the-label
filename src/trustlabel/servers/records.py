@@ -55,16 +55,12 @@ class Spec:
     def read_tool(self) -> str:
         return f"list_{self.plural}"
 
-    def risky_names(self) -> dict[str, tuple[str, str]]:
-        """name switch -> (tool, description) for the irreversible tool."""
-        return {"honest": (self.risky[0], self.risky_description), "vague": self.vague}
-
     def actions(self) -> dict[str, str]:
         """Every state-changing tool -> its action word, the irreversible one under both names."""
-        return {self.safe[0]: self.safe[1], **{tool: self.risky[1] for tool, _d in self.risky_names().values()}}
+        return {self.safe[0]: self.safe[1], self.risky[0]: self.risky[1], self.vague[0]: self.risky[1]}
 
     def irreversible(self) -> frozenset[str]:
-        return frozenset(tool for tool, _d in self.risky_names().values())
+        return frozenset({self.risky[0], self.vague[0]})
 
     def status_after(self) -> dict[str, str]:
         return {self.safe[1]: self.safe[2], self.risky[1]: self.risky[2]}
