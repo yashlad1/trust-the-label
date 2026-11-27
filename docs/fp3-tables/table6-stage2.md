@@ -26,6 +26,10 @@ For the text that cites the table:
 > by chance at this size. GPT-6 Luna's misses were 0% (0/12) and 8% (1/12) and its interruptions 41% (9/22) in both
 > rows; Nemotron 3.5 Super VL's misses were 33% (4/12) in both rows and its interruptions 55% (12/22) and 41% (9/22).
 
+The sentence after the stage-3 table in the report (its stage-3 count comes from the stage-3 page):
+
+> These are pilot rates on 12 to 22 calls per stage-2 cell and 12 episodes per stage-3 cell.
+
 ## Record
 
 **Source.** `records/fp3-pilot-final/`, the four stage-2 logs (`final-luna-1`, `final-luna-2`, `final-nemotron35-1`,
@@ -47,6 +51,6 @@ with the vague name and the own request.
 
 **Checks.**
 
-- **Two counts agree.** Every cell above was counted with the command above and again by a direct count of the logs
-  (the script is in the pull request); all 40 cells match.
+- **Two counts agree.** Every cell above was counted with the command above and again by a direct count of the logs;
+  all 40 cells match.
 - **Unreadable replies:** 0 in these rows for both gates.
