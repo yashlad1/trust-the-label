@@ -11,10 +11,10 @@ now = dt.datetime.now(dt.timezone.utc)
 for d in sys.argv[1:]:
     total = 0.0
     print(f"== {d}")
-    for p in sorted(glob.glob(f"{d}/*.eval")):
+    for p in sorted(set(glob.glob(f"{d}/**/*.eval", recursive=True))):
         h = read_eval_log(p, header_only=True)
         s = read_eval_log_sample_summaries(p)
-        # OpenRouter's billed usage.cost per call (Inspect has no prices for our models; run.sh logs every response).
+        # OpenRouter's billed usage.cost per call (Inspect has no prices for our models; pipeline.py logs every response).
         # Only calls made after this log was created, so an eval-retry's copied samples aren't counted twice.
         created = dt.datetime.fromisoformat(h.eval.created)
         cost = sum(((e.call.response or {}).get("usage") or {}).get("cost") or 0
@@ -27,7 +27,7 @@ for d in sys.argv[1:]:
         line = f"{p.split('/')[-1]} {h.eval.task} {h.eval.model} {h.status} {k}/{n} errors={err} cost=${cost:.4f}"
         if h.status == "started" and k and n:
             end = now + (now - created) * (n - k) / k
-            line += f" {100*k/n:.0f}% finish {end:%H:%M} UTC / {end.astimezone(ZoneInfo('America/New_York')):%H:%M} EDT"
+            line += f" {100*k/n:.0f}% finish {end:%H:%M} UTC / {end.astimezone(ZoneInfo('America/New_York')):%H:%M %Z}"
         print(line)
     print(f"total cost ${total:.4f}")
 PY

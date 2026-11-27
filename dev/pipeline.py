@@ -20,6 +20,7 @@ import argparse
 import json
 import subprocess
 import sys
+import traceback
 from pathlib import Path
 
 import yaml
@@ -85,7 +86,9 @@ class Run:
         cost = spend(self.logs)
         print(f"{step}: {log.status}, {len(log.samples or [])} samples, spend so far ${cost:.4f}", flush=True)
         if cost > self.stop_at:
-            sys.exit(f"STOP: spend ${cost:.4f} passed ${self.stop_at:.2f}")
+            self.stop(f"STOP: spend ${cost:.4f} passed ${self.stop_at:.2f}")
+        if "smoke" not in step and log.status != "success":
+            self.stop(f"STOP: {step} ended with status {log.status}; its log was not used")
         return log
 
     def check(self, step, log, ok, why):
@@ -93,7 +96,12 @@ class Run:
         passed = log.status == "success" and not errors and ok
         print(f"{step} smoke check: {'pass' if passed else 'FAIL'} ({why}; sample errors: {len(errors)})", flush=True)
         if not passed and not self.dry:
-            sys.exit(f"STOP: {step} smoke failed; the full stage was not started")
+            self.stop(f"STOP: {step} smoke failed; the full stage was not started")
+
+    def stop(self, msg):  # save the manifest first, so a stopped run still says what ran
+        self.manifest.update(stopped=msg, logs=list(dict.fromkeys(self.logs)))
+        self.save()
+        sys.exit(msg)
 
     def save(self):
         (self.out / "manifest.json").write_text(json.dumps(self.manifest, indent=2))
@@ -123,76 +131,81 @@ def main():
     if [g for g in gates if g not in GATES]:
         ap.error(f"unknown gate in {gates}; valid: {GATES}")
     p = Run(a.out, dry, a.stop_at)
-    p.manifest.update(jobs=jobs, wording=a.wording, epochs=a.epochs, stage2_epochs=a.stage2_epochs)  # the manifest says what a run covered
-    status = git("status", "--porcelain", "--untracked-files=no")  # tracked files only; how to rebuild the run: mode, command, code, models
-    p.manifest.update(mode=a.mode, command=sys.argv, code={"git_sha": git("rev-parse", "HEAD"),
-                                                           "dirty": None if status is None else bool(status)})
-    p.manifest["models"] = {n: {"model": MODELS[n][0], "config": MODELS[n][1], "provider": yaml.safe_load(Path(MODELS[n][1]).read_text()),
-                                "effort": MODELS[n][2], "connections": CONNECTIONS.get(n, 4)}
-                            for n in dict.fromkeys([*AGENTS, *gates, LIVE_GATE])}
-    p.manifest.update(stage2_skipped=a.no_stage2, stage3_skipped=a.no_stage3)
+    try:
+        p.manifest.update(jobs=jobs, wording=a.wording, epochs=a.epochs, stage2_epochs=a.stage2_epochs)  # the manifest says what a run covered
+        status = git("status", "--porcelain", "--untracked-files=no")  # tracked files only; how to rebuild the run: mode, command, code, models
+        p.manifest.update(mode=a.mode, command=sys.argv, code={"git_sha": git("rev-parse", "HEAD"),
+                                                               "dirty": None if status is None else bool(status)})
+        p.manifest["models"] = {n: {"model": MODELS[n][0], "config": MODELS[n][1], "provider": yaml.safe_load(Path(MODELS[n][1]).read_text()),
+                                    "effort": MODELS[n][2], "connections": CONNECTIONS.get(n, 4)}
+                                for n in dict.fromkeys([*AGENTS, *gates, LIVE_GATE])}
+        p.manifest.update(stage2_skipped=a.no_stage2, stage3_skipped=a.no_stage3)
 
-    if not dry:  # 0. one tiny tool call per model, the same way the runs send them
-        if subprocess.run([sys.executable, "dev/check_openrouter.py", "--ping", "--yes"]).returncode:
-            sys.exit("STOP: the ping failed")
+        if not dry:  # 0. one tiny tool call per model, the same way the runs send them
+            if subprocess.run([sys.executable, "dev/check_openrouter.py", "--ping", "--yes"]).returncode:
+                p.stop("STOP: the ping failed")
 
-    # 1. stage 1: each agent proposes, with never ask
-    unneeded = {}
-    for agent in [] if a.stage1_logs else AGENTS:
-        log = p.run(f"stage1-{agent}-smoke", stage1(scenarios=jobs, names=STAGE1_NAMES), agent, limit=12, epochs=1)
-        used_tools = any(m.role == "assistant" and m.tool_calls for s in log.samples for m in s.messages)
-        p.check(f"stage1-{agent}", log, used_tools, "the agent called tools" if used_tools else "no tool calls")
-        log = p.run(f"stage1-{agent}", stage1(scenarios=jobs, names=STAGE1_NAMES), agent, epochs=a.epochs)
-        p.manifest["stage1"].append(log.location)
-        unneeded[agent] = sum(bool(s.store["episode"]["stored_calls"]) for s in log.samples
-                              if not failed(s, None) and s.metadata["scenario"]["version"] == "unneeded")
-    if a.stage1_logs:  # reuse: count the unneeded proposals from the given logs, per agent
-        unneeded = dict.fromkeys(AGENTS, 0)
-        for path in a.stage1_logs.split(","):
-            old = read_eval_log(path)
-            agent = next((g for g in AGENTS if MODELS[g][0] == old.eval.model), None)
-            if agent is None:
-                if not dry:
-                    sys.exit(f"STOP: {path} was made by {old.eval.model}, not one of the agents {AGENTS}")
-                agent = AGENTS[0]
-                print(f"note: {path} was made by {old.eval.model}, not one of the agents; counted as {agent} (dry run)")
-            unneeded[agent] += sum(bool(s.store["episode"]["stored_calls"]) for s in old.samples or []
-                                   if not failed(s, None) and s.metadata["scenario"]["version"] == "unneeded")
-        p.manifest.update(stage1=a.stage1_logs.split(","), stage1_reused=True)
-    p.save()
-    stage1_logs = ",".join(p.manifest["stage1"])
-
-    # 2. stage 2: every gate judges the same stored calls: the standard rows plus the intent rows and the wording rows
-    rows = dict(intent_rows=True, wording_rows=a.wording)
-    for gate in [] if a.no_stage2 else gates:
-        log = p.run(f"stage2-{gate}-smoke", stage2(logs=stage1_logs, scenarios=jobs, **rows), gate, limit=12)
-        scored = [s for s in log.samples if not failed(s, "gate_outcome")]
-        unreadable = sum(s.scores["gate_outcome"].value["unreadable"] for s in scored)
-        p.check(f"stage2-{gate}", log, len(scored) == 12 and unreadable <= 3,
-                f"{unreadable}/{len(scored)} unreadable replies, {len(scored)}/12 scored")
-        p.manifest["stage2"][gate] = p.run(f"stage2-{gate}", stage2(logs=stage1_logs, scenarios=jobs, **rows), gate,
-                                         epochs=a.stage2_epochs).location
+        # 1. stage 1: each agent proposes, with never ask
+        unneeded = {}
+        for agent in [] if a.stage1_logs else AGENTS:
+            log = p.run(f"stage1-{agent}-smoke", stage1(scenarios=jobs, names=STAGE1_NAMES), agent, limit=12, epochs=1)
+            used_tools = any(m.role == "assistant" and m.tool_calls for s in (log.samples or []) for m in s.messages)
+            p.check(f"stage1-{agent}", log, used_tools, "the agent called tools" if used_tools else "no tool calls")
+            log = p.run(f"stage1-{agent}", stage1(scenarios=jobs, names=STAGE1_NAMES), agent, epochs=a.epochs)
+            p.manifest["stage1"].append(log.location)
+            unneeded[agent] = sum(bool(s.store["episode"]["stored_calls"]) for s in log.samples
+                                  if not failed(s, None) and s.metadata["scenario"]["version"] == "unneeded")
+        if a.stage1_logs:  # reuse: count the unneeded proposals from the given logs, per agent
+            unneeded = dict.fromkeys(AGENTS, 0)
+            for path in a.stage1_logs.split(","):
+                old = read_eval_log(path)
+                agent = next((g for g in AGENTS if MODELS[g][0] == old.eval.model), None)
+                if agent is None:
+                    if not dry:
+                        p.stop(f"STOP: {path} was made by {old.eval.model}, not one of the agents {AGENTS}")
+                    agent = AGENTS[0]
+                    print(f"note: {path} was made by {old.eval.model}, not one of the agents; counted as {agent} (dry run)")
+                unneeded[agent] += sum(bool(s.store["episode"]["stored_calls"]) for s in old.samples or []
+                                       if not failed(s, None) and s.metadata["scenario"]["version"] == "unneeded")
+            p.manifest.update(stage1=a.stage1_logs.split(","), stage1_reused=True)
         p.save()
+        stage1_logs = ",".join(p.manifest["stage1"])
 
-    # 3. stage 3: the stage-1 agent with more unneeded proposals, live, with the live gate
-    agent = max(unneeded, key=unneeded.get)
-    gate_model, gate_pin, gate_effort = MODELS[LIVE_GATE]
-    gate = dict(gate_model="mockllm/model" if dry else gate_model, gate_config="" if dry else gate_pin,
-                gate_effort="" if dry else gate_effort)
-    p.manifest.update(stage3_agent=agent, stage1_unneeded=unneeded)
-    print(f"stage 3 agent: {agent} (unneeded proposals in stage 1: {unneeded})", flush=True)
-    for i, (label, (policy, warning)) in enumerate({} if a.no_stage3 else STAGE3.items()):
-        task = lambda: stage3(policy=policy, warning=warning, name=STAGE3_NAME, scenarios=jobs, epochs=a.epochs, **gate)
-        if i == 0:
-            log = p.run("stage3-smoke", task(), agent, limit=12, epochs=1, max_samples=STAGE3_SAMPLES)
-            gated = any(d["verdict"] for s in log.samples if not failed(s, "final_state_scorer") for d in s.store["episode"]["decisions"])
-            p.check("stage3", log, gated, "the gate decided calls" if gated else "no gate decisions")
-        p.manifest["stage3"][label] = p.run(f"stage3-{policy}-{'warn' if warning else 'plain'}", task(), agent, max_samples=STAGE3_SAMPLES).location
+        # 2. stage 2: every gate judges the same stored calls: the standard rows plus the intent rows and the wording rows
+        rows = dict(intent_rows=True, wording_rows=a.wording)
+        for gate in [] if a.no_stage2 else gates:
+            log = p.run(f"stage2-{gate}-smoke", stage2(logs=stage1_logs, scenarios=jobs, **rows), gate, limit=12)
+            scored = [s for s in (log.samples or []) if not failed(s, "gate_outcome")]
+            unreadable = sum(s.scores["gate_outcome"].value["unreadable"] for s in scored)
+            p.check(f"stage2-{gate}", log, len(scored) == 12 and unreadable <= 3,
+                    f"{unreadable}/{len(scored)} unreadable replies, {len(scored)}/12 scored")
+            p.manifest["stage2"][gate] = p.run(f"stage2-{gate}", stage2(logs=stage1_logs, scenarios=jobs, **rows), gate,
+                                             epochs=a.stage2_epochs).location
+            p.save()
+
+        # 3. stage 3: the stage-1 agent with more unneeded proposals, live, with the live gate
+        agent = max(unneeded, key=unneeded.get)
+        gate_model, gate_pin, gate_effort = MODELS[LIVE_GATE]
+        gate = dict(gate_model="mockllm/model" if dry else gate_model, gate_config="" if dry else gate_pin,
+                    gate_effort="" if dry else gate_effort)
+        p.manifest.update(stage3_agent=agent, stage1_unneeded=unneeded)
+        print(f"stage 3 agent: {agent} (unneeded proposals in stage 1: {unneeded})", flush=True)
+        for i, (label, (policy, warning)) in enumerate({} if a.no_stage3 else STAGE3.items()):
+            task = lambda: stage3(policy=policy, warning=warning, name=STAGE3_NAME, scenarios=jobs, epochs=a.epochs, **gate)
+            if i == 0:
+                log = p.run("stage3-smoke", task(), agent, limit=12, epochs=1, max_samples=STAGE3_SAMPLES)
+                gated = any(d["verdict"] for s in (log.samples or []) if not failed(s, "final_state_scorer") for d in s.store["episode"]["decisions"])
+                p.check("stage3", log, gated, "the gate decided calls" if gated else "no gate decisions")
+            p.manifest["stage3"][label] = p.run(f"stage3-{policy}-{'warn' if warning else 'plain'}", task(), agent, max_samples=STAGE3_SAMPLES).location
+            p.save()
+
+        p.manifest.update(spend=spend(p.logs), stop_at=p.stop_at)
         p.save()
-
-    p.manifest.update(spend=spend(p.logs), stop_at=p.stop_at)
-    p.save()
-    print(f"done. spend ${spend(p.logs):.4f}. manifest: {p.out}/manifest.json")
+        print(f"done. spend ${spend(p.logs):.4f}. manifest: {p.out}/manifest.json")
+    except Exception as e:  # any failure after the Run exists ends the run through stop(), one STOP line
+        (p.out / "stop-traceback.txt").write_text(traceback.format_exc())  # the full traceback, only here
+        p.manifest["traceback"] = "stop-traceback.txt"
+        p.stop(f"STOP: {type(e).__name__}: {(str(e).splitlines() or [''])[0]}")
 
 
 if __name__ == "__main__":

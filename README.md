@@ -24,7 +24,7 @@ dev/
   pipeline.py          runs the whole experiment end to end (dry or paid)
   report.py            prints the runs table and the measure tables
   scripted_stage1.py   makes stage-1 logs on the fake model, for free dry runs
-  run.sh, progress.sh  run helper and a progress printer for long runs
+  progress.sh          a progress printer for long runs
   check_openrouter.py  pings each model once
   models/              one provider config per model (see Models)
 tests/                 same layout as src/; fake model only
@@ -34,18 +34,21 @@ records/               logs of the real-model runs, stored with Git LFS (see rec
 
 ## Setup
 
-Needs Python 3.13 and [uv](https://docs.astral.sh/uv/).
+Needs Python 3.13, [uv](https://docs.astral.sh/uv/) and [Git LFS](https://git-lfs.com/) (the run records are stored
+with it). The code is public at https://github.com/yashlad1/trust-the-label.
 
 ```bash
+git lfs install          # once per machine
+git clone https://github.com/yashlad1/trust-the-label
+cd trust-the-label
 uv sync
-cp .env.example .env     # put your OpenRouter key on its one line; this file is never committed
+uv run python --version  # should print Python 3.13.x
 ```
 
+Only a paid run needs a key: `cp .env.example .env` and put your OpenRouter key on its one line; this file is never
+committed. The free dry run below needs no key.
+
 Run everything with `uv run ...`. It makes `import trustlabel` work.
-
-## Dependencies
-
-From `pyproject.toml`: `inspect-ai` (the evaluation framework), `mcp` (the MCP servers), `openai` (the client library).
 
 ## Conditions
 
@@ -88,14 +91,17 @@ the same text for the same condition.
 Free dry run on the fake model (no paid call, no key needed):
 
 ```bash
-uv run python dev/scripted_stage1.py logs/dry_stage1          # prints the stage-1 log path
-uv run python dev/pipeline.py dry logs/dry \
-    --wording src/trustlabel/scenarios/wording.json --stage1-logs <that log path> [--jobs <files>] [--epochs N]
+uv run python dev/scripted_stage1.py logs/dry_stage1 --jobs src/trustlabel/scenarios/delete.json   # prints the stage-1 log path
+uv run python dev/pipeline.py dry logs/dry --jobs src/trustlabel/scenarios/delete.json \
+    --wording src/trustlabel/scenarios/wording.json --stage1-logs <that log path> [--epochs N]
 ```
 
-A plain fake model never calls a tool, so the scripted stage 1 supplies calls to replay. `--jobs` takes
-comma-separated job files and defaults to the delete jobs. `--epochs` sets repeats for the full stage-1 and stage-3
-runs.
+On the fake model the stage-3 smoke check prints FAIL (no gate decisions); that is expected, and the run still finishes.
+
+A plain fake model never calls a tool, so the scripted stage 1 supplies calls to replay. Pass the same `--jobs`
+(comma-separated job files) to both commands. `scripted_stage1.py` defaults to all four job kinds and `pipeline.py`
+to the delete jobs, so with both defaults the run fails at stage 2. `--epochs` sets repeats for the full stage-1 and
+stage-3 runs.
 
 Paid run (needs an OpenRouter key in `.env` and costs money):
 
@@ -124,8 +130,7 @@ outcomes), wall time, tokens and billed cost. It also accepts `.eval` files dire
 The same command also prints the measure tables from `src/trustlabel/analysis/rates.py`: the stage-1 table; for each
 gate, the stage-2 table and the reference lines; and the stage-3 table.
 
-A sample: `unzip sample_records/dry_run_fake_model.zip -d sample_records/` then
-`uv run python dev/report.py sample_records/dry_run/manifest.json`.
+A sample dry run on the fake model, and how to open it: `sample_records/README.md`.
 
 `uv run --with matplotlib python dev/fp3_chart.py` draws the pilot's headline chart (Figure 3) into
 `docs/figures/fp3-pilot-headline.png` and `.svg`, and writes its caption page, `docs/figures/fp3-pilot-headline.md`.
@@ -148,6 +153,5 @@ All models run through OpenRouter, with the provider pinned and no fallbacks (co
 
 ## Records
 
-The logs of the real-model runs are in `records/`, stored with Git LFS: run `git lfs install` once, then `git lfs pull`
-after cloning. `records/README.md` lists each run. `sample_records/` holds a small zipped sample of a dry run on the
-fake model.
+The real-model runs: `records/README.md` (stored with Git LFS; it says how to fetch them). A dry-run sample on the
+fake model: `sample_records/README.md`.

@@ -15,10 +15,10 @@ from trustlabel.contracts import Labels, Scenario
 from trustlabel.servers.registry import SERVERS
 
 
-def start_server(scenario: Scenario, label: str, name: str, workdir: str | None = None) -> tuple[ToolSource, Path]:
+def start_server(scenario: Scenario, label: str, name: str) -> tuple[ToolSource, Path]:
     """A fresh state file with the job's starting items, and the MCP server over it (started on first use)."""
     registered = SERVERS[scenario.kind]
-    state_file = registered.new_state_file(scenario, workdir)
+    state_file = registered.new_state_file(scenario)
 
     # the server is a child process: pass PYTHONPATH on when set (needed only when the package isn't installed)
     env = {"PYTHONPATH": os.environ["PYTHONPATH"]} if "PYTHONPATH" in os.environ else None
@@ -46,8 +46,3 @@ def labels_for(kind: str, label: str, name: str) -> dict[str, Labels | None]:
         tool: None if ann is None else Labels(ann.read_only_hint, ann.destructive_hint)
         for tool, _description, ann in SERVERS[kind].module.tool_specs(label, name)
     }
-
-
-def final_state(kind: str, state_file: Path) -> dict[str, str]:
-    """item id -> status at the end of the episode; the scorer reads only this."""
-    return {item["id"]: item["status"] for item in SERVERS[kind].module.read_items(state_file)}
