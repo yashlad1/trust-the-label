@@ -34,12 +34,19 @@ records/               logs of the real-model runs, stored with Git LFS (see rec
 
 ## Setup
 
-Needs Python 3.13 and [uv](https://docs.astral.sh/uv/).
+Needs Python 3.13, [uv](https://docs.astral.sh/uv/) and [Git LFS](https://git-lfs.com/) (the run records are stored
+with it). The code is public at https://github.com/yashlad1/trust-the-label.
 
 ```bash
+git lfs install          # once per machine
+git clone https://github.com/yashlad1/trust-the-label
+cd trust-the-label
 uv sync
-cp .env.example .env     # put your OpenRouter key on its one line; this file is never committed
+uv run python --version  # should print Python 3.13.x
 ```
+
+Only a paid run needs a key: `cp .env.example .env` and put your OpenRouter key on its one line; this file is never
+committed. The free dry run below needs no key.
 
 Run everything with `uv run ...`. It makes `import trustlabel` work.
 
@@ -88,6 +95,8 @@ uv run python dev/scripted_stage1.py logs/dry_stage1 --jobs src/trustlabel/scena
 uv run python dev/pipeline.py dry logs/dry --jobs src/trustlabel/scenarios/delete.json \
     --wording src/trustlabel/scenarios/wording.json --stage1-logs <that log path> [--epochs N]
 ```
+
+On the fake model the stage-3 smoke check prints FAIL (no gate decisions); that is expected, and the run still finishes.
 
 A plain fake model never calls a tool, so the scripted stage 1 supplies calls to replay. Pass the same `--jobs`
 (comma-separated job files) to both commands. `scripted_stage1.py` defaults to all four job kinds and `pipeline.py`
