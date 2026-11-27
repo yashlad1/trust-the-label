@@ -17,8 +17,8 @@ from inspect_ai.model import GenerateConfig
 from inspect_ai.solver import generate
 
 from trustlabel.harness.episode import episode
-from trustlabel.harness.replay import (ASK_FIRST_CONDITIONS, INTENT_CONDITIONS, NAMES_SHOWN, WORDING_CONDITIONS,
-                                       gate_outcome, replay_samples, stored_calls)
+from trustlabel.harness.replay import (INTENT_CONDITIONS, WORDING_CONDITIONS, gate_outcome, replay_samples,
+                                       stored_calls)
 from trustlabel.scenarios.load import DELETE_JOBS, load_scenarios
 from trustlabel.scorer import final_state_scorer
 
@@ -88,7 +88,7 @@ def stage2(logs: str, scenarios: str = DELETE_JOBS, first_only: bool = True, int
         samples = samples + replay_samples(calls, jobs, WORDING_CONDITIONS, names=("vague",),
                                            wording=json.loads(Path(from_root(wording_rows)).read_text()))
     if ask_first_rows:
-        samples = samples + replay_samples(calls, jobs, ASK_FIRST_CONDITIONS, names=("vague",), ask_first=True)
+        samples = samples + replay_samples(calls, jobs, WORDING_CONDITIONS, names=("vague",), ask_first=True)
     return Task(
         dataset=MemoryDataset(samples),
         solver=generate(),

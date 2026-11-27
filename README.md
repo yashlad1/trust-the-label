@@ -24,7 +24,7 @@ dev/
   pipeline.py          runs the whole experiment end to end (dry or paid)
   report.py            prints the runs table and the measure tables
   scripted_stage1.py   makes stage-1 logs on the fake model, for free dry runs
-  run.sh, progress.sh  run helper and a progress printer for long runs
+  progress.sh          a progress printer for long runs
   check_openrouter.py  pings each model once
   models/              one provider config per model (see Models)
 tests/                 same layout as src/; fake model only

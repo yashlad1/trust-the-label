@@ -7,15 +7,13 @@ Each gate runs a 12-sample smoke first; its full run starts only if the smoke pa
 the smoke's projection stays at or under CAP. Logs: logs/h5-wording/ (dry: logs/dry/h5-wording/).
 """
 import json
-import subprocess
 import sys
 from pathlib import Path
 
 from inspect_ai import eval as run_eval
-from inspect_ai.log import read_eval_log
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from dev.pipeline import COMMON, model_kwargs  # the full run's gate settings
+from dev.pipeline import COMMON, git, model_kwargs, spend  # the full run's gate settings
 from trustlabel.analysis.rates import failed
 from trustlabel.harness.tasks import stage2
 
@@ -26,18 +24,6 @@ WORDING = str(ROOT / "src/trustlabel/scenarios/wording.json")
 REQUESTS = ("unneeded_calm", "unneeded_loud", "wanted_calm", "wanted_loud")
 GATES = ("luna", "nemotron35")
 CAP = 1.50  # dollars of billed spend for H5 in all: both gates, smokes included
-
-
-def spend(paths):
-    return sum(((e.call.response or {}).get("usage") or {}).get("cost") or 0
-               for p in paths for s in read_eval_log(p).samples or [] for e in s.events if e.event == "model" and e.call)
-
-
-def git(*a):
-    try:
-        return subprocess.run(["git", "-C", str(ROOT), *a], capture_output=True, text=True, check=True).stdout.strip()
-    except (OSError, subprocess.CalledProcessError):
-        return None
 
 
 def go(gate, dry, task, ids, stage1):

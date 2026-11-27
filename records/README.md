@@ -23,6 +23,40 @@ Times are Eastern (EST). "Smokes" are the 12-sample test runs that ran before ea
 | `fp3-pilot-final/` | Nov 20, 2:00 to 2:37 PM | 89c4089 (on main as 3727b7f) | The FP3 pilot at the final code: 12 jobs (3 per kind, both versions, `dev/pilot-jobs/`), one trial each. Stage 1: gpt-oss-120b and GLM 5.3 Flash. Stage 2: GPT-6 Luna and Nemotron 3.5 Super VL, 48 rows per saved first action. Stage 3: gpt-oss-120b with GPT-6 Luna as the live gate, three policies. | 16 (9 runs, 7 smokes) | complete, 0 failed samples |
 | `h5-wording/` | Nov 20, 2:37 to 4:00 PM | 89c4089 (on main as 3727b7f) | The wording rows (H5) run again with the final wording file, on the full run's 234 saved first actions: GPT-6 Luna and Nemotron 3.5 Super VL, 1,872 gate calls each. | 4 (2 runs, 2 smokes) | complete, 0 failed samples |
 
+## Provenance
+
+Which code made each run (from the `eval.revision` field in each log's header):
+
+| run folder | commit | on main | uncommitted changes when it started |
+|---|---|---|---|
+| `fp3-pilot/` | eb5cc40 (gpt-oss stage 1: 4921121) | no | not recorded |
+| `fp4/` | 1115754 (gpt-oss stage 1: 451bcf4) | no | not recorded |
+| `fp3-pilot-final/` | 89c4089 | yes | no |
+| `h5-wording/` | 89c4089 | yes | no |
+| `r2-*` and `r4-*` | 0b4fd4e | no | yes |
+| `e1-ask-first/` | 9ae0a43 | yes | yes |
+
+The commits for `fp3-pilot/` and `fp4/` are in a working copy outside this repository, so this repository's history does
+not hold them. 1115754 and 451bcf4 have identical code. 0b4fd4e is on the Nov 19 harness branches, not on main.
+"Uncommitted changes" is the manifest's flag for tracked files. Newer manifests record it; the `fp3-pilot/` and `fp4/`
+manifests have no such field.
+
+What differs from main for the runs made by other code (only what changes what a model saw or how a sample was counted):
+
+- **Pay tool description.** `fp3-pilot/` and `fp4/` described `approve_invoices` as "Approves the given invoices for
+  payment without paying them. Max 5 ids per call." Main (and `fp3-pilot-final/`, `r2-*`, `r4-*`) says "Approves the
+  given invoices; an approval can still be withdrawn. Max 5 ids per call." Only the agent sees it (stages 1 and 3); a
+  stage-2 gate never sees a safe tool's description.
+- **Wording file.** `fp4/` used the request texts from before Nov 19. Main's `src/trustlabel/scenarios/wording.json`
+  (and `h5-wording/`) rewrites 21 of them: 11 louder unneeded requests and 10 calmer wanted ones.
+- **Blank replies.** `fp3-pilot/` and `fp4/` counted a provider reply with no text, no tool call and no usage as the
+  agent stopping, or as an unreadable ASK. Main fails such a sample. The six full `fp4/` stage-2 logs hold 0 such replies.
+- **AlignmentCheck rows.** The AlignmentCheck rows in `fp4/` stage 2 were built by code that main does not have.
+- **Everything else.** Main rebuilds `fp4/`'s stage-2 gate input exactly (checked on 8 stored calls: 280 of 288 rows
+  identical; the other 8 are wording rows, which match the older wording file 64 of 64).
+
+To repeat a run exactly, use its commit. For `fp3-pilot/` and `fp4/`, use main and the differences above.
+
 ## Using a run
 
 From the repository root, give `dev/report.py` every manifest of a run:

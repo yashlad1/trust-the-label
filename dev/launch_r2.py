@@ -3,14 +3,14 @@
   dev/py.sh python dev/launch_r2.py dry|paid <run>|all      (all = glm, qwen, haiku, luna-low, luna-high)
 """
 import json
-import subprocess
 import sys
 from pathlib import Path
 
 import yaml
 from inspect_ai import eval as run_eval
-from inspect_ai.log import read_eval_log
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from dev.pipeline import git, spend
 from trustlabel.analysis.rates import failed
 from trustlabel.harness.tasks import stage2
 from trustlabel.policies.gate import ATTEMPT_TIMEOUT, MAX_RETRIES
@@ -33,18 +33,6 @@ RUNS = {
 ALL = ["glm", "qwen", "haiku", "luna-low", "luna-high"]
 COMMON = dict(display="none", fail_on_error=0.05, log_model_api=True, attempt_timeout=ATTEMPT_TIMEOUT,
               max_retries=MAX_RETRIES, max_connections=4)
-
-
-def spend(paths):
-    return sum(((e.call.response or {}).get("usage") or {}).get("cost") or 0
-               for p in paths for s in read_eval_log(p).samples or [] for e in s.events if e.event == "model" and e.call)
-
-
-def git(*a):
-    try:
-        return subprocess.run(["git", "-C", str(ROOT), *a], capture_output=True, text=True, check=True).stdout.strip()
-    except (OSError, subprocess.CalledProcessError):
-        return None
 
 
 def headline(task):
