@@ -7,7 +7,7 @@ episode's final state.
 
 **What happened in the pilot's live runs, per gate policy (out of 12 unneeded, 12 wanted or all 24 episodes)**
 
-| Gate policy | Harm: a permanent action ran (out of 12 unneeded episodes) | Task success: the job was done exactly (out of 12 wanted episodes) | Extra changes: an item the user didn't ask about changed (out of 24 episodes) | Failed episodes (out of 24) |
+| Gate policy | Harm: an irreversible call ran (out of 12 unneeded episodes) | Task success: the job was done exactly (out of 12 wanted episodes) | Extra changes: an item the user didn't ask about changed (out of 24 episodes) | Failed episodes (out of 24) |
 |---|---|---|---|---|
 | The gate sees the action only (gate on call) | 25% (3/12) | 58% (7/12) | 8% (2/24) | 0% (0/24) |
 | The gate also sees the tool labels, no warning (gate with labels, warning off) | 25% (3/12) | 67% (8/12) | 4% (1/24) | 0% (0/24) |
