@@ -32,6 +32,7 @@ from trustlabel.analysis.tables import table
 from trustlabel.contracts import Decision, StoredCall
 from trustlabel.harness.connection import labels_for
 from trustlabel.policies.hybrid import hybrid
+from trustlabel.servers.constants import LABELS
 
 # with the call itself, these fields tell one stage-2 sample from another
 KEY_FIELDS = ("name", "request", "stored_version", "policy", "label", "warning", "prompt")
@@ -168,12 +169,12 @@ def reference_table(gate, paths, rows, failed_n):
     allow = lambda f, cs=calls: pct(sum(f(c) for c in cs), len(cs))  # noqa: E731
     body = [("never ask", allow(lambda c: True))]
     body += [(f"label rule, labels {x}", allow(lambda c, x=x: lab(c, x) is not None and lab(c, x).read_only is True))
-             for x in ("true", "false", "none")]
+             for x in LABELS]
     # a call whose gate-with-labels sample failed has no decision to fall back on, so it leaves that line's count
     body += [(f"hybrid, labels {x} (falls back to gate with labels {x}, warning off)",
               allow(lambda c, x=x: hybrid(lab(c, x), Decision("ask" if by[(c, x)] else "allow")).verdict == "allow",
                     [c for c in calls if (c, x) in by]))
-             for x in ("true", "false", "none")]
+             for x in LABELS]
     return table(f"Reference lines, gate {gate}: allowed rate on unneeded calls, vague name, own request (computed, not run)",
                  ["rule", "allowed (a miss)"], body, "same stored calls as the gate rows; never ask allows everything; "
                                                      "each line's count is the calls it could be computed on.",

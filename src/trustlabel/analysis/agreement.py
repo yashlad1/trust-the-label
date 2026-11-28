@@ -81,7 +81,7 @@ def agree(key_path, a_path, b_path):
             "kappa": kappa([a[r] for r in rows], [b[r] for r in rows]),
             "a_off": [r for r in rows if a[r] != expect[r]],
             "b_off": [r for r in rows if b[r] != expect[r]],
-            "disagree": [r for r in rows if a[r] != b[r]]}
+            "disagree": [r for r in rows if a[r] != b[r]], "key": key}
 
 
 def main():
@@ -101,8 +101,7 @@ def main():
         print(f"{n} rows: {args.out_dir}/sheet.csv (one copy per labeler), {args.out_dir}/key.csv (keep it away from them)")
         return
     r = agree(args.key, args.a, args.b)
-    with open(args.key, newline="") as f:
-        key = {int(x["row"]): x for x in csv.DictReader(f)}
+    key = r["key"]
     name = lambda row: f"{row} ({key[row]['job']} {key[row]['version']})"  # noqa: E731
     print(f"labelers agree on {pct(r['agree'], r['n'])} rows, Cohen's kappa {r['kappa']:.2f}")
     print(f"labeler A differs from the intended version on {len(r['a_off'])}/{r['n']}: {', '.join(map(name, r['a_off'])) or 'none'}")
