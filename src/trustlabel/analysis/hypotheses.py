@@ -97,10 +97,6 @@ def h1c_floor(gate, paths, nl, fl, floored, failed_n):
                  f"{names(paths)}; analysis/hypotheses.py; first calls only, {failed_n} failed samples (in no pair)")
 
 
-# def per_call(rows, spec):
-#     return {c: (j, int(x) - int(y)) for c, j, x, y in paired(rows, *spec)}
-
-
 def effect_change(rows, spec_a, spec_b):
     """Per call, spec_a's difference minus spec_b's, on the calls judged under both: (mean in points, 90% CI low,
     high, the per-call (job, value) list). The CI resamples jobs."""
