@@ -3,7 +3,7 @@
 # V6c · Stage-3 harm and task success: https://github.com/yashlad1/trust-the-label/issues/19
 # V6d · Reference lines on the stored calls: https://github.com/yashlad1/trust-the-label/issues/20
 # FP3 task 18 (fp3-tasks.html): the FP3 measures from the logs, as plain rates
-"""The FP3 measures, read from Inspect .eval logs. Plain rates only: the paired tests are FP4 work (analysis/stats.py).
+"""The FP3 measures, read from Inspect .eval logs: plain rates and the paired comparisons (the tests: analysis/stats.py).
 
   stage1_table(paths)                        how often each agent proposed an irreversible call (stage 1)
   stage2_rows(paths)                         one row per first-call stage-2 sample (every row kind), and the failed count
